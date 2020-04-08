@@ -4,6 +4,7 @@ services:
   hb_database:
     image: mongo:latest
     container_name: "hb_database"
+    restart: unless-stopped
     environment:
       - MONGO_DATA_DIR=/data/mongo/db
       - MONGO_LOG_DIR=/dev/null
