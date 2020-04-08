@@ -14,6 +14,16 @@ services:
       - 27017:27017
     command: mongod --logpath=/dev/null
 
+  hb_database_view:
+    image: mongo-express:latest
+    container_name: "hb_database_view"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=hb_database
+    links:
+      - hb_database
+    ports:
+      - 8043:8081
+
   hb_pacs:
     image: jodogne/orthanc:latest
     container_name: "hb_pacs"
