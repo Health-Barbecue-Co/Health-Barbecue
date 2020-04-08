@@ -22,6 +22,7 @@ services:
       - 8042:8042
     volumes:
       - ./data/orthanc:/var/lib/orthanc/db/
+      - ./config/orthanc.json:/etc/orthanc/orthanc.json
 
   # hb_business:
   #   image: hb_business
