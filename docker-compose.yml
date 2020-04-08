@@ -34,6 +34,19 @@ services:
       - ./data/orthanc:/var/lib/orthanc/db/
       - ./config/orthanc.json:/etc/orthanc/orthanc.json
 
+  hb_web_client:
+    container_name: hb_web_client
+    build:
+      context: ./client/web/
+      dockerfile: prod.Dockerfile
+    volumes:
+      - './client/web:/app'
+      - '/app/node_modules'
+    ports:
+      - 4000:80
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
   # hb_business:
   #   image: hb_business
   #   build: ./business

@@ -3,8 +3,8 @@
 ## Pre-requirement
 
 To launch the global application, you need:
-- docker
-- docker-compose
+- docker [https://www.docker.com/]()
+- docker-compose [https://docs.docker.com/compose/install/]()
 
 ## Install
 
@@ -25,3 +25,22 @@ If you want to change login/password, edit file `config/orthanc.json` and add yo
 ### Mongo Database
 
 A web Mongo client is available on the stack, you just need to use [http://localhost:8043/]() to access MongoDB.
+
+### Web client
+
+It is developed in React Typecript
+
+#### Docker
+
+It is available on [http://localhost:4000/]()
+
+#### Locally
+
+you can run locally with the command:
+
+```bash
+cd ./client/web
+npm install && npm start
+```
+
+The application will be available on [http://localhost:3000]()
