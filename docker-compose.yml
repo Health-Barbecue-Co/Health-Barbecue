@@ -1,34 +1,44 @@
 version: '3.4'
 
 services:
-  mongodb:
+  hb_database:
     image: mongo:latest
-    container_name: "mongodb"
+    container_name: "hb_database"
     environment:
       - MONGO_DATA_DIR=/data/mongo/db
       - MONGO_LOG_DIR=/dev/null
       - MONGO_DB=healthbarbecue
     volumes:
-      - ./data/db:/data/db
+      - ./data/mongo/db:/data/db
     ports:
       - 27017:27017
     command: mongod --logpath=/dev/null
 
-  hb_business:
-    image: hb_business
-    build: ./business
-    environment:
-      NODE_ENV: production
+  hb_pacs:
+    image: jodogne/orthanc:latest
+    container_name: "hb_pacs"
     ports:
-      - 3001:3001
-    depends_on:
-      - mongodb
-    links:
-      - mongodb
-  hb_client:
-    image: hb_client
-    build: ./client
-    environment:
-      NODE_ENV: production
-    ports:
-      - 3001:3001
+      - 4242:4242
+      - 8042:8042
+    volumes:
+      - ./data/orthanc:/var/lib/orthanc/db/
+      - ./config/orthanc.json:/etc/orthanc/orthanc.json
+
+  # hb_business:
+  #   image: hb_business
+  #   build: ./business
+  #   environment:
+  #     NODE_ENV: production
+  #   ports:
+  #     - 3001:3001
+  #   depends_on:
+  #     - mongodb
+  #   links:
+  #     - mongodb
+  # hb_client:
+  #   image: hb_client
+  #   build: ./client
+  #   environment:
+  #     NODE_ENV: production
+  #   ports:
+  #     - 3001:3001

@@ -1,3 +1,7 @@
+# Data folder
+data/mongo
+data/orthanc
+
 # Build and Release Folders
 bin-debug/
 bin-release/
