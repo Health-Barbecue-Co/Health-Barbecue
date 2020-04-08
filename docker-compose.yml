@@ -10,7 +10,7 @@ services:
       - MONGO_LOG_DIR=/dev/null
       - MONGO_DB=healthbarbecue
     volumes:
-      - ./data/mongo/db:/data/db
+      - mongodata:/data/db
     ports:
       - 27017:27017
     command: mongod --logpath=/dev/null
@@ -48,21 +48,5 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
 
-  # hb_business:
-  #   image: hb_business
-  #   build: ./business
-  #   environment:
-  #     NODE_ENV: production
-  #   ports:
-  #     - 3001:3001
-  #   depends_on:
-  #     - mongodb
-  #   links:
-  #     - mongodb
-  # hb_client:
-  #   image: hb_client
-  #   build: ./client
-  #   environment:
-  #     NODE_ENV: production
-  #   ports:
-  #     - 3001:3001
+volumes:
+  mongodata:
