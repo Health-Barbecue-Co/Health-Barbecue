@@ -49,4 +49,4 @@ services:
       - CHOKIDAR_USEPOLLING=true
 
 volumes:
-  mongodata:
+  mongodata: {}
