@@ -28,7 +28,7 @@ A web Mongo client is available on the stack, you just need to use [http://local
 
 ### Web client
 
-It is developed in React Typecript
+It is developed in React Typecript and using Yarn
 
 #### Docker
 
@@ -44,3 +44,18 @@ npm install && npm start
 ```
 
 The application will be available on [http://localhost:3000](http://localhost:3000)
+
+## Devlopment
+
+### Business
+
+#### Requirement
+
+### Web Client
+
+#### Requirement
+
+To develop, we need following tools:
+ - NodeJs [https://nodejs.org/en/](https://nodejs.org/en/) >= 12
+ - Yarn [https://classic.yarnpkg.com/lang/en/](https://classic.yarnpkg.com/lang/en/) ~1.20
+
