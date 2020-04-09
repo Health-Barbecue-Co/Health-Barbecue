@@ -56,8 +56,8 @@ It is developed in React TypeScript, and Yarn is used as the package manager/CLI
 
 To develop, we need following tools:
 
- - [Node.js](https://nodejs.org/en/) >= 12
- - [Yarn](https://classic.yarnpkg.com/lang/en/) ~1.20
+- [Node.js](https://nodejs.org/en/) >= 12
+- [Yarn](https://classic.yarnpkg.com/lang/en/) ~1.20
 
 On macOS, you can install those tools with Homebrew by running the command `brew install yarn`.
 
