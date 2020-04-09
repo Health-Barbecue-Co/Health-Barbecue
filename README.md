@@ -6,6 +6,23 @@ To launch the global application, you need:
 - docker [https://www.docker.com/](https://www.docker.com/)
 - docker-compose [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
 
+## Requirements on macOS
+
+For Docker, you'll need:
+
+- Computer: Mac >= 2010
+- OS: macOS >= 10.13
+- RAM: 4 GB
+- VirtualBox prior to version 4.3.30 MUST NOT be installed
+
+Setup:
+
+1. [optional] [Homebrew](https://brew.sh)
+2. Install Docker (e.g. with Homebrew: `brew cask install docker`)
+3. Run `open /Applications/Docker.app`
+
+You can then proceed with the *Install* step below.
+
 ## Install
 
 to Install all the stack, you should execute into the root folder the line below:
@@ -28,7 +45,7 @@ A web Mongo client is available on the stack, you just need to use [http://local
 
 ### Web client
 
-It is developed in React Typecript
+It is developed in React TypeScript
 
 #### Docker
 
