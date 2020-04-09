@@ -31,6 +31,7 @@ to Install all the stack, you should execute into the root folder the line below
 docker-compose -f "docker-compose.yml" up -d --build
 ```
 
+ps: If you have this kind of error “no matching manifest for windows/amd64 in the manifest list entries”, switch to Linux container in Deocker Desktop.
 ## Usage
 
 ### Orthanc server
