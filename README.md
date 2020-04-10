@@ -6,6 +6,20 @@ Required to launch the global application:
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
+## Requirements on Windows
+
+For Docker:
+
+- Windows 10 64-bit: Pro, Enterprise, or Education (Build 15063 or later).
+- Hyper-V and Containers Windows features must be enabled.
+
+###System Requirements:
+
+The following hardware prerequisites are required to successfully run Client Hyper-V on Windows 10:
+-64 bit processor with Second Level Address Translation (SLAT)
+-4GB system RAM
+-BIOS-level hardware virtualization support must be enabled in the BIOS settings. For more information, see Virtualization.
+	
 ### Requirements on macOS
 
 On macOS, specific steps are needed to install Docker, Docker Compose and the .NET Core SDK.
