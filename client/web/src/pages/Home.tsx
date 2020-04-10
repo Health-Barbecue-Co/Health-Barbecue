@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import Counter from '../components/counter/Counter'
+import { StudiesList } from '../components/studies'
 import { useTranslation } from "react-i18next";
 
 export const Home: React.FC = () => {
@@ -14,6 +15,7 @@ export const Home: React.FC = () => {
         Prettier for you. Take a look around ;)
       </p>
       <Counter />
+      <StudiesList />
     </Fragment>
   )
 }

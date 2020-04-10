@@ -9,12 +9,14 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # install app dependencies
 COPY package.json ./
-COPY package-lock.json ./
-RUN npm install --silent
-RUN npm install react-scripts -g --silent
+COPY yarn.lock ./
+RUN yarn install --silent
+RUN yarn global add react-scripts --silent
 
 # add app
 COPY . ./
 
+EXPOSE 3000
+
 # start app
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
