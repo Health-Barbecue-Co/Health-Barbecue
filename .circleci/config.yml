@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build-docker:
     docker:
       - image: circleci/cci-demo-docker-primary:0.0.2
     steps:
@@ -28,4 +28,4 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - build-docker
