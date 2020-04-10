@@ -3,8 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 export const Navbar: React.FC = () => 
 {
-  let pjson = require('../../package.json');
-  let version = pjson.version;
+  let version = require('../../package.json').version;
 
   return (
     <nav>
