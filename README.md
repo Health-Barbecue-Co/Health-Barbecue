@@ -1,12 +1,14 @@
 # Health-Barbecue
 
-## Pre-requirement
+## Requirements
 
-To launch the global application, you need:
-- docker [https://www.docker.com/](https://www.docker.com/)
-- docker-compose [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
+Required to launch the global application:
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Requirements on macOS
+### Requirements on macOS
+
+On macOS, specific steps are needed to install Docker, Docker Compose and the .NET Core SDK.
 
 For Docker, you'll need:
 
@@ -17,62 +19,75 @@ For Docker, you'll need:
 
 Setup:
 
-1. [optional] [Homebrew](https://brew.sh)
-2. Install Docker (e.g. with Homebrew: `brew cask install docker`)
-3. Run `open /Applications/Docker.app`
+1. [optional] Install [Homebrew](https://brew.sh) to get all the required tools easily.
+2. Install Docker and Docker Compose (e.g. with Homebrew: `brew cask install docker`).
+3. Install the [.NET Core SDK](https://dotnet.microsoft.com/download#macos) (e.g. with Homebrew: `brew cask install dotnet-sdk`).
+4. Run the command `open /Applications/Docker.app`.
 
-You can then proceed with the *Install* step below.
+Then, proceed with the Install step below.
 
 ## Install
 
-to Install all the stack, you should execute into the root folder the line below:
+to Install all the stack, the command below should be executed in the root folder:
 
 ```shell
 docker-compose -f "docker-compose.yml" up -d --build
 ```
 
+P.S. If the kind of error "no matching manifest for windows/amd64 in the manifest list entries" occurs, switch to **Linux container** in Docker Desktop.
+
 ## Usage
 
-### Orthanc server
+### Orthanc Server
 
-Once Orthanc is running, use Mozilla Firefox at URL [http://localhost:8042/](http://localhost:8042/) to interact with Orthanc. The default username is `barbecuehealth` and its password is `barbecuehealth`.
+Once Orthanc is running, use Mozilla Firefox at URL <http://localhost:8042/> to interact with Orthanc. The default username is `barbecuehealth` and its password is `barbecuehealth`.
 
-If you want to change login/password, edit file `config/orthanc.json` and add your new login into RegisteredUsers
+To change the login/password, edit file `config/orthanc.json` and add a new login into `RegisteredUsers`.
 
 ### Mongo Database
 
-A web Mongo client is available on the stack, you just need to use [http://localhost:8043/](http://localhost:8043/) to access MongoDB.
+A web Mongo client being available on the stack, simply use <http://localhost:8043/> to access MongoDB.
 
-### Web client
+### Web Client
 
-It is developed in React TypeScript and Yarn is using as package manager/cli
+It is developed in React TypeScript, and Yarn is used as the package manager/CLI.
+
+#### Requirement
+
+The following tools are needed for development:
+
+- [Node.js](https://nodejs.org/en/) >= 12
+- [Yarn](https://classic.yarnpkg.com/lang/en/) ~1.20
+
+On macOS, these tools can be installed with Homebrew, by running the command `brew install yarn`.
 
 #### Docker
 
-It is available on [http://localhost:4000/](http://localhost:4000/)
+It is available on <http://localhost:4000/>.
 
 #### Locally
 
-you can run locally with the command:
+The web client can be ran locally with the commands:
 
 ```bash
-cd ./client/web
+cd client/web
 yarn && yarn start
 ```
 
-The application will be available on [http://localhost:3000](http://localhost:3000)
+The application will be available on <http://localhost:3000/>.
 
-## Devlopment
+## Development
 
 ### Business
 
 #### Requirement
 
-### Web Client
+#### Build on macOS
 
-#### Requirement
+Run the commands:
 
-To develop, we need following tools:
- - NodeJs [https://nodejs.org/en/](https://nodejs.org/en/) >= 12
- - Yarn [https://classic.yarnpkg.com/lang/en/](https://classic.yarnpkg.com/lang/en/) ~1.20
-
+```sh
+cd business/MetadataDatabase
+dotnet restore
+dotnet msbuild .
+```
