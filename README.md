@@ -6,6 +6,13 @@ To launch the global application, you need:
 - docker [https://www.docker.com/](https://www.docker.com/)
 - docker-compose [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
 
+## Requirements on Windows
+
+For Docker:
+
+- Windows 10 64-bit: Pro, Enterprise, or Education (Build 15063 or later).
+- Hyper-V and Containers Windows features must be enabled.
+
 ## Requirements on macOS
 
 ###System Requirements:
