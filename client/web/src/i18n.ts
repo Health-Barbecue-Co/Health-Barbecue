@@ -1,55 +1,43 @@
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
+import XHR from "i18next-xhr-backend";
 
-i18n.use(LanguageDetector).init({
-  // we init with resources
-  resources: {
-    en: {
-      translations: {
-        "Translation test":
-          "Translation test",
+import translationEn from "./locales/en/translation.json";
+import translationDe from "./locales/de/translation.json";
+import translationFr from "./locales/fr/translation.json";
+import translationJa from "./locales/ja/translation.json";
+i18n
+  .use(XHR)
+  .use(LanguageDetector)
+  .init({
+    react: { 
+      useSuspense: false //   <---- this will do the magic
+    },
+    fallbackLng: "en", // use en if detected lng is not available
+    keySeparator: false, // we do not use keys in form messages.welcome
+    interpolation: {
+      escapeValue: false // react already safes from xss
+    },
+    resources: {
+      en: {
+        translations: translationEn
+      },
+      de: {
+        translations: translationDe
+      },
+      fr: {
+        translations: translationFr
+      },
+      ja: {
+        translations: translationJa
       }
     },
-    ja: {
-      translations: {
-        "Translation test":
-          "翻訳テスト",
-      }
-    },
-    de: {
-      translations: {
-        "Translation test":
-          "Übersetzungstest",
-      }
-    },
-    fr: {
-      translations: {
-        "Translation test":
-          "Test de traduction",
-      }
-    }
-  },
-  fallbackLng: "en",
-  debug: true,
-  
-  // have a common namespace used around the full app
-  ns: ["translations"],
-  defaultNS: "translations",
-
-  keySeparator: false, // we use content as keys
-
-  interpolation: {
-    escapeValue: false, // not needed for react!!
-    formatSeparator: ","
-  },
-
-  detection: {
-    order: ['navigator','querystring', 'cookie', 'localStorage', 'htmlTag', 'path', 'subdomain'],
-  },
-
-  react: {
-    wait: true
-  }
-});
+    // have a common namespace used around the full app
+    ns: ["translations"],
+    defaultNS: "translations",
+    detection: {
+        order: ['querystring', 'navigator'],
+      },
+  });
 
 export default i18n;

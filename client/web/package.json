@@ -25,6 +25,7 @@
     "eslint-plugin-react-hooks": "^2.5.1",
     "i18next": "^19.4.0",
     "i18next-browser-languagedetector": "^4.0.2",
+    "i18next-xhr-backend": "^3.2.2",
     "prettier": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
