@@ -23,7 +23,7 @@ jobs:
           name: Build Health Barbecue docker-compose
           command: |
             pwd
-            docker-compose -f "docker-compose.yml" up -d --build
+#            docker-compose -f "docker-compose.yml" up -d --build
 workflows:
   version: 2
   build_and_test:
