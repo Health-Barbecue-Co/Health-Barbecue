@@ -35,11 +35,11 @@ services:
       - ./data/orthanc:/var/lib/orthanc/db/
       - ./config/orthanc.json:/etc/orthanc/orthanc.json
 
-  hb_web_client:
-    container_name: hb_web_client
+  hb_web_server:
+    container_name: hb_web_server
     build:
-      context: ./client/web/
-      dockerfile: prod.Dockerfile
+      context: .
+      dockerfile: server.Dockerfile
     volumes:
       - './client/web:/app'
       - '/app/node_modules'
