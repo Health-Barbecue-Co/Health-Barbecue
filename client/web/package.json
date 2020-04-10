@@ -24,6 +24,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.1",
     "http-proxy-middleware": "^1.0.3",
+    "node-sass": "^4.13.1",
     "prettier": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
