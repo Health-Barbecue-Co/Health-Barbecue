@@ -1,20 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 type StudiesListProps = {}
 
 export const StudiesList: React.FC<StudiesListProps> = () => {
-	let list: any = [];
+	const [list, setList] = useState([])
 
 	useEffect(() => {
-		fetch('/api/studies').then((content: Response) => {
-			console.log('__________________', content)
-			list = content.body
-		})
+		axios.get('/api/studies')
+			.then(response => {
+				setList(response.data)
+			})
 	}, [])
+
 	return (
 		<>
 			<div>StudiesList</div>
-			<div>{JSON.stringify(list)}</div>
+			<div>{
+				list.map((id: any) => <div key={id}>{id}</div>)
+			}</div>
 		</>
 	)
 }
