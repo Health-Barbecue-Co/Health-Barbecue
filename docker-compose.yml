@@ -39,6 +39,9 @@ services:
 
   hb_business_server:
     container_name: hb_business_server
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:4001
     build:
       context: ./business/MetadataDatabase
     ports:
