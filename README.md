@@ -19,7 +19,7 @@ The following hardware prerequisites are required to successfully run Client Hyp
 -64 bit processor with Second Level Address Translation (SLAT)
 -4GB system RAM
 -BIOS-level hardware virtualization support must be enabled in the BIOS settings. For more information, see Virtualization.
-	
+
 ### Requirements on macOS
 
 On macOS, specific steps are needed to install Docker, Docker Compose and the .NET Core SDK.
@@ -104,4 +104,13 @@ Run the commands:
 cd business/MetadataDatabase
 dotnet restore
 dotnet msbuild .
+```
+
+#### Build on Windows/Linux
+
+Run the commands:
+
+```sh
+cd business/MetadataDatabase
+dotnet run
 ```
