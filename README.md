@@ -96,6 +96,7 @@ The application will be available on <http://localhost:3000/>.
 ### Business
 
 #### Requirement
+Install [dotnet 3.1](https://dotnet.microsoft.com/download).
 
 #### Build on macOS
 
