@@ -7,7 +7,7 @@ export const StudiesList: React.FC<StudiesListProps> = () => {
 	const [list, setList] = useState([])
 
 	useEffect(() => {
-		axios.get('/api/studies')
+		axios.get('/orthanc/studies')
 			.then(response => {
 				setList(response.data)
 			})

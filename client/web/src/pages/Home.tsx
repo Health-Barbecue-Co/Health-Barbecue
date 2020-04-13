@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import Counter from '../components/counter/Counter'
 import { StudiesList } from '../components/studies'
+import { SeriesList } from '../components/series'
 
 export const Home: React.FC = () => {
   return (
@@ -13,6 +14,8 @@ export const Home: React.FC = () => {
       </p>
       <Counter />
       <StudiesList />
+      <hr />
+      <SeriesList />
     </Fragment>
   )
 }
