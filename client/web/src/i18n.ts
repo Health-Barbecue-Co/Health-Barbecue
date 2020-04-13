@@ -10,8 +10,10 @@ i18n
   .use(XHR)
   .use(LanguageDetector)
   .init({
+    // Adds react useSuspense to avoid error when using unmanaged language. 
+    // Strangely the fallbackLng doesn't work well without this...
     react: { 
-      useSuspense: false //   <---- this will do the magic
+      useSuspense: false
     },
     fallbackLng: "en", // use en if detected lng is not available
     keySeparator: false, // we do not use keys in form messages.welcome
