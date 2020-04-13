@@ -5,6 +5,7 @@
 Required to launch the global application:
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
+- [DOTNet Core 3.xx](https://dotnet.microsoft.com/download)
 
 ### Requirements on Windows
 
