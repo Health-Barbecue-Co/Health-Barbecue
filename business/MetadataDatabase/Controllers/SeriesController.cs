@@ -6,6 +6,7 @@ using MetadataDatabase.Data;
 using MetadataDatabase.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MetadataDatabase.Models;
 
 namespace MetadataDatabase.Controllers
 {
@@ -23,7 +24,7 @@ namespace MetadataDatabase.Controllers
         // GET: api/Series
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<SeriesDto>> Get()
+        public ActionResult<IEnumerable<Series>> Get()
         {
             return this.Ok(this.seriesService.GetAll());
         }

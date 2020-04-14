@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Options;
+using MetadataDatabase.Models;
 
 namespace MetadataDatabase
 {
@@ -28,6 +30,13 @@ namespace MetadataDatabase
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // requires using Microsoft.Extensions.Options
+            services.Configure<SeriesDBSettings>(
+                Configuration.GetSection(nameof(SeriesDBSettings)));
+
+            services.AddSingleton<ISeriesDBSettings>(sp =>
+                sp.GetRequiredService<IOptions<SeriesDBSettings>>().Value);
+
             services.AddControllers();
             RegisterIocContainer(services);
 
@@ -74,6 +83,7 @@ namespace MetadataDatabase
         /// <param name="service"></param>
         private static void RegisterIocContainer(IServiceCollection service)
         {
+            service.AddSingleton<SeriesContext>();
             service.AddScoped<ISeriesServices, SeriesServices>();
             service.AddScoped<ISeriesRepository, SeriesRepository>();
         }
