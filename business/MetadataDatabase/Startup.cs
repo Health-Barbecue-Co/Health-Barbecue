@@ -34,7 +34,7 @@ namespace MetadataDatabase
             services.Configure<SeriesDBSettings>(
                 Configuration.GetSection(nameof(SeriesDBSettings)));
 
-            services.AddSingleton<ISeriesDBSettings>(sp =>
+            services.AddSingleton<SeriesDBSettings>(sp =>
                 sp.GetRequiredService<IOptions<SeriesDBSettings>>().Value);
 
             services.AddControllers();
