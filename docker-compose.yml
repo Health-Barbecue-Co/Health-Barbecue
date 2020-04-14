@@ -32,7 +32,7 @@ services:
       - 4242:4242
       - 8042:8042
     volumes:
-      - ./data/orthanc:/var/lib/orthanc/db/
+      - orthancdata:/var/lib/orthanc/db/
       - ./config/orthanc.json:/etc/orthanc/orthanc.json
     expose:
       - 8042
@@ -64,3 +64,4 @@ services:
 
 volumes:
   mongodata: {}
+  orthancdata: {}
