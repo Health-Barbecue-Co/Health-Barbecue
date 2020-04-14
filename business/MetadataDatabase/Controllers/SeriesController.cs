@@ -24,34 +24,56 @@ namespace MetadataDatabase.Controllers
         // GET: api/Series
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Series>> Get()
+        public ActionResult<IEnumerable<SeriesDto>> Get()
         {
             return this.Ok(this.seriesService.GetAll());
         }
 
         // GET: api/Series/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public ActionResult<SeriesDto> Get(string id)
         {
-            return "value";
+            return this.seriesService.Get(id);
         }
 
         // POST: api/Series
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<SeriesDto> Post([FromBody] SeriesDto series)
         {
+            this.seriesService.Create(series);
+            return CreatedAtRoute("Get", new { id = series.Id.ToString() }, series);
         }
 
         // PUT: api/Series/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(string id, [FromBody] SeriesDto seriesIn)
         {
+            var series = this.seriesService.Get(id);
+
+            if (series == null)
+            {
+                return NotFound();
+            }
+
+            this.seriesService.Update(id, seriesIn);
+
+            return NoContent();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(string id)
         {
+            var series = this.seriesService.Get(id);
+
+            if (series == null)
+            {
+                return NotFound();
+            }
+
+            this.seriesService.Delete(id);
+
+            return NoContent();
         }
     }
 }

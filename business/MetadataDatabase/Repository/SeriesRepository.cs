@@ -16,6 +16,7 @@ namespace MetadataDatabase.Repository
         public SeriesRepository(SeriesContext ctx) {
             _collection = ctx.Collection;
         }
+
         /// <summary>
         /// Get all the series;
         /// </summary>
@@ -24,14 +25,6 @@ namespace MetadataDatabase.Repository
         {
             // TODO : Connect to Mongo DB here.
             return _collection.Find(user => true).ToEnumerable();
-
-            // return new[] {
-            //     new SeriesDto { SeriesInstanceUID ="ID 1"} ,
-            //     new SeriesDto { SeriesInstanceUID ="ID 2"} ,
-            //     new SeriesDto { SeriesInstanceUID ="ID 3"} ,
-            //     new SeriesDto { SeriesInstanceUID ="ID 4"} ,
-            //     new SeriesDto { SeriesInstanceUID ="ID 5"} ,
-            // };
         }
 
 
