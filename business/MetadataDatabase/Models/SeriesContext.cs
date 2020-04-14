@@ -1,8 +1,8 @@
+using MongoDB.Driver;
+using System;
+
 namespace MetadataDatabase.Models
 {
-    using MongoDB.Driver;
-    using System;
-
     public class SeriesContext: IModelContext<Series>
     {
         private readonly IMongoDatabase _db;

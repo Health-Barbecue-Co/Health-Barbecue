@@ -10,6 +10,6 @@ namespace MetadataDatabase.Models
         public string Id { get; set; }
 
         [BsonElement("SeriesInstanceUID")]
-        public string Uid { get; set; }
+        public string SeriesInstanceUID { get; set; }
     }
 }
