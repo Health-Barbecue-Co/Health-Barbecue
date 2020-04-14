@@ -11,13 +11,22 @@ function onProxyRes(onProxyRes) {
 
 module.exports = function(app) {
   app.use(
-    '/api',
+    '/orthanc',
     createProxyMiddleware({
       target: 'http://localhost:8042',
       changeOrigin: true,
 			pathRewrite:{
-				'^/api': '/'
+				'^/orthanc': '/'
 			},
+			onProxyRes
+    })
+  );
+
+  app.use(
+    '/api',
+    createProxyMiddleware({
+      target: 'http://localhost:5000',
+      changeOrigin: true,
 			onProxyRes
     })
   );

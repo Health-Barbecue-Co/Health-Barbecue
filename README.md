@@ -5,6 +5,7 @@
 Required to launch the global application:
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
+- [DOTNet Core 3.xx](https://dotnet.microsoft.com/download)
 
 ### Requirements on Windows
 
@@ -19,7 +20,7 @@ The following hardware prerequisites are required to successfully run Client Hyp
 -64 bit processor with Second Level Address Translation (SLAT)
 -4GB system RAM
 -BIOS-level hardware virtualization support must be enabled in the BIOS settings. For more information, see Virtualization.
-	
+
 ### Requirements on macOS
 
 On macOS, specific steps are needed to install Docker, Docker Compose and the .NET Core SDK.
@@ -95,6 +96,7 @@ The application will be available on <http://localhost:3000/>.
 ### Business
 
 #### Requirement
+Install [dotnet 3.1](https://dotnet.microsoft.com/download).
 
 #### Build on macOS
 
@@ -104,4 +106,13 @@ Run the commands:
 cd business/MetadataDatabase
 dotnet restore
 dotnet msbuild .
+```
+
+#### Build on Windows/Linux
+
+Run the commands:
+
+```sh
+cd business/MetadataDatabase
+dotnet run
 ```
