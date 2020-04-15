@@ -1,5 +1,6 @@
 ﻿using MetadataDatabase.Data;
 using MetadataDatabase.Models;
+using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +12,7 @@ namespace MetadataDatabase.Convertor
         {
             return new Series
             {
-                Id = seriesDto.Id,
+                Id = seriesDto.Id.ToObjectId(),
                 SeriesInstanceUID = seriesDto.SeriesInstanceUID
             };
         }
@@ -19,7 +20,7 @@ namespace MetadataDatabase.Convertor
         {
             return new SeriesDto
             {
-                Id = series.Id,
+                Id = series.Id.ToString(),
                 SeriesInstanceUID = series.SeriesInstanceUID
             };
         }
