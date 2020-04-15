@@ -8,7 +8,7 @@ namespace MetadataDatabase.Services
 
         T Get(string id);
 
-        void Create(T objectToCreate);
+        T Create(T objectToCreate);
 
         void Update(string id, T objectToUpdate);
 

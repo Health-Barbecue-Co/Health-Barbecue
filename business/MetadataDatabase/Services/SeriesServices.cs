@@ -14,9 +14,9 @@ namespace MetadataDatabase.Services
             _seriesRepository = seriesRepository;
         }
 
-        public void Create(SeriesDto objectToCreate)
+        public SeriesDto Create(SeriesDto objectToCreate)
         {
-            _seriesRepository.Create(objectToCreate.ToModel());
+            return _seriesRepository.Create(objectToCreate.ToModel()).ToDto();
         }
 
         public void Delete(string id)

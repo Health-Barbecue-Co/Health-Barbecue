@@ -37,11 +37,23 @@ namespace MetadataDatabase.Controllers
         }
 
         // POST: api/Series
+        /// <summary>
+        /// Creates a Series.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /
+        ///     {
+        ///        "SeriesInstanceUID": "1.3.12.2.1107.5.2.30.26626.30000011032311153339000007041"
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost]
         public ActionResult<SeriesDto> Post([FromBody] SeriesDto series)
         {
-            this.seriesService.Create(series);
-            return CreatedAtRoute("Get", new { id = series.Id.ToString() }, series);
+            var seriesWithId = this.seriesService.Create(series);
+            return CreatedAtRoute("Get", new { id = seriesWithId.Id.ToString() }, seriesWithId);
         }
 
         // PUT: api/Series/5
@@ -60,7 +72,10 @@ namespace MetadataDatabase.Controllers
             return NoContent();
         }
 
-        // DELETE: api/ApiWithActions/5
+        /// <summary>
+        /// Deletes a specific Series.
+        /// </summary>
+        /// <param name="id"></param> 
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
