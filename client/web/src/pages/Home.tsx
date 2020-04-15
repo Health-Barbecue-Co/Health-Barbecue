@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react'
+import { useTranslation } from "react-i18next";
 import Counter from '../components/counter/Counter'
 import { StudiesList } from '../components/studies'
-import { useTranslation } from "react-i18next";
+import { SeriesList } from '../components/series'
 
 export const Home: React.FC = () => {
   const { t } = useTranslation();
@@ -16,6 +17,8 @@ export const Home: React.FC = () => {
       </p>
       <Counter />
       <StudiesList />
+      <hr />
+      <SeriesList />
     </Fragment>
   )
 }
