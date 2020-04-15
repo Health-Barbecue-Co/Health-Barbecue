@@ -13,6 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Options;
+using MetadataDatabase.Models;
+using System.Reflection;
+using System.IO;
 
 namespace MetadataDatabase
 {
@@ -28,6 +32,13 @@ namespace MetadataDatabase
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // requires using Microsoft.Extensions.Options
+            services.Configure<SeriesDBSettings>(
+                Configuration.GetSection(nameof(SeriesDBSettings)));
+
+            services.AddSingleton<SeriesDBSettings>(sp =>
+                sp.GetRequiredService<IOptions<SeriesDBSettings>>().Value);
+
             services.AddControllers();
             RegisterIocContainer(services);
 
@@ -35,6 +46,10 @@ namespace MetadataDatabase
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Health Barbecue API", Version = "v1" });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 
@@ -74,6 +89,7 @@ namespace MetadataDatabase
         /// <param name="service"></param>
         private static void RegisterIocContainer(IServiceCollection service)
         {
+            service.AddSingleton<SeriesContext>();
             service.AddScoped<ISeriesServices, SeriesServices>();
             service.AddScoped<ISeriesRepository, SeriesRepository>();
         }

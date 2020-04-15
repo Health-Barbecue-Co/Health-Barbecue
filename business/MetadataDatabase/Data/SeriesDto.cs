@@ -7,6 +7,7 @@ namespace MetadataDatabase.Data
 {
     public class SeriesDto
     {
+        public string Id { get; set; }
         public string SeriesInstanceUID { get; set; }
     }
 }

@@ -17,7 +17,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
 		<>
 			<div>SeriesList</div>
 			<div>{
-				list.map(({ seriesInstanceUID }) => <div key={seriesInstanceUID}>{seriesInstanceUID}</div>)
+				list.map(({ SeriesInstanceUID }) => <div key={SeriesInstanceUID}>{SeriesInstanceUID}</div>)
 			}</div>
 		</>
 	)

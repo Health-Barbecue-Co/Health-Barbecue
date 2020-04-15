@@ -8,12 +8,14 @@ services:
     environment:
       - MONGO_DATA_DIR=/data/mongo/db
       - MONGO_LOG_DIR=/dev/null
-      - MONGO_DB=healthbarbecue
+      - MONGO_INITDB_DATABASE=healthbarbecue
     volumes:
       - mongodata:/data/db
     ports:
       - 27017:27017
     command: mongod --logpath=/dev/null
+    expose:
+      - 27017
 
   hb_database_view:
     image: mongo-express:latest
@@ -42,12 +44,15 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:4001
+      - SeriesDBSettings__Host=hb_database
     build:
       context: ./business/MetadataDatabase
     ports:
       - 4001:80
     expose:
       - 4001
+    depends_on:
+      - hb_database
 
   hb_web_server:
     container_name: hb_web_server
@@ -61,6 +66,9 @@ services:
       - 4000:80
     environment:
       - CHOKIDAR_USEPOLLING=true
+    links:
+      - hb_business_server
+      - hb_pacs_server
 
 volumes:
   mongodata: {}
