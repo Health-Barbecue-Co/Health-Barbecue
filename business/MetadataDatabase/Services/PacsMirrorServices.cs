@@ -20,35 +20,34 @@ namespace MetadataDatabase.Services
             this.seriesService = seriesService;
         }
 
-        public void testPacsMirror()
+        public void MirrorPacs()
         {
-            Console.Write("testPacsMirror !");
-        }
-        public void CheckForUpdates()
-        {
-            Task<IEnumerable<QidoDicomSeries>> task = this.pacsService.GetSeries();
+            // Get all series on PACS
+            Task<IEnumerable<QidoSeries>> task = this.pacsService.GetSeries();
             task.Wait();
-            var orthancSeriesList = task.Result?.ToDto();
-            //foreach (var series in orthancSeriesList)
-            //    Console.Write(series.GetValueOfDicomTag(QidoDicomSeries.DicomTag.SeriesInstanceUID) + "\n");
+            var pacsSeries = task.Result?.ToDto();
+            // Get all series on DB
             var dataBaseSeries = this.seriesService.GetAll();
-            //foreach (var series in dataBaseSeries)
-            //    Console.Write(series.SeriesInstanceUID + "\n");
-
-            IEnumerable<SeriesDto> seriesNotInPacs = dataBaseSeries.Except(orthancSeriesList);
-            IEnumerable<SeriesDto> seriesNotInDb = orthancSeriesList.Except(dataBaseSeries);
+            // Get SeriesInstanceUID to compaire
+            IEnumerable<string> pacsSeriesUids = pacsSeries.Select(series => series.SeriesInstanceUID);
+            IEnumerable<string> dataBaseSeriesUids = dataBaseSeries.Select(series => series.SeriesInstanceUID);
+            // Delete into DB all series not in the PACS
             Console.WriteLine("series Not In Pacs");
-            foreach (SeriesDto series in seriesNotInPacs)
+            IEnumerable<string> seriesUidsNotInPacs = dataBaseSeriesUids.Except(pacsSeriesUids);
+            foreach (string uid in seriesUidsNotInPacs)
             {
-                Console.WriteLine(series.SeriesInstanceUID);
-                this.seriesService.Delete(series.Id);
+                Console.WriteLine(uid);
+                IEnumerable<SeriesDto> query = dataBaseSeries.Where(series => series.SeriesInstanceUID == uid);
+                this.seriesService.Delete(query.FirstOrDefault().Id);
             }
-
+            // Create into DB all series not in the DB but in PACS
             Console.WriteLine("series Not In Db");
-            foreach (SeriesDto series in seriesNotInDb)
+            IEnumerable<string> seriesUidsNotInDb = pacsSeriesUids.Except(dataBaseSeriesUids);
+            foreach (string uid in seriesUidsNotInDb)
             {
-                Console.WriteLine(series.SeriesInstanceUID);
-                this.seriesService.Create(series);
+                Console.WriteLine(uid);
+                IEnumerable<SeriesDto> query = pacsSeries.Where(series => series.SeriesInstanceUID == uid);
+                this.seriesService.Create(query.FirstOrDefault());
             }
         }
     }

@@ -33,11 +33,6 @@ namespace MetadataDatabase
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<PacsSettings>(
-                Configuration.GetSection(nameof(PacsSettings)));
-            services.AddSingleton<PacsSettings>(sp =>
-                sp.GetRequiredService<IOptions<PacsSettings>>().Value);
-
             services.AddControllers();
             RegisterIocContainer(services);
 
@@ -60,9 +55,7 @@ namespace MetadataDatabase
                 app.UseDeveloperExceptionPage();
             }
 
-            pacsMirrorServices.CheckForUpdates();
-
-            // app.UseHttpsRedirection();
+            pacsMirrorServices.MirrorPacs();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -90,8 +83,8 @@ namespace MetadataDatabase
         /// <param name="service"></param>
         private void RegisterIocContainer(IServiceCollection service)
         {
-            service.Configure<MongoConfiguration>(Configuration.GetSection("MongoConfiguration"));
-
+            service.Configure<MongoConfiguration>(Configuration.GetSection(nameof(MongoConfiguration)));
+            service.Configure<PacsConfiguration>(Configuration.GetSection(nameof(PacsConfiguration)));
             service.AddScoped<ISeriesServices, SeriesServices>();
             service.AddScoped<ISeriesRepository, SeriesRepository>();
             service.AddScoped<IPacsServices, PacsServices>();

@@ -1,34 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace MetadataDatabase.Controllers
 {
-    public class DicomStringObject
-    {
-        public IList<string> Value { get; set; }
-        public string vr { get; set; }
-    }
-    public class DicomIntObject
-    {
-        public IList<int> Value { get; set; }
-        public string vr { get; set; }
-    }
-
-    public class DicomNameObject
-    {
-        public IList<Name> Value { get; set; }
-        public string vr { get; set; }
-    }
-
-    public class Name
-    {
-        public string Alphabetic { get; set; }
-    }
-
-    public class QidoDicomSeries
+    /// <summary>Class to deserialize Query based on ID for DICOM Objects (QIDO) json response</summary>
+    public class QidoSeries
     {
         // Character Set that expands or replaces the Basic Graphic Set. (00080005)
         [JsonPropertyName("00080005")]
@@ -101,36 +77,35 @@ namespace MetadataDatabase.Controllers
         // Todo
         public string GetValueOfDicomTag(DicomTag propertyName)
         {
-            string value = "";
-            var theType = this.GetType().GetProperty(propertyName.Value).PropertyType.Name;
-            var otherType = nameof(DicomStringObject);
-            switch (theType)
+            string resultValue = "";
+            var dicomPrpertyType = this.GetType().GetProperty(propertyName.Value).PropertyType.Name;
+            switch (dicomPrpertyType)
             {
                 case nameof(DicomStringObject):
                     var dicomStringValue = (DicomStringObject)this.GetType().GetProperty(propertyName.Value).GetValue(this, null);
                     if (dicomStringValue.Value != null)
                     {
-                        value = dicomStringValue.Value[0];
+                        resultValue = dicomStringValue.Value[0];
                     }
                     break;
                 case nameof(DicomIntObject):
                     var dicomIntValue = (DicomIntObject)this.GetType().GetProperty(propertyName.Value).GetValue(this, null);
                     if (dicomIntValue.Value != null)
                     {
-                        value = dicomIntValue.Value[0].ToString();
+                        resultValue = dicomIntValue.Value[0].ToString();
                     }
                     break;
                 case nameof(DicomNameObject):
                     var dicomNameObject = (DicomNameObject)this.GetType().GetProperty(propertyName.Value).GetValue(this, null);
                     if (dicomNameObject.Value != null)
                     {
-                        value = dicomNameObject.Value[0].Alphabetic;
+                        resultValue = dicomNameObject.Value[0].Alphabetic;
                     }
                     break;
                 default:
                     break;
             }
-            return value;
+            return resultValue;
         }
 
         public class DicomTag
@@ -155,5 +130,26 @@ namespace MetadataDatabase.Controllers
             public static DicomTag SeriesNumber { get { return new DicomTag("SeriesNumber"); } }
             public static DicomTag NumberOfSeriesRelatedInstances { get { return new DicomTag("NumberOfSeriesRelatedInstances"); } }
         }
+    }
+    public class DicomStringObject
+    {
+        public IList<string> Value { get; set; }
+        public string vr { get; set; }
+    }
+    public class DicomIntObject
+    {
+        public IList<int> Value { get; set; }
+        public string vr { get; set; }
+    }
+
+    public class DicomNameObject
+    {
+        public IList<DicomName> Value { get; set; }
+        public string vr { get; set; }
+    }
+
+    public class DicomName
+    {
+        public string Alphabetic { get; set; }
     }
 }

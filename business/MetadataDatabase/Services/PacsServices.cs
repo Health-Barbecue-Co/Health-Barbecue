@@ -1,5 +1,6 @@
 ﻿using MetadataDatabase.Controllers;
 using MetadataDatabase.Models;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,23 +13,18 @@ namespace MetadataDatabase.Services
     public class PacsServices: IPacsServices
     {
         private static readonly HttpClient client = new HttpClient();
-        private readonly PacsSettings settings;
+        private readonly PacsConfiguration settings;
 
-        public PacsServices(PacsSettings settings)
+        public PacsServices(IOptions<PacsConfiguration> settings)
         {
-            this.settings = settings;
+            this.settings = settings.Value;
         }
 
-        public async Task<IEnumerable<QidoDicomSeries>> GetSeries()
+        public async Task<IEnumerable<QidoSeries>> GetSeries()
         {
             var streamtask = client.GetStreamAsync($"http://{this.settings.Host}:{this.settings.Port}/{this.settings.Path}/series");
-            var orthancSeriesList = await JsonSerializer.DeserializeAsync<IEnumerable<QidoDicomSeries>>(await streamtask);
+            var orthancSeriesList = await JsonSerializer.DeserializeAsync<IEnumerable<QidoSeries>>(await streamtask);
             return orthancSeriesList;
-        }
-
-        public void TestPacsService()
-        {
-            Console.WriteLine("TestPacsService");
         }
     }
 }
