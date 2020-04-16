@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
 import {
@@ -23,10 +23,12 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
 import MailIcon from '@material-ui/icons/Mail'
-
 import { useSelector, useDispatch } from 'react-redux'
-import { version } from '../../../../package.json'
+
+import axios, { AxiosResponse } from 'axios'
 import { selectors, actionTypes } from '../../../features/user'
+import { Version } from '../../../models/version'
+
 import styles from './Navbar.style'
 
 const useStyles = makeStyles(styles)
@@ -37,6 +39,17 @@ export const Navbar: React.FC = () => {
   const theme = useTheme()
   const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false)
+
+  const [version, setVersion] = useState('')
+
+  useEffect(() => {
+    // @todo use Redux-Saga
+    axios.get('/api/version').then((response: AxiosResponse) => {
+      const vers: Version = response.data
+      const displayVersion = `${vers.major}.${vers.minor}.${vers.build}.${vers.revision}`
+      setVersion(displayVersion)
+    })
+  }, [])
 
   const handleDrawerOpen = () => {
     setOpen(true)
