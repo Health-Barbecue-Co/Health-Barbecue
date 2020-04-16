@@ -4,11 +4,18 @@
     public class MongoConfiguration
     {
         /// <summary>
-        ///   <p>Gets or sets the URL.</p>
-        ///   <p>example : mongodb://localhost:27017</p>
+        ///   <p>Gets or sets the server name.</p>
+        ///   <p>example : localhost</p>
         /// </summary>
-        /// <value>The URL.</value>
-        public string Url { get; set; }
+        /// <value>The Server name .</value>
+        public string Servername { get; set; }
+
+        /// <summary>
+        ///   <p>Gets or sets the port of server.</p>
+        ///   <p>example : 27017</p>
+        /// </summary>
+        /// <value>The Server's port.</value>
+        public string Port { get; set; }
 
         /// <summary>
         /// Gets the name of the database.
