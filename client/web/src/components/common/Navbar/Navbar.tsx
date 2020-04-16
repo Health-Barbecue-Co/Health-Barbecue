@@ -53,10 +53,7 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, { [classes.appBarShift]: open })}
-      >
+      <AppBar className={clsx(classes.appBar, { [classes.appBarShift]: open })}>
         <Toolbar>
           {user ? (
             <IconButton
