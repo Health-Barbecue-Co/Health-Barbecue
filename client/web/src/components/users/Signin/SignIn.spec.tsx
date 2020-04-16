@@ -3,14 +3,21 @@ import { Provider } from 'react-redux'
 import { mount } from 'enzyme'
 import configureStore from 'redux-mock-store'
 
-import { actionTypes } from '../../features/counter'
-import Counter from './Counter'
+import { actionTypes } from '../../../features/user'
+import { SignIn } from './SignIn'
 
-describe('Counter', () => {
+jest.mock('react-router-dom', () => ({
+  useRouteMatch: () => ({ url: 'myUrl' }),
+  useHistory: () => ({
+    push: () => jest.fn(),
+  }),
+}))
+
+describe('SignIn', () => {
   const mockStore = configureStore([])
   const store = mockStore({
-    count: {
-      value: 42,
+    user: {
+      name: 'test',
     },
   })
 
@@ -25,49 +32,28 @@ describe('Counter', () => {
   it('renders without crashing.', () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Counter />
+        <SignIn />
       </Provider>
     )
-
-    const countValue = wrapper.find('strong').text()
-    expect(countValue).toBe('42')
+    expect(wrapper.find('form').exists()).toBeTruthy()
   })
 
-  it('should be possible to increment counter.', () => {
+  it('should set current user on submit', () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Counter />
+        <SignIn />
       </Provider>
     )
 
-    wrapper
-      .find('button')
-      .filter({ 'data-qa': 'increment-counter' })
-      .simulate('click')
+    wrapper.find('button[type="submit"]').simulate('submit')
 
     expect(store.dispatch).toBeCalledTimes(1)
 
     expect(store.dispatch).toBeCalledWith({
-      type: actionTypes.INCREMENT_COUNTER,
-    })
-  })
-
-  it('should be possible to decrement counter.', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <Counter />
-      </Provider>
-    )
-
-    wrapper
-      .find('button')
-      .filter({ 'data-qa': 'decrement-counter' })
-      .simulate('click')
-
-    expect(store.dispatch).toHaveBeenCalledTimes(1)
-
-    expect(store.dispatch).toHaveBeenCalledWith({
-      type: actionTypes.DECREMENT_COUNTER,
+      type: actionTypes.SET_CURRENT_USER,
+      user: {
+        lastname: 'damien',
+      }
     })
   })
 })

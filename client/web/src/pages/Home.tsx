@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import Counter from '../components/counter/Counter'
+
 import { StudiesList } from '../components/studies'
 import { SeriesList } from '../components/series'
 
@@ -12,7 +12,6 @@ export const Home: React.FC = () => {
         template and bootstrapped with Redux, React Router, TypeScript, ESlint,
         Prettier for you. Take a look around ;)
       </p>
-      <Counter />
       <StudiesList />
       <hr />
       <SeriesList />
