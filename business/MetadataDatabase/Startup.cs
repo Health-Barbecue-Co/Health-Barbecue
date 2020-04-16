@@ -15,6 +15,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Options;
 using MetadataDatabase.Models;
+using System.Reflection;
+using System.IO;
 
 namespace MetadataDatabase
 {
@@ -34,7 +36,7 @@ namespace MetadataDatabase
             services.Configure<SeriesDBSettings>(
                 Configuration.GetSection(nameof(SeriesDBSettings)));
 
-            services.AddSingleton<ISeriesDBSettings>(sp =>
+            services.AddSingleton<SeriesDBSettings>(sp =>
                 sp.GetRequiredService<IOptions<SeriesDBSettings>>().Value);
 
             services.AddControllers();
@@ -44,6 +46,10 @@ namespace MetadataDatabase
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Health Barbecue API", Version = "v1" });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 

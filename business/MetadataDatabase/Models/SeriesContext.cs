@@ -8,11 +8,11 @@ namespace MetadataDatabase.Models
         private readonly IMongoDatabase _db;
 		public IMongoCollection<Series> Collection { get; set; }
 
-		public SeriesContext(ISeriesDBSettings settings) {
+		public SeriesContext(SeriesDBSettings settings) {
             var client = new MongoClient($@"mongodb://{settings.Host}:{settings.Port}");
 
             _db = client.GetDatabase(settings.Database);
-            Collection = _db.GetCollection<Series>(settings.Collection);
+            Collection = _db.GetCollection<Series>(nameof(Series));
         }
     }
 }

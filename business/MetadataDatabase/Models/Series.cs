@@ -9,7 +9,6 @@ namespace MetadataDatabase.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        [BsonElement("SeriesInstanceUID")]
         public string SeriesInstanceUID { get; set; }
     }
 }

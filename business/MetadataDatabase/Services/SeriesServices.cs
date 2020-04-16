@@ -1,12 +1,10 @@
-﻿using MetadataDatabase.Models;
+﻿using System.Collections.Generic;
 using MetadataDatabase.Repository;
-using System.Collections.Generic;
-using MetadataDatabase.Services;
+using MetadataDatabase.Data;
+using MetadataDatabase.Convertor;
 
 namespace MetadataDatabase.Services
 {
-    public interface ISeriesServices: IService<Series>{ }
-
     public class SeriesServices : ISeriesServices
     {
         private readonly ISeriesRepository _seriesRepository;
@@ -16,9 +14,29 @@ namespace MetadataDatabase.Services
             _seriesRepository = seriesRepository;
         }
 
-        public IEnumerable<Series> GetAll()
+        public SeriesDto Create(SeriesDto objectToCreate)
         {
-            return _seriesRepository.GetAll();
+            return _seriesRepository.Create(objectToCreate.ToModel()).ToDto();
+        }
+
+        public void Delete(string id)
+        {
+            _seriesRepository.Delete(id);
+        }
+
+        public SeriesDto Get(string id)
+        {
+            return _seriesRepository.Get(id)?.ToDto();
+        }
+
+        public IEnumerable<SeriesDto> GetAll()
+        {
+            return _seriesRepository.GetAll()?.ToDto();
+        }
+
+        public void Update(string id, SeriesDto objectToUpdate)
+        {
+            _seriesRepository.Update(id, objectToUpdate.ToModel());
         }
     }
 }
