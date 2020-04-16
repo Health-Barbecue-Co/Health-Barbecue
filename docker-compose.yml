@@ -44,7 +44,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:4001
-      - SeriesDBSettings__Host=hb_database
+      - MongoConfiguration__Servername=hb_database
     build:
       context: ./business/MetadataDatabase
     ports:

@@ -41,9 +41,14 @@ namespace MetadataDatabase.framework.DAL
         public MongoRepositoryBase(MongoConfiguration configuration)
         {
             // sanity check
-            if (string.IsNullOrWhiteSpace(configuration.Url))
+            if (string.IsNullOrWhiteSpace(configuration.Servername))
             {
-                throw new ArgumentNullException(nameof(configuration.Url));
+                throw new ArgumentNullException(nameof(configuration.Servername));
+            }
+
+            if (string.IsNullOrWhiteSpace(configuration.Port))
+            {
+                throw new ArgumentNullException(nameof(configuration.Port));
             }
 
             if (string.IsNullOrWhiteSpace(configuration.DatabaseName))
@@ -52,7 +57,8 @@ namespace MetadataDatabase.framework.DAL
             }
 
             // create the settings
-            var settings = MongoClientSettings.FromUrl(MongoUrl.Create(configuration.Url));
+            var url = $"mongodb://{configuration.Servername}:{configuration.Port}";
+            var settings = MongoClientSettings.FromUrl(MongoUrl.Create(url));
 
             // create the Mongo DB client.
             try
@@ -61,7 +67,7 @@ namespace MetadataDatabase.framework.DAL
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"error durring mongo DB initialisation : {configuration.Url} \ntrace -----> {ex.Message}");
+                Debug.WriteLine($"error durring mongo DB initialisation : {url} \ntrace -----> {ex.Message}");
             }
 
             databaseName = configuration.DatabaseName;
