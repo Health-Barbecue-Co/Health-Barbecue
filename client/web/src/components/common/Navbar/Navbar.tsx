@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
-import { NavLink, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   makeStyles,
   IconButton,
   Drawer,
@@ -22,6 +21,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import Logout from '@material-ui/icons/ExitToApp'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import HelpIcon from '@material-ui/icons/Help'
 
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -89,30 +89,6 @@ export const Navbar: React.FC = () => {
             Health-Barbecue
           </Typography>
 
-          {user ? (
-            <>
-              <Button
-                className={classes.menuButton}
-                color="inherit"
-                component={NavLink}
-                to="/home"
-              >
-                Home
-              </Button>
-              <Button
-                className={classes.menuButton}
-                color="inherit"
-                component={NavLink}
-                to="/about"
-              >
-                About
-              </Button>
-              <IconButton onClick={logout} color="inherit">
-                <Logout />
-              </IconButton>
-            </>
-          ) : null}
-
           <Typography variant="subtitle1">{version}</Typography>
         </Toolbar>
       </AppBar>
@@ -151,6 +127,13 @@ export const Navbar: React.FC = () => {
           <Box flexGrow={1} />
           <Divider />
           <List>
+            <ListItem button component={Link} to="/about">
+              <ListItemIcon>
+                <HelpIcon />
+              </ListItemIcon>
+              <ListItemText primary={t('about')} />
+            </ListItem>
+
             <ListItem button onClick={logout}>
               <ListItemIcon>
                 <Logout />

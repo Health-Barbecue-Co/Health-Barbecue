@@ -4,7 +4,7 @@ import { SeriesList } from '../components/series'
 
 export const Series: React.FC = () => (
   <>
-    <Typography variant="h2">Series Page</Typography>
+    <Typography variant="h5">Series Page</Typography>
     <Divider />
     <SeriesList />
   </>
