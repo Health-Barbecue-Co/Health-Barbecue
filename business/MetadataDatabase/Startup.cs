@@ -17,6 +17,7 @@ using Microsoft.Extensions.Options;
 using MetadataDatabase.Models;
 using System.Reflection;
 using System.IO;
+using MetadataDatabase.framework.DAL;
 
 namespace MetadataDatabase
 {
@@ -32,12 +33,6 @@ namespace MetadataDatabase
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // requires using Microsoft.Extensions.Options
-            services.Configure<SeriesDBSettings>(
-                Configuration.GetSection(nameof(SeriesDBSettings)));
-            services.AddSingleton<SeriesDBSettings>(sp =>
-                sp.GetRequiredService<IOptions<SeriesDBSettings>>().Value);
-
             services.Configure<PacsSettings>(
                 Configuration.GetSection(nameof(PacsSettings)));
             services.AddSingleton<PacsSettings>(sp =>
@@ -93,9 +88,10 @@ namespace MetadataDatabase
         /// Register here your services for the Dependancy Injection.
         /// </summary>
         /// <param name="service"></param>
-        private static void RegisterIocContainer(IServiceCollection service)
+        private void RegisterIocContainer(IServiceCollection service)
         {
-            service.AddSingleton<SeriesContext>();
+            service.Configure<MongoConfiguration>(Configuration.GetSection("MongoConfiguration"));
+
             service.AddScoped<ISeriesServices, SeriesServices>();
             service.AddScoped<ISeriesRepository, SeriesRepository>();
             service.AddScoped<IPacsServices, PacsServices>();

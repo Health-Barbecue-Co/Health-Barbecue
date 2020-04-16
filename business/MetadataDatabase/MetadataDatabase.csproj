@@ -6,6 +6,8 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<AssemblyVersion>1.0.0.1</AssemblyVersion>
+	<FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +15,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.10.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="framework\services\" />
   </ItemGroup>
 
 

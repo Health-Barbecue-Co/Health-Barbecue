@@ -4,47 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Driver;
 using MetadataDatabase.Models;
+using MetadataDatabase.framework.DAL;
+using MongoDB.Bson;
+using System.Linq.Expressions;
+using Microsoft.Extensions.Options;
 
 namespace MetadataDatabase.Repository
 {
-    public class SeriesRepository : ISeriesRepository
+
+    public class SeriesRepository : MongoRepositoryBase<Series>, ISeriesRepository
     {
-        private readonly IMongoCollection<Series> _collection;
-
-        public SeriesRepository(SeriesContext ctx) {
-            _collection = ctx.Collection;
-        }
-
         /// <summary>
-        /// Get all the series;
+        /// Initializes a new instance of the <see cref="SeriesRepository"/> class.
         /// </summary>
-        /// <returns></returns>
-        public IEnumerable<Series> GetAll()
+        /// <param name="configuration">The configuration.</param>
+        public SeriesRepository(IOptions<MongoConfiguration> configuration) : base(configuration.Value)
         {
-            // TODO : Connect to Mongo DB here.
-            return _collection.Find(user => true).ToEnumerable();
-        }
 
-
-        public Series Get(string id) {
-            return _collection.Find(item => item.Id == id).FirstOrDefault();
-        }
-
-        public Series Create(Series entity) {
-            _collection.InsertOne(entity);
-			return entity;
-        }
-
-        // api/[PUT]
-        public Series Update(string id, Series entity) {
-            _collection.ReplaceOne(item => item.Id == id, entity);
-			return Get(id);
-        }
-
-        // api/1/[DELETE]
-        public bool Delete(string id){
-            var result = _collection.DeleteOne(item => item.Id == id);
-            return result.DeletedCount == 1;
         }
     }
 }

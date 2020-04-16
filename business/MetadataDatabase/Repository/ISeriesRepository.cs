@@ -1,8 +1,12 @@
-﻿using MetadataDatabase.Models;
+﻿using MetadataDatabase.framework.DAL;
+using MetadataDatabase.Models;
+using MongoDB.Bson;
 
 namespace MetadataDatabase.Repository
 {
-    public interface ISeriesRepository: IRepository<Series>
-    {
-    }
+    /// <summary>
+    /// Series Repository interface.
+    /// </summary>
+    /// <seealso cref="MetadataDatabase.framework.DAL.IRepository{MetadataDatabase.Models.Series, MongoDB.Bson.ObjectId}" />
+    public interface ISeriesRepository: IRepository<Series, ObjectId> {}
 }
