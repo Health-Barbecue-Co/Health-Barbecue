@@ -4,21 +4,22 @@ import axios from 'axios'
 type SeriesListProps = {}
 
 export const SeriesList: React.FC<SeriesListProps> = () => {
-	const [list, setList] = useState([])
+  const [list, setList] = useState([])
 
-	useEffect(() => {
-		axios.get('/api/series')
-			.then(response => {
-				setList(response.data)
-			})
-	}, [])
+  useEffect(() => {
+    axios.get('/api/series').then((response) => {
+      setList(response.data)
+    })
+  }, [])
 
-	return (
-		<>
-			<div>SeriesList</div>
-			<div>{
-				list.map(({ SeriesInstanceUID }) => <div key={SeriesInstanceUID}>{SeriesInstanceUID}</div>)
-			}</div>
-		</>
-	)
+  return (
+    <>
+      <div>SeriesList</div>
+      <div>
+        {list.map(({ seriesInstanceUID }) => (
+          <div key={seriesInstanceUID}>{seriesInstanceUID}</div>
+        ))}
+      </div>
+    </>
+  )
 }

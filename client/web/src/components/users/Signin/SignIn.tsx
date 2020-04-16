@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container'
 
 import { Link as RouterLink, useRouteMatch, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 import { actionTypes } from '../../../features/user'
 
@@ -24,6 +25,7 @@ export const SignIn: React.FC = () => {
   const location = useRouteMatch()
   const dispatch = useDispatch()
   const history = useHistory()
+  const { t } = useTranslation()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -44,7 +46,7 @@ export const SignIn: React.FC = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          {t('user:signin.title')}
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
@@ -53,7 +55,7 @@ export const SignIn: React.FC = () => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label={t('user:signin.email')}
             name="email"
             autoComplete="email"
             autoFocus
@@ -64,7 +66,7 @@ export const SignIn: React.FC = () => {
             required
             fullWidth
             name="password"
-            label="Password"
+            label={t('user:signin.password')}
             type="password"
             id="password"
             autoComplete="current-password"
@@ -79,7 +81,7 @@ export const SignIn: React.FC = () => {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            {t('user:signin.action')}
           </Button>
           <Grid container>
             <Grid item xs>
@@ -87,12 +89,12 @@ export const SignIn: React.FC = () => {
                 component={RouterLink}
                 to={`${location.url}/forgetten-password`}
               >
-                Forgot password?
+                {t('user:signin.forgotten_password_link')}
               </Link>
             </Grid>
             <Grid item>
               <Link component={RouterLink} to={`${location.url}/register`}>
-                Create new account
+                {t('user:signin.create_link')}
               </Link>
             </Grid>
           </Grid>

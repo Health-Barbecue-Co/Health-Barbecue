@@ -9,6 +9,7 @@ import { About } from './pages/About'
 import { Home } from './pages/Home'
 import { User } from './pages/User'
 import { Studies } from './pages/Studies'
+import { Series } from './pages/Series'
 
 import { selectors } from './features/user'
 
@@ -20,13 +21,22 @@ const App: React.FC = () => {
       <Navbar />
       <Container>
         <Switch>
-          <Route path="/home" component={Home} exact />
-          <Route path="/about" component={About} exact />
+          <Route path="/home" exact>
+            {!user ? <Redirect to="/user" /> : <Home />}
+          </Route>
+          <Route path="/about" exact>
+            {!user ? <Redirect to="/user" /> : <About />}
+          </Route>
           <Route path="/user" component={User} />
           <Route exact path="/">
             {!user ? <Redirect to="/user" /> : <Home />}
           </Route>
-          <Route path="/studies" component={Studies} />
+          <Route path="/studies" exact>
+            {!user ? <Redirect to="/user" /> : <Studies />}
+          </Route>
+          <Route path="/series" exact>
+            {!user ? <Redirect to="/user" /> : <Series />}
+          </Route>
         </Switch>
       </Container>
     </BrowserRouter>

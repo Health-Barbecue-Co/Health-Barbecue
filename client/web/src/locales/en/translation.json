@@ -1,3 +1,8 @@
 {
+    "menu": {
+        "home": "Dashboard",
+        "studies": "Studies",
+        "series": "Series"
+    },
     "Translation test": "Translation test"
 }

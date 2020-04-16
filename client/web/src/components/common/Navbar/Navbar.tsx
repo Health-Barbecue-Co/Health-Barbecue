@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
@@ -16,18 +16,21 @@ import {
   ListItemText,
   useTheme,
   CssBaseline,
+  Box,
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import Logout from '@material-ui/icons/ExitToApp'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
-import MailIcon from '@material-ui/icons/Mail'
+
 import { useSelector, useDispatch } from 'react-redux'
 
 import axios, { AxiosResponse } from 'axios'
+import { useTranslation } from 'react-i18next'
+
 import { selectors, actionTypes } from '../../../features/user'
 import { Version } from '../../../models/version'
+import menu from '../../../config/menu'
 
 import styles from './Navbar.style'
 
@@ -35,6 +38,7 @@ const useStyles = makeStyles(styles)
 
 export const Navbar: React.FC = () => {
   const classes = useStyles()
+  const { t } = useTranslation()
   const { user } = useSelector(selectors.getUser)
   const theme = useTheme()
   const dispatch = useDispatch()
@@ -137,25 +141,22 @@ export const Navbar: React.FC = () => {
           </div>
           <Divider />
           <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
+            {menu().map(({ icon, label, url }) => (
+              <ListItem button key={label} component={Link} to={url}>
+                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemText primary={t(label)} />
               </ListItem>
             ))}
           </List>
+          <Box flexGrow={1} />
           <Divider />
           <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+            <ListItem button onClick={logout}>
+              <ListItemIcon>
+                <Logout />
+              </ListItemIcon>
+              <ListItemText primary={t('logout')} />
+            </ListItem>
           </List>
         </Drawer>
       ) : null}
