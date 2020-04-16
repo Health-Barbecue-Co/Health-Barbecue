@@ -25,7 +25,7 @@ namespace MetadataDatabase.Controllers
 
     public class Name
     {
-        public string type { get; set; }
+        public string Alphabetic { get; set; }
     }
 
     public class QidoDicomSeries
@@ -102,26 +102,34 @@ namespace MetadataDatabase.Controllers
         public string GetValueOfDicomTag(DicomTag propertyName)
         {
             string value = "";
-            var theType = this.GetType().GetProperty(propertyName.Value).PropertyType;
+            var theType = this.GetType().GetProperty(propertyName.Value).PropertyType.Name;
             var otherType = nameof(DicomStringObject);
-            if(theType.Name == otherType)
+            switch (theType)
             {
-                DicomStringObject dicomStringValue = (DicomStringObject)this.GetType().GetProperty(propertyName.Value).GetValue(this, null);
-                if (dicomStringValue.Value != null)
-                {
-                    value = dicomStringValue.Value[0];
-                }
-            } else if (theType.Name == nameof(DicomNameObject))
-            {
-                DicomNameObject dicomNameObject = (DicomNameObject)this.GetType().GetProperty(propertyName.Value).GetValue(this, null);
-                if (dicomNameObject.Value != null)
-                {
-                    value = dicomNameObject.Value[0].type;
-                }
+                case nameof(DicomStringObject):
+                    var dicomStringValue = (DicomStringObject)this.GetType().GetProperty(propertyName.Value).GetValue(this, null);
+                    if (dicomStringValue.Value != null)
+                    {
+                        value = dicomStringValue.Value[0];
+                    }
+                    break;
+                case nameof(DicomIntObject):
+                    var dicomIntValue = (DicomIntObject)this.GetType().GetProperty(propertyName.Value).GetValue(this, null);
+                    if (dicomIntValue.Value != null)
+                    {
+                        value = dicomIntValue.Value[0].ToString();
+                    }
+                    break;
+                case nameof(DicomNameObject):
+                    var dicomNameObject = (DicomNameObject)this.GetType().GetProperty(propertyName.Value).GetValue(this, null);
+                    if (dicomNameObject.Value != null)
+                    {
+                        value = dicomNameObject.Value[0].Alphabetic;
+                    }
+                    break;
+                default:
+                    break;
             }
-            
-            
-
             return value;
         }
 

@@ -14,6 +14,7 @@ namespace MetadataDatabase.Convertor
             {
                 Id = seriesDto.Id.ToObjectId(),
                 SeriesInstanceUID = seriesDto.SeriesInstanceUID,
+                SpecificCharacterSet = seriesDto.SpecificCharacterSet,
                 StudyDate = seriesDto.StudyDate,
                 StudyTime = seriesDto.StudyTime,
                 AccessionNumber = seriesDto.AccessionNumber,

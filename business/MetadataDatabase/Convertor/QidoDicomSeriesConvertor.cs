@@ -14,6 +14,7 @@ namespace MetadataDatabase.Convertor
             {
                 Id = null,
                 SeriesInstanceUID = series.GetValueOfDicomTag(QidoDicomSeries.DicomTag.SeriesInstanceUID),
+                SpecificCharacterSet = series.GetValueOfDicomTag(QidoDicomSeries.DicomTag.SpecificCharacterSet),
                 StudyDate = series.GetValueOfDicomTag(QidoDicomSeries.DicomTag.StudyDate),
                 StudyTime = series.GetValueOfDicomTag(QidoDicomSeries.DicomTag.StudyTime),
                 AccessionNumber = series.GetValueOfDicomTag(QidoDicomSeries.DicomTag.AccessionNumber),
