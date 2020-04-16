@@ -35,9 +35,13 @@ namespace MetadataDatabase
             // requires using Microsoft.Extensions.Options
             services.Configure<SeriesDBSettings>(
                 Configuration.GetSection(nameof(SeriesDBSettings)));
-
             services.AddSingleton<SeriesDBSettings>(sp =>
                 sp.GetRequiredService<IOptions<SeriesDBSettings>>().Value);
+
+            services.Configure<PacsSettings>(
+                Configuration.GetSection(nameof(PacsSettings)));
+            services.AddSingleton<PacsSettings>(sp =>
+                sp.GetRequiredService<IOptions<PacsSettings>>().Value);
 
             services.AddControllers();
             RegisterIocContainer(services);
@@ -54,12 +58,14 @@ namespace MetadataDatabase
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IPacsMirrorServices pacsMirrorServices)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            pacsMirrorServices.CheckForUpdates();
 
             // app.UseHttpsRedirection();
 
@@ -92,6 +98,8 @@ namespace MetadataDatabase
             service.AddSingleton<SeriesContext>();
             service.AddScoped<ISeriesServices, SeriesServices>();
             service.AddScoped<ISeriesRepository, SeriesRepository>();
+            service.AddScoped<IPacsServices, PacsServices>();
+            service.AddScoped<IPacsMirrorServices, PacsMirrorServices>();
         }
     }
 }

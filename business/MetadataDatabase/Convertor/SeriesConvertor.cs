@@ -12,7 +12,22 @@ namespace MetadataDatabase.Convertor
             return new Series
             {
                 Id = seriesDto.Id,
-                SeriesInstanceUID = seriesDto.SeriesInstanceUID
+                SeriesInstanceUID = seriesDto.SeriesInstanceUID,
+                StudyDate = seriesDto.StudyDate,
+                StudyTime = seriesDto.StudyTime,
+                AccessionNumber = seriesDto.AccessionNumber,
+                Modality = seriesDto.Modality,
+                ReferringPhysiciansName = seriesDto.ReferringPhysiciansName,
+                SeriesDescription = seriesDto.SeriesDescription,
+                RetrieveURLAttribute = seriesDto.RetrieveURLAttribute,
+                PatientsName = seriesDto.PatientsName,
+                PatientID = seriesDto.PatientID,
+                PatientsBirthDate = seriesDto.PatientsBirthDate,
+                PatientsSex = seriesDto.PatientsSex,
+                StudyInstanceUID = seriesDto.StudyInstanceUID,
+                StudyID = seriesDto.StudyID,
+                SeriesNumber = seriesDto.SeriesNumber,
+                NumberOfSeriesRelatedInstances = seriesDto.NumberOfSeriesRelatedInstances,
             };
         }
         public static SeriesDto ToDto(this Series series)
@@ -20,7 +35,23 @@ namespace MetadataDatabase.Convertor
             return new SeriesDto
             {
                 Id = series.Id,
-                SeriesInstanceUID = series.SeriesInstanceUID
+                SeriesInstanceUID = series.SeriesInstanceUID,
+                SpecificCharacterSet = series.SpecificCharacterSet,
+                StudyDate = series.StudyDate,
+                StudyTime = series.StudyTime,
+                AccessionNumber = series.AccessionNumber,
+                Modality = series.Modality,
+                ReferringPhysiciansName = series.ReferringPhysiciansName,
+                SeriesDescription = series.SeriesDescription,
+                RetrieveURLAttribute = series.RetrieveURLAttribute,
+                PatientsName = series.PatientsName,
+                PatientID = series.PatientID,
+                PatientsBirthDate = series.PatientsBirthDate,
+                PatientsSex = series.PatientsSex,
+                StudyInstanceUID = series.StudyInstanceUID,
+                StudyID = series.StudyID,
+                SeriesNumber = series.SeriesNumber,
+                NumberOfSeriesRelatedInstances = series.NumberOfSeriesRelatedInstances,
             };
         }
 

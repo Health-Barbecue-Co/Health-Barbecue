@@ -7,8 +7,6 @@ using MetadataDatabase.Models;
 
 namespace MetadataDatabase.Repository
 {
-    public interface ISeriesRepository: IRepository<Series> {}
-
     public class SeriesRepository : ISeriesRepository
     {
         private readonly IMongoCollection<Series> _collection;
