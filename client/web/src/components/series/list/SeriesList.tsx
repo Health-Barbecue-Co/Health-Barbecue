@@ -33,10 +33,10 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
         <TableHead>
           <TableRow>
             <TableCell>seriesInstanceUID</TableCell>
-            <TableCell align="right">title</TableCell>
-            <TableCell align="right">title</TableCell>
-            <TableCell align="right">title</TableCell>
-            <TableCell align="right">title</TableCell>
+            <TableCell align="right">title 2</TableCell>
+            <TableCell align="right">title 3</TableCell>
+            <TableCell align="right">title 4</TableCell>
+            <TableCell align="right">title 5</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
