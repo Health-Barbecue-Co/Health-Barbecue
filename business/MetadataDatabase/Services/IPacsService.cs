@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace MetadataDatabase.Services
 {
-    public interface IPacsServices
+    public interface IPacsService
     {
-        public Task<IEnumerable<QidoSeries>> GetSeries();
+        public Task<IEnumerable<QidoSeries>> GetSeriesAsync();
     }
 }

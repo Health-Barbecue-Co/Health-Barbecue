@@ -1,6 +1,6 @@
 ﻿namespace MetadataDatabase.Services
 {
-    public interface IPacsMirrorServices
+    public interface IPacsMirrorService
     {
         public void MirrorPacs();
     }

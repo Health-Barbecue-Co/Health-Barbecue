@@ -1,11 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace MetadataDatabase.Controllers
 {
     /// <summary>Class to deserialize Query based on ID for DICOM Objects (QIDO) json response</summary>
     public class QidoSeries
     {
+        public enum DicomTag
+        {
+            SpecificCharacterSet,
+            StudyDate,
+            StudyTime,
+            AccessionNumber,
+            Modality,
+            ReferringPhysiciansName,
+            SeriesDescription,
+            RetrieveURLAttribute,
+            PatientsName,
+            PatientID,
+            PatientsBirthDate,
+            PatientsSex,
+            StudyInstanceUID,
+            SeriesInstanceUID,
+            StudyID,
+            SeriesNumber,
+            NumberOfSeriesRelatedInstances
+        }
         // Character Set that expands or replaces the Basic Graphic Set. (00080005)
         [JsonPropertyName("00080005")]
         public DicomStringObject SpecificCharacterSet { get; set; }
@@ -74,29 +93,28 @@ namespace MetadataDatabase.Controllers
         [JsonPropertyName("00201209")]
         public DicomIntObject NumberOfSeriesRelatedInstances { get; set; }
 
-        // Todo
         public string GetValueOfDicomTag(DicomTag propertyName)
         {
             string resultValue = "";
-            var dicomPrpertyType = this.GetType().GetProperty(propertyName.Value).PropertyType.Name;
+            var dicomPrpertyType = this.GetType().GetProperty(propertyName.ToString()).PropertyType.Name;
             switch (dicomPrpertyType)
             {
                 case nameof(DicomStringObject):
-                    var dicomStringValue = (DicomStringObject)this.GetType().GetProperty(propertyName.Value).GetValue(this, null);
+                    var dicomStringValue = (DicomStringObject)this.GetType().GetProperty(propertyName.ToString()).GetValue(this, null);
                     if (dicomStringValue.Value != null)
                     {
                         resultValue = dicomStringValue.Value[0];
                     }
                     break;
                 case nameof(DicomIntObject):
-                    var dicomIntValue = (DicomIntObject)this.GetType().GetProperty(propertyName.Value).GetValue(this, null);
+                    var dicomIntValue = (DicomIntObject)this.GetType().GetProperty(propertyName.ToString()).GetValue(this, null);
                     if (dicomIntValue.Value != null)
                     {
                         resultValue = dicomIntValue.Value[0].ToString();
                     }
                     break;
                 case nameof(DicomNameObject):
-                    var dicomNameObject = (DicomNameObject)this.GetType().GetProperty(propertyName.Value).GetValue(this, null);
+                    var dicomNameObject = (DicomNameObject)this.GetType().GetProperty(propertyName.ToString()).GetValue(this, null);
                     if (dicomNameObject.Value != null)
                     {
                         resultValue = dicomNameObject.Value[0].Alphabetic;
@@ -107,49 +125,5 @@ namespace MetadataDatabase.Controllers
             }
             return resultValue;
         }
-
-        public class DicomTag
-        {
-            private DicomTag(string value) { Value = value; }
-            public string Value { get; set; }
-            public static DicomTag SpecificCharacterSet { get { return new DicomTag("SpecificCharacterSet"); } }
-            public static DicomTag StudyDate { get { return new DicomTag("StudyDate"); } }
-            public static DicomTag StudyTime { get { return new DicomTag("StudyTime"); } }
-            public static DicomTag AccessionNumber { get { return new DicomTag("AccessionNumber"); } }
-            public static DicomTag Modality { get { return new DicomTag("Modality"); } }
-            public static DicomTag ReferringPhysiciansName { get { return new DicomTag("ReferringPhysiciansName"); } }
-            public static DicomTag SeriesDescription { get { return new DicomTag("SeriesDescription"); } }
-            public static DicomTag RetrieveURLAttribute { get { return new DicomTag("RetrieveURLAttribute"); } }
-            public static DicomTag PatientsName { get { return new DicomTag("PatientsName"); } }
-            public static DicomTag PatientID { get { return new DicomTag("PatientID"); } }
-            public static DicomTag PatientsBirthDate { get { return new DicomTag("PatientsBirthDate"); } }
-            public static DicomTag PatientsSex { get { return new DicomTag("PatientsSex"); } }
-            public static DicomTag StudyInstanceUID { get { return new DicomTag("StudyInstanceUID"); } }
-            public static DicomTag SeriesInstanceUID { get { return new DicomTag("SeriesInstanceUID"); } }
-            public static DicomTag StudyID { get { return new DicomTag("StudyID"); } }
-            public static DicomTag SeriesNumber { get { return new DicomTag("SeriesNumber"); } }
-            public static DicomTag NumberOfSeriesRelatedInstances { get { return new DicomTag("NumberOfSeriesRelatedInstances"); } }
-        }
-    }
-    public class DicomStringObject
-    {
-        public IList<string> Value { get; set; }
-        public string vr { get; set; }
-    }
-    public class DicomIntObject
-    {
-        public IList<int> Value { get; set; }
-        public string vr { get; set; }
-    }
-
-    public class DicomNameObject
-    {
-        public IList<DicomName> Value { get; set; }
-        public string vr { get; set; }
-    }
-
-    public class DicomName
-    {
-        public string Alphabetic { get; set; }
     }
 }
