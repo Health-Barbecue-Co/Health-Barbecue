@@ -45,6 +45,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:4001
       - MongoConfiguration__Servername=hb_database
+      - PacsConfiguration__Host=hb_pacs_server
     build:
       context: ./business/MetadataDatabase
     ports:
