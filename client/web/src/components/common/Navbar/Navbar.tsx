@@ -64,6 +64,7 @@ export const Navbar: React.FC = () => {
   }
 
   const logout = () => {
+    handleDrawerClose()
     dispatch({ type: actionTypes.UNSET_CURRENT_USER })
   }
 
