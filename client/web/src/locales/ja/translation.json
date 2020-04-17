@@ -1,8 +1,8 @@
 {
     "menu": {
-        "home": "Dashboard",
-        "studies": "Studies",
-        "series": "Series"
+        "home": "ダッシュボード",
+        "studies": "研究",
+        "series": "シリーズ"
     },
     "Translation test": "翻訳テスト"
 }

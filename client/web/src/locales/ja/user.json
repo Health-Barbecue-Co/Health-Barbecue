@@ -1,10 +1,10 @@
 {
 	"signin": {
-		"title": "Sign In",
-		"email": "Email Address",
-		"password": "Password",
-		"action": "Sign In",
-		"forgotten_password_link": "Forgotten password?",
-		"create_link": "Create a new account"
+		"title": "サインイン",
+		"email": "電子メールアドレス",
+		"password": "パスワード",
+		"action": "サインイン",
+		"forgotten_password_link": "パスワードを忘れました ？",
+		"create_link": "新しいアカウントを作成する"
 	}
 }
