@@ -28,11 +28,11 @@ namespace MetadataDatabase.Services
             var pacsSeries = task.Result?.ToDto();
             // Get all series on DB
             var dataBaseSeries = this.seriesService.GetAll();
-            // Get SeriesInstanceUID to compaire
+            // Get SeriesInstanceUID to compare
             IEnumerable<string> pacsSeriesUids = pacsSeries.Select(series => series.SeriesInstanceUID);
             IEnumerable<string> dataBaseSeriesUids = dataBaseSeries.Select(series => series.SeriesInstanceUID);
             // Delete into DB all series not in the PACS
-            Console.WriteLine("series Not In Pacs");
+            Console.WriteLine("series Not In Pacs:");
             IEnumerable<string> seriesUidsNotInPacs = dataBaseSeriesUids.Except(pacsSeriesUids);
             foreach (string uid in seriesUidsNotInPacs)
             {
@@ -41,7 +41,7 @@ namespace MetadataDatabase.Services
                 this.seriesService.Delete(query.FirstOrDefault().Id);
             }
             // Create into DB all series not in the DB but in PACS
-            Console.WriteLine("series Not In Db");
+            Console.WriteLine("series Not In Db:");
             IEnumerable<string> seriesUidsNotInDb = pacsSeriesUids.Except(dataBaseSeriesUids);
             foreach (string uid in seriesUidsNotInDb)
             {
