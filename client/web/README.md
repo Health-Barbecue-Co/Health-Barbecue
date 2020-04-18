@@ -1,3 +1,9 @@
+## Compatibilities
+
+| IE   | Edge | Firefox | Chrome | Safari | Googlebot |
+| :------- | :------- | :------- | :------- | :------- | :------- |
+| 11    | >= 14 | >= 52 | >= 49 | >= 10 | ✅ |
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -7,8 +13,6 @@ In the project directory, you can run:
 - `yarn test` - launches the test runner in the interactive watch mode.
 
 - `yarn build` - builds the app for production to the `build` folder.
-
-- `yarn eject` - exposes content of `react-script` package
 
 - `yarn lint` - lints project files according to eslint rules, see below. Typical use case: continuous integration environments, Travis, CircleCI, etc.
 
@@ -28,26 +32,19 @@ Testing is done with [Enzyme](https://airbnb.io/enzyme/).
 
 I added `prettier` to force consistent formatting. Don't like trailing semicolons? Feel free to [tweak prettier rules](https://prettier.io/docs/en/configuration.html) inside `.prettierrc` file to match your code style.
 
-## Styles/CSS/Styling
-
-Just for the styling purpose of the example app, I used [Materialize](https://materializecss.com/). The template is shipped with the Materialize by default. I want to make sure that this template is style agnostic so you can plugin any CSS-in-JS or whatever library/framework you want to use for styles on your own.
-
-### How to remove materialize
-
-In order to remove Materialize [MaterializeCSS](https://materializecss.com/) navigate to the `public` folder, open `index.html` and remove following CDN link in the `<head>` lines 18-22:
-
-```html
-<!--Import materialize.css-->
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-/>
-```
-
-Remove or adjust all the `classNames` related to the Materialize and feel free to use your own styling.
-
 ## Eslint configurations
 
 The template extends CRA ESLint rules with a custom set, tailored for the reasonable and clean development process.
 
 Eslint rules are commented for your convenience feel free to tweak or remove them inside `.eslintrc`. No judgment.
+
+## Styles/CSS/Styling
+
+We use [Material-ui](https://material-ui.com/) and we are using Google Icons font.
+
+### List of Styling libraries
+
+| Library | Description | Document |
+| :------ | :------- | :------- |
+| material-ui | Material design components | [https://material-ui.com/]() |
+| typeface-roboto | font fact Roboto | [https://www.npmjs.com/package/typeface-roboto]() |
