@@ -6,6 +6,8 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 import store from './store'
 
+import 'typeface-roboto'
+
 import './index.scss'
 
 import App from './App'

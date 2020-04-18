@@ -1,24 +1,58 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  makeStyles,
+} from '@material-ui/core'
+
+import styles from './SeriesList.style'
+
+const useStyles = makeStyles(styles)
 
 type SeriesListProps = {}
 
 export const SeriesList: React.FC<SeriesListProps> = () => {
-	const [list, setList] = useState([])
+  const [list, setList] = useState([])
+  const classes = useStyles()
 
-	useEffect(() => {
-		axios.get('/api/series')
-			.then(response => {
-				setList(response.data)
-			})
-	}, [])
+  useEffect(() => {
+    axios.get('/api/series').then((response) => {
+      setList(response.data)
+    })
+  }, [])
 
-	return (
-		<>
-			<div>SeriesList</div>
-			<div>{
-				list.map(({ SeriesInstanceUID }) => <div key={SeriesInstanceUID}>{SeriesInstanceUID}</div>)
-			}</div>
-		</>
-	)
+  return (
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>seriesInstanceUID</TableCell>
+            <TableCell align="right">title 2</TableCell>
+            <TableCell align="right">title 3</TableCell>
+            <TableCell align="right">title 4</TableCell>
+            <TableCell align="right">title 5</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {list.map(({ id, seriesInstanceUID }) => (
+            <TableRow key={id}>
+              <TableCell component="th" scope="row">
+                {seriesInstanceUID}
+              </TableCell>
+              <TableCell align="right">---</TableCell>
+              <TableCell align="right">---</TableCell>
+              <TableCell align="right">---</TableCell>
+              <TableCell align="right">---</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
 }
