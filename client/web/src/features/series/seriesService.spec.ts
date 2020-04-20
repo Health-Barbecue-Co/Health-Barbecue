@@ -1,5 +1,5 @@
-import { ISerie } from '../../models/serie'
-import serieService, { SerieService } from './serieService'
+import { ISeries } from '../../models/series'
+import serieService, { SerieService } from './seriesService'
 import { HttpRequest } from '../common/HttpRequest'
 
 jest.mock('../common/HttpRequest')
@@ -56,7 +56,7 @@ describe('SerieService', () => {
 
     it('calls an HttpRequest', () => {
       const mockGet = mockapiInstance.put
-      serieService.update('my-id', { id: 'myId' } as ISerie)
+      serieService.update('my-id', { id: 'myId' } as ISeries)
 
       expect(mockGet).toHaveBeenCalled()
       expect(mockGet).toHaveBeenCalledWith('my-id', { id: 'myId' })
@@ -70,7 +70,7 @@ describe('SerieService', () => {
 
     it('calls an HttpRequest', () => {
       const mockPost = mockapiInstance.post
-      serieService.create({ id: 'myId' } as ISerie)
+      serieService.create({ id: 'myId' } as ISeries)
 
       expect(mockPost).toHaveBeenCalled()
       expect(mockPost).toHaveBeenCalledWith('', { id: 'myId' })
@@ -90,7 +90,7 @@ describe('SerieService', () => {
 
     it('calls an HttpRequest', () => {
       mockDelete = mockapiInstance.delete
-      serieService.remove({ id: 'myId' } as ISerie)
+      serieService.remove({ id: 'myId' } as ISeries)
 
       expect(mockDelete).toHaveBeenCalled()
       expect(mockDelete).toHaveBeenCalledWith('myId')
@@ -98,7 +98,7 @@ describe('SerieService', () => {
 
     it('does nothing if there is no Id', () => {
       mockDelete = mockapiInstance.delete
-      serieService.remove({} as ISerie)
+      serieService.remove({} as ISeries)
 
       expect(mockDelete).not.toHaveBeenCalled()
     })

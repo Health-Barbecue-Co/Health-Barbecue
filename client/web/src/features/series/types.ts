@@ -1,7 +1,7 @@
-import { ISerie } from '../../models/serie'
+import { ISeries } from '../../models/series'
 import {
-  SET_CURRENT_SERIE,
-  UNSET_CURRENT_SERIE,
+  SET_CURRENT_SERIES,
+  UNSET_CURRENT_SERIES,
   SET_ALL_SERIES,
   FETCH_ALL_SERIES,
 } from './actionTypes'
@@ -9,26 +9,26 @@ import {
 interface FetchSeriesAction {
   type: typeof FETCH_ALL_SERIES
 }
-interface SetCurrentSerieAction {
-  type: typeof SET_CURRENT_SERIE
-  serie: ISerie
+interface SetCurrentSeriesAction {
+  type: typeof SET_CURRENT_SERIES
+  series: ISeries
 }
-interface UnsetCurrentSerieAction {
-  type: typeof UNSET_CURRENT_SERIE
+interface UnsetCurrentSeriesAction {
+  type: typeof UNSET_CURRENT_SERIES
 }
 
 interface SetAllSeriesAction {
   type: typeof SET_ALL_SERIES
-  series: ISerie[]
+  series: ISeries[]
 }
 
-export type SerieActionTypes =
-  | UnsetCurrentSerieAction
-  | SetCurrentSerieAction
+export type SeriesActionTypes =
+  | UnsetCurrentSeriesAction
+  | SetCurrentSeriesAction
   | SetAllSeriesAction
   | FetchSeriesAction
 
-export interface SerieState {
-  serie: ISerie | null
-  list: ISerie[]
+export interface SeriesState {
+  series: ISeries | null
+  list: ISeries[]
 }

@@ -1,5 +1,5 @@
 import { put, takeLatest, all } from 'redux-saga/effects'
-import userSaga, { fetchSeries, actionWatcher } from './serieSaga'
+import seriesSaga, { fetchSeries, actionWatcher } from './seriesSaga'
 import * as actionTypes from './actionTypes'
 
 jest.mock('../common/HttpRequest')
@@ -25,7 +25,7 @@ describe('Series saga', () => {
   })
 
   it('runs Saga', async () => {
-    const task = userSaga()
+    const task = seriesSaga()
     expect(task.next().value).toEqual(all([actionWatcher()]))
   })
 })

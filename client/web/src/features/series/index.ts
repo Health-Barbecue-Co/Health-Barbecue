@@ -1,10 +1,10 @@
 import * as actionTypes from './actionTypes'
 import * as selectors from './selectors'
-import serieService from './serieService'
-import serieSaga from './serieSaga'
+import serieService from './seriesService'
+import seriesSaga from './seriesSaga'
 
-export { default as UserReducer } from './serieReducer'
+export { default as SeriesReducer } from './seriesReducer'
 export { actionTypes }
 export { selectors }
 export const SerieService = serieService
-export { serieSaga }
+export { seriesSaga }

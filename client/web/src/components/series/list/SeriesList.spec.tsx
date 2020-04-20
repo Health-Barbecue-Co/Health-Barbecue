@@ -10,7 +10,7 @@ jest.mock('../../../features/common/HttpRequest')
 describe('SeriesList', () => {
   const mockStore = configureStore([])
   const store = mockStore({
-    serie: {
+    series: {
       list: [{ id: 'myId' }],
     },
   })

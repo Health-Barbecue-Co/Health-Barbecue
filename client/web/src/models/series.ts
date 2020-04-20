@@ -1,4 +1,4 @@
-export interface ISerie {
+export interface ISeries {
   id: string
   seriesInstanceUID: string
 }

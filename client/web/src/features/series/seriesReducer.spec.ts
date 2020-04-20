@@ -1,16 +1,16 @@
-import { ISerie } from '../../models/serie'
+import { ISeries } from '../../models/series'
 
 import {
-  SET_CURRENT_SERIE,
-  UNSET_CURRENT_SERIE,
+  SET_CURRENT_SERIES,
+  UNSET_CURRENT_SERIES,
   SET_ALL_SERIES,
   FETCH_ALL_SERIES,
 } from './actionTypes'
-import serieReducer from './serieReducer'
-import { SerieActionTypes } from './types'
+import serieReducer from './seriesReducer'
+import { SeriesActionTypes } from './types'
 
 const initialState = {
-  serie: null,
+  series: null,
   list: [],
 }
 
@@ -27,41 +27,41 @@ describe('features > series > serieReducer', () => {
     )
   })
 
-  it(`sets serie, if ${SET_CURRENT_SERIE} action is provided`, () => {
+  it(`sets serie, if ${SET_CURRENT_SERIES} action is provided`, () => {
     const expectedState = {
-      serie: {},
+      series: {},
       list: [],
     }
 
-    const action: SerieActionTypes = {
-      type: SET_CURRENT_SERIE,
-      serie: {} as ISerie,
+    const action: SeriesActionTypes = {
+      type: SET_CURRENT_SERIES,
+      series: {} as ISeries,
     }
 
     expect(serieReducer(initialState, action)).toEqual(expectedState)
   })
 
-  it(`reset serie, if ${UNSET_CURRENT_SERIE} action is provided`, () => {
+  it(`reset serie, if ${UNSET_CURRENT_SERIES} action is provided`, () => {
     const expectedState = {
-      serie: null,
+      series: null,
       list: [],
     }
 
-    const action: SerieActionTypes = {
-      type: UNSET_CURRENT_SERIE,
+    const action: SeriesActionTypes = {
+      type: UNSET_CURRENT_SERIES,
     }
 
     expect(serieReducer(initialState, action)).toEqual(expectedState)
   })
 
   it(`set List if ${SET_ALL_SERIES} action is provided`, () => {
-    const list = [{} as ISerie, {} as ISerie]
+    const list = [{} as ISeries, {} as ISeries]
     const expectedState = {
-      serie: null,
+      series: null,
       list,
     }
 
-    const action: SerieActionTypes = {
+    const action: SeriesActionTypes = {
       type: SET_ALL_SERIES,
       series: list,
     }

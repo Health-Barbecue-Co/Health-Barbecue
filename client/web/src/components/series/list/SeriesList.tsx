@@ -20,7 +20,7 @@ const useStyles = makeStyles(styles)
 type SeriesListProps = {}
 
 export const SeriesList: React.FC<SeriesListProps> = () => {
-  const { list } = useSelector(selectors.getSerieStore)
+  const { list } = useSelector(selectors.getSeriesStore)
 
   const classes = useStyles()
   const dispatch = useDispatch()

@@ -3,13 +3,13 @@ import { devToolsEnhancer } from 'redux-devtools-extension'
 import createSagaMiddleware from 'redux-saga'
 
 import { UserReducer, userSaga } from './features/user'
-import { serieSaga } from './features/series'
-import serieReducer from './features/series/serieReducer'
+import { seriesSaga } from './features/series'
+import serieReducer from './features/series/seriesReducer'
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({
   user: UserReducer,
-  serie: serieReducer,
+  series: serieReducer,
 })
 
 /* Configuration Redux Saga */
@@ -21,7 +21,7 @@ const store = createStore(
 )
 
 sagaMiddleware.run(userSaga)
-sagaMiddleware.run(serieSaga)
+sagaMiddleware.run(seriesSaga)
 
 export type RootState = ReturnType<typeof rootReducer>
 
