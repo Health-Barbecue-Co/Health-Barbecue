@@ -3,21 +3,11 @@ import { ISerie } from '../../models/serie'
 import { ICrudService } from '../common/ICrudService'
 import { HttpRequest } from '../common/HttpRequest'
 
-class SerieService implements ICrudService<ISerie> {
-  private static instance: SerieService
-
+export class SerieService implements ICrudService<ISerie> {
   private api: HttpRequest<ISerie>
 
   constructor() {
     this.api = new HttpRequest({ baseURL: '/api/series' })
-  }
-
-  static getInstance() {
-    if (!SerieService.instance) {
-      SerieService.instance = new SerieService()
-    }
-
-    return SerieService.instance
   }
 
   getAll(): Promise<ISerie[]> {

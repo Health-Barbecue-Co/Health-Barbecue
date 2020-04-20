@@ -5,6 +5,8 @@ import configureStore from 'redux-mock-store'
 
 import { SeriesList } from './SeriesList'
 
+jest.mock('../../../features/common/HttpRequest')
+
 describe('SeriesList', () => {
   const mockStore = configureStore([])
   const store = mockStore({

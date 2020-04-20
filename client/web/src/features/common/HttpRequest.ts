@@ -28,16 +28,6 @@ export class HttpRequest<T> {
     }))
   }
 
-  public getUri(config?: AxiosRequestConfig): string {
-    return this.api.getUri(config)
-  }
-
-  public request<T, R = AxiosResponse<T>>(
-    config: AxiosRequestConfig
-  ): Promise<R> {
-    return this.api.request(config)
-  }
-
   public get<T, R = AxiosResponse<T>>(
     url: string,
     config?: AxiosRequestConfig
@@ -50,13 +40,6 @@ export class HttpRequest<T> {
     config?: AxiosRequestConfig
   ): Promise<R> {
     return this.api.delete(url, config)
-  }
-
-  public head<T, R = AxiosResponse<T>>(
-    url: string,
-    config?: AxiosRequestConfig
-  ): Promise<R> {
-    return this.api.head(url, config)
   }
 
   public post<T, R = AxiosResponse<T>>(
@@ -77,7 +60,7 @@ export class HttpRequest<T> {
 
   public patch<T, R = AxiosResponse<T>>(
     url: string,
-    data?: string,
+    data?: any,
     config?: AxiosRequestConfig
   ): Promise<R> {
     return this.api.patch(url, data, config)

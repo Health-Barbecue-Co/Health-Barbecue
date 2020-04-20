@@ -1,3 +1,5 @@
+# Health Barbecue Web client
+
 ## Compatibilities
 
 | IE   | Edge | Firefox | Chrome | Safari | Googlebot |
@@ -18,7 +20,11 @@ In the project directory, you can run:
 
 - `yarn fix` - same as `yarn lint`, but also fixes errors, when possible. Typical use case: local development environment, git hooks.
 
+- `yarn coverage` - launch once the test runner and show the code coverage, a folder coverage is created at the root of web project.
+
 Due to CRA template limitations (we can change only `scripts` and `dependencies` inside generated `package.json`) all configuration is done by adding config files where possible. Also no `devDependencies` for now, sorry.
+
+It is possible to display the coverage webpage with the index.html included to folder `coverage/`.
 
 ## Redux configuration
 
@@ -48,3 +54,11 @@ We use [Material-ui](https://material-ui.com/) and we are using Google Icons fon
 | :------ | :------- | :------- |
 | material-ui | Material design components | [https://material-ui.com/]() |
 | typeface-roboto | font fact Roboto | [https://www.npmjs.com/package/typeface-roboto]() |
+
+## External dependencies
+
+| Library | Description | Document |
+| :------ | :------- | :------- |
+| material-ui | Material design components | [https://material-ui.com/](https://material-ui.com/) |
+| redux | application store | [https://redux.js.org/](https://redux.js.org/) |
+| redux-saga | it is a library that aims to make application side effects | [https://redux-saga.js.org/](https://redux-saga.js.org/) |

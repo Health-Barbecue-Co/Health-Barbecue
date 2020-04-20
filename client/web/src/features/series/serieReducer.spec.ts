@@ -4,6 +4,7 @@ import {
   SET_CURRENT_SERIE,
   UNSET_CURRENT_SERIE,
   SET_ALL_SERIES,
+  FETCH_ALL_SERIES,
 } from './actionTypes'
 import serieReducer from './serieReducer'
 import { SerieActionTypes } from './types'
@@ -14,6 +15,18 @@ const initialState = {
 }
 
 describe('features > series > serieReducer', () => {
+  it('initial state', () => {
+    expect(serieReducer(undefined, { type: FETCH_ALL_SERIES })).toEqual(
+      initialState
+    )
+  })
+
+  it('default state is provided if action is unknown', () => {
+    expect(serieReducer(initialState, { type: FETCH_ALL_SERIES })).toEqual(
+      initialState
+    )
+  })
+
   it(`sets serie, if ${SET_CURRENT_SERIE} action is provided`, () => {
     const expectedState = {
       serie: {},

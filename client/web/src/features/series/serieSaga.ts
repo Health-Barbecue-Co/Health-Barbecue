@@ -1,10 +1,10 @@
 import { put, takeLatest, call, all } from 'redux-saga/effects'
 
 import * as actionTypes from './actionTypes'
-import SerieService from './serieService'
+import serieService from './serieService'
 
-function* fetchSeries() {
-  const { data: series } = yield call([SerieService, 'getAll'])
+export function* fetchSeries() {
+  const { data: series } = yield call([serieService, 'getAll'])
 
   yield put({
     type: actionTypes.SET_ALL_SERIES,
@@ -12,7 +12,7 @@ function* fetchSeries() {
   })
 }
 
-function* actionWatcher() {
+export function* actionWatcher() {
   yield takeLatest(actionTypes.FETCH_ALL_SERIES, fetchSeries)
 }
 
