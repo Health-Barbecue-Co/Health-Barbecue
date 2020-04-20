@@ -11,6 +11,7 @@
 		"firstname": "Prénom",
 		"lastname": "Nom",
 		"login": "Identifiant",
-		"role": "Rôle"
+		"role": "Rôle",
+		"password": "Mot de passe"
 	}
 }

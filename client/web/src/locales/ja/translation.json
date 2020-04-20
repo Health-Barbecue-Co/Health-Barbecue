@@ -8,5 +8,8 @@
     "about": "約",
     "users": "ユーザー",
     "logout": "ログアウト",
+    "action": {
+        "save": "セーブ"
+    },
     "Translation test": "翻訳テスト"
 }

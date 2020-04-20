@@ -8,5 +8,8 @@
     "about": "A Propos",
     "users": "Utilisateurs",
     "logout": "Déconnexion",
+    "action": {
+        "save": "Sauvegarder"
+    },
     "Translation test": "Test de traduction"
 }

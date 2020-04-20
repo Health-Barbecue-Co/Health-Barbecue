@@ -11,6 +11,7 @@
 		"firstname": "ファーストネーム",
 		"lastname": "苗字",
 		"login": "ログインする",
-		"role": "役割"
+		"role": "役割",
+		"password": "パスワード"
 	}
 }

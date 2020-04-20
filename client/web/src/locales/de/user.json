@@ -12,6 +12,7 @@
 		"firstname": "Vorname",
 		"lastname": "Familienname, Nachname",
 		"login": "Anmeldung",
+		"password": "Passwort",
 		"role": "Rolle"
 	}
 }

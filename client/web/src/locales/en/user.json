@@ -12,6 +12,7 @@
 		"firstname": "Firstname",
 		"lastname": "Lastname",
 		"login": "Login",
+		"password": "Password",
 		"role": "Role"
 	}
 }

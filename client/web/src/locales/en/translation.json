@@ -7,6 +7,8 @@
     "about": "About",
     "users": "Users",
     "logout": "Logout",
-
+    "action": {
+        "save": "Save"
+    },
     "Translation test": "Translation test"
 }
