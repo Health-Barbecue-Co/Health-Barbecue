@@ -6,6 +6,8 @@ import configureStore from 'redux-mock-store'
 import { actionTypes } from '../../../features/user'
 import { SignIn } from './SignIn'
 
+jest.mock('../../../features/common/HttpRequest')
+
 jest.mock('react-router-dom', () => ({
   useRouteMatch: () => ({ url: 'myUrl' }),
   useHistory: () => ({
