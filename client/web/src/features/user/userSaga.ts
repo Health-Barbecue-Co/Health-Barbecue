@@ -1,17 +1,17 @@
 import { put, takeLatest, call, all } from 'redux-saga/effects'
 
 import * as actionTypes from './actionTypes'
-import UserService from './userService'
+import userService from './userService'
 
-function* fetchUsers() {
-  const users = yield call(UserService.getAll)
+export function* fetchUsers() {
+  const { data: users } = yield call([userService, 'getAll'])
   yield put({
     type: actionTypes.SET_ALL_USERS,
     users,
   })
 }
 
-function* actionWatcher() {
+export function* actionWatcher() {
   yield takeLatest(actionTypes.FETCH_ALL_USERS, fetchUsers)
 }
 

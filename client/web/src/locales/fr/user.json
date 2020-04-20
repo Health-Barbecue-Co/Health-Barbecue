@@ -6,5 +6,11 @@
 		"action": "Se Connecter",
 		"forgotten_password_link": "Mot de passe oublié ?",
 		"create_link": "Créer un nouveau compte"
+	},
+	"field": {
+		"firstname": "Prénom",
+		"lastname": "Nom",
+		"login": "Identifiant",
+		"role": "Rôle"
 	}
 }

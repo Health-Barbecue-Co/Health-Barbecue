@@ -1,4 +1,5 @@
 {
+	"title": "Users",
 	"signin": {
 		"title": "Sign In",
 		"email": "Email Address",
@@ -6,5 +7,11 @@
 		"action": "Sign In",
 		"forgotten_password_link": "Forgotten password?",
 		"create_link": "Create a new account"
+	},
+	"field": {
+		"firstname": "Firstname",
+		"lastname": "Lastname",
+		"login": "Login",
+		"role": "Role"
 	}
 }

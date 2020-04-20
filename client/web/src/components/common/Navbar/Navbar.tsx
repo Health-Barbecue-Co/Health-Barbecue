@@ -22,6 +22,7 @@ import Logout from '@material-ui/icons/ExitToApp'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import HelpIcon from '@material-ui/icons/Help'
+import UsersIcon from '@material-ui/icons/PeopleAlt'
 
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -39,7 +40,7 @@ const useStyles = makeStyles(styles)
 export const Navbar: React.FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
-  const { user } = useSelector(selectors.getUser)
+  const user = useSelector(selectors.getSelected)
   const theme = useTheme()
   const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false)
@@ -128,6 +129,13 @@ export const Navbar: React.FC = () => {
           <Box flexGrow={1} />
           <Divider />
           <List>
+            <ListItem button component={Link} to="/user/main/list">
+              <ListItemIcon>
+                <UsersIcon />
+              </ListItemIcon>
+              <ListItemText primary={t('users')} />
+            </ListItem>
+
             <ListItem button component={Link} to="/about">
               <ListItemIcon>
                 <HelpIcon />

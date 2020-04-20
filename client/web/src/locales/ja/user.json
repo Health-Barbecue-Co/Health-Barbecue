@@ -6,5 +6,11 @@
 		"action": "サインイン",
 		"forgotten_password_link": "パスワードを忘れました ？",
 		"create_link": "新しいアカウントを作成する"
+	},
+	"field": {
+		"firstname": "ファーストネーム",
+		"lastname": "苗字",
+		"login": "ログインする",
+		"role": "役割"
 	}
 }

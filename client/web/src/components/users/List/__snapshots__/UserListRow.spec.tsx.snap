@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserListRow a table row with user information 1`] = `
+<tr
+  className="MuiTableRow-root"
+  role={null}
+>
+  <th
+    aria-sort={null}
+    className="MuiTableCell-root"
+    role="cell"
+    scope="row"
+  >
+    firstname
+  </th>
+  <td
+    aria-sort={null}
+    className="MuiTableCell-root MuiTableCell-alignRight"
+  >
+    lastname
+  </td>
+  <td
+    aria-sort={null}
+    className="MuiTableCell-root MuiTableCell-alignRight"
+  >
+    login
+  </td>
+  <td
+    aria-sort={null}
+    className="MuiTableCell-root MuiTableCell-alignRight"
+  >
+    role
+  </td>
+</tr>
+`;

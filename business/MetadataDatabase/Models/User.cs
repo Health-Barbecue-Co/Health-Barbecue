@@ -46,5 +46,13 @@ namespace MetadataDatabase.Models
         /// The user instance role.
         /// </value>
         public string role { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user instance password.
+        /// </summary>
+        /// <value>
+        /// The user instance password.
+        /// </value>
+        public string password { get; set; }
     }
 }

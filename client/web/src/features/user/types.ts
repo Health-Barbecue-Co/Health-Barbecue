@@ -3,7 +3,12 @@ import {
   SET_CURRENT_USER,
   UNSET_CURRENT_USER,
   SET_ALL_USERS,
+  FETCH_ALL_USERS,
 } from './actionTypes'
+
+interface FetchUsersAction {
+  type: typeof FETCH_ALL_USERS
+}
 
 interface SetCurrentUserAction {
   type: typeof SET_CURRENT_USER
@@ -22,8 +27,9 @@ export type UserActionTypes =
   | UnsetCurrentUserAction
   | SetCurrentUserAction
   | SetAllUserAction
+  | FetchUsersAction
 
-export interface SystemState {
-  user: any
+export interface UserState {
+  user: IUser | null
   list: IUser[]
 }

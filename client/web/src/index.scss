@@ -22,21 +22,7 @@ body {
   }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-.px1 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
 .group {
   display: flex;
   justify-content: space-between;
-}
-
-.version {
-  float: right;
 }

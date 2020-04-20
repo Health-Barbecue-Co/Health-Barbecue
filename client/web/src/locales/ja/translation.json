@@ -1,8 +1,12 @@
 {
+    "title": "ユーザー",
     "menu": {
         "home": "ダッシュボード",
         "studies": "研究",
         "series": "シリーズ"
     },
+    "about": "約",
+    "users": "ユーザー",
+    "logout": "ログアウト",
     "Translation test": "翻訳テスト"
 }

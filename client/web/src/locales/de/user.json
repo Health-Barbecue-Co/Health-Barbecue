@@ -1,4 +1,5 @@
 {
+	"title": "Benutzer",
 	"signin": {
 		"title": "Verbindung",
 		"email": "E-Mail-Adresse",
@@ -6,5 +7,11 @@
 		"action": "Einloggen",
 		"forgotten_password_link": "Passwort vergessen ?",
 		"create_link": "Erstellen Sie ein neues Konto"
+	},
+	"field": {
+		"firstname": "Vorname",
+		"lastname": "Familienname, Nachname",
+		"login": "Anmeldung",
+		"role": "Rolle"
 	}
 }

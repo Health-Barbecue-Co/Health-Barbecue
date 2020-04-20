@@ -1,8 +1,12 @@
 {
+    "title": "Utilisateurs",
     "menu": {
         "home": "tableau de bord",
         "studies": "études",
         "series": "séries"
     },
+    "about": "A Propos",
+    "users": "Utilisateurs",
+    "logout": "Déconnexion",
     "Translation test": "Test de traduction"
 }
