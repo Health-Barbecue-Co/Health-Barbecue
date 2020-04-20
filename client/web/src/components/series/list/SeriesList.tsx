@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useEffect } from 'react'
 import {
   TableContainer,
   Paper,
@@ -15,6 +14,9 @@ import {
 import SyncIcon from '@material-ui/icons/Sync'
 import { useTranslation } from 'react-i18next'
 
+import { useDispatch, useSelector } from 'react-redux'
+
+import { actionTypes, selectors } from '../../../features/series'
 import styles from './SeriesList.style'
 
 const useStyles = makeStyles(styles)
@@ -22,25 +24,14 @@ const useStyles = makeStyles(styles)
 type SeriesListProps = {}
 
 export const SeriesList: React.FC<SeriesListProps> = () => {
-  const [list, setList] = useState([])
+  const { list } = useSelector(selectors.getSeriesStore)
+
   const classes = useStyles()
-  const { t } = useTranslation()
-
-  const updateSeriesList = () => {
-    axios.get('/api/series').then((response) => {
-      setList(response.data)
-    })
-  }
-
-  const refresh = () => {
-    axios.get('/api/PacsMirror').then(() => {
-      updateSeriesList();
-    });
-  }
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    updateSeriesList();
-  }, [])
+    dispatch({ type: actionTypes.FETCH_ALL_SERIES })
+  }, [dispatch])
 
   return (
     <TableContainer component={Paper}>
@@ -62,17 +53,18 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {list.map(({ id, seriesInstanceUID, seriesDescription, modality, numberOfSeriesRelatedInstances }) => (
-            <TableRow key={id}>
-              <TableCell component="th" scope="row">
-                {seriesInstanceUID}
-              </TableCell>
-              <TableCell align="right">{seriesDescription}</TableCell>
-              <TableCell align="right">{modality}</TableCell>
-              <TableCell align="right">{numberOfSeriesRelatedInstances}</TableCell>
-              <TableCell align="right">---</TableCell>
-            </TableRow>
-          ))}
+          {list &&
+            list.map(({ id, seriesInstanceUID }) => (
+              <TableRow key={id}>
+                <TableCell component="th" scope="row">
+                  {seriesInstanceUID}
+                </TableCell>
+                <TableCell align="right">---</TableCell>
+                <TableCell align="right">---</TableCell>
+                <TableCell align="right">---</TableCell>
+                <TableCell align="right">---</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

@@ -5,9 +5,15 @@ import configureStore from 'redux-mock-store'
 
 import { SeriesList } from './SeriesList'
 
+jest.mock('../../../features/common/HttpRequest')
+
 describe('SeriesList', () => {
-	const mockStore = configureStore([])
-  const store = mockStore({})
+  const mockStore = configureStore([])
+  const store = mockStore({
+    series: {
+      list: [{ id: 'myId' }],
+    },
+  })
 
   // Add jest mock spy to watch for store.dispatch method. See https://jestjs.io/docs/en/jest-object#jestspyonobject-methodname for more info
   jest.spyOn(store, 'dispatch')
