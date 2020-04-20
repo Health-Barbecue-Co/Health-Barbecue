@@ -3,7 +3,7 @@ import { ISeries } from '../../models/series'
 import { ICrudService } from '../common/ICrudService'
 import { HttpRequest } from '../common/HttpRequest'
 
-export class SerieService implements ICrudService<ISeries> {
+export class SeriesService implements ICrudService<ISeries> {
   private api: HttpRequest<ISeries>
 
   constructor() {
@@ -33,6 +33,6 @@ export class SerieService implements ICrudService<ISeries> {
   }
 }
 
-const service = new SerieService()
+const service = new SeriesService()
 
 export default service
