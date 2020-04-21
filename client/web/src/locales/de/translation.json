@@ -1,3 +1,9 @@
 {
-    "Translation test": "Übersetzungstest"
+    "menu": {
+        "home": "Instrumententafel",
+        "studies": "Studien",
+        "series": "Serie"
+    },
+    "Translation test": "Übersetzungstest",
+    "Refresh": "Aktualisierung"
 }

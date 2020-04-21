@@ -1,3 +1,9 @@
 {
-    "Translation test": "Test de traduction"
+    "menu": {
+        "home": "tableau de bord",
+        "studies": "études",
+        "series": "séries"
+    },
+    "Translation test": "Test de traduction",
+    "Refresh": "Rafraîchir"
 }

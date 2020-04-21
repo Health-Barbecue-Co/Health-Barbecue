@@ -101,21 +101,21 @@ namespace MetadataDatabase.Controllers
             {
                 case nameof(DicomStringObject):
                     var dicomStringValue = (DicomStringObject)this.GetType().GetProperty(propertyName.ToString()).GetValue(this, null);
-                    if (dicomStringValue.Value != null)
+                    if (dicomStringValue != null && dicomStringValue.Value != null)
                     {
                         resultValue = dicomStringValue.Value[0];
                     }
                     break;
                 case nameof(DicomIntObject):
                     var dicomIntValue = (DicomIntObject)this.GetType().GetProperty(propertyName.ToString()).GetValue(this, null);
-                    if (dicomIntValue.Value != null)
+                    if (dicomIntValue != null && dicomIntValue.Value != null)
                     {
                         resultValue = dicomIntValue.Value[0].ToString();
                     }
                     break;
                 case nameof(DicomNameObject):
                     var dicomNameObject = (DicomNameObject)this.GetType().GetProperty(propertyName.ToString()).GetValue(this, null);
-                    if (dicomNameObject.Value != null)
+                    if (dicomNameObject != null && dicomNameObject.Value != null)
                     {
                         resultValue = dicomNameObject.Value[0].Alphabetic;
                     }

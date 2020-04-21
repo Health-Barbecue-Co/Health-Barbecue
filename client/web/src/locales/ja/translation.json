@@ -1,3 +1,10 @@
 {
-    "Translation test": "翻訳テスト"
+    "menu": {
+        "home": "ダッシュボード",
+        "studies": "研究",
+        "series": "シリーズ"
+    },
+    "Translation test": "翻訳テスト",
+    "Refresh": "リフレッシュ"
+    
 }

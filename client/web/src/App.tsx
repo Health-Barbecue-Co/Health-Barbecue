@@ -1,20 +1,44 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
-import { Navbar } from './components/Navbar'
+import { Container } from '@material-ui/core'
+import { useSelector } from 'react-redux'
+
+import { Navbar } from './components/common'
 import { About } from './pages/About'
 import { Home } from './pages/Home'
+import { User } from './pages/User'
+import { Studies } from './pages/Studies'
+import { Series } from './pages/Series'
+
+import { selectors } from './features/user'
 
 const App: React.FC = () => {
+  const { user } = useSelector(selectors.getUser)
+
   return (
     <BrowserRouter>
       <Navbar />
-      <Switch>
-        <div className="container">
-          <Route path="/" component={Home} exact />
-          <Route path="/about" component={About} />
-        </div>
-      </Switch>
+      <Container>
+        <Switch>
+          <Route path="/home" exact>
+            {!user ? <Redirect to="/user" /> : <Home />}
+          </Route>
+          <Route path="/about" exact>
+            {!user ? <Redirect to="/user" /> : <About />}
+          </Route>
+          <Route path="/user" component={User} />
+          <Route exact path="/">
+            {!user ? <Redirect to="/user" /> : <Home />}
+          </Route>
+          <Route path="/studies" exact>
+            {!user ? <Redirect to="/user" /> : <Studies />}
+          </Route>
+          <Route path="/series" exact>
+            {!user ? <Redirect to="/user" /> : <Series />}
+          </Route>
+        </Switch>
+      </Container>
     </BrowserRouter>
   )
 }

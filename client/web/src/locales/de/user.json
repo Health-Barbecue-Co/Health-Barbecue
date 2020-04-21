@@ -1,0 +1,10 @@
+{
+	"signin": {
+		"title": "Verbindung",
+		"email": "E-Mail-Adresse",
+		"password": "Passwort",
+		"action": "Einloggen",
+		"forgotten_password_link": "Passwort vergessen ?",
+		"create_link": "Erstellen Sie ein neues Konto"
+	}
+}
