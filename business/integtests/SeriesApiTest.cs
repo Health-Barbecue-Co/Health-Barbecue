@@ -22,10 +22,8 @@ namespace IntegTests
             List<HBSeriesDto> seriesList = JsonConvert.DeserializeObject<List<HBSeriesDto>>(responseString);
 
             Assert.Equal(2, seriesList.Count);
-            Assert.Equal(seriesPosted1.Id, seriesList[0].Id);
-            Assert.Equal(seriesPosted1.SeriesInstanceUID, seriesList[0].SeriesInstanceUID);
-            Assert.Equal(seriesPosted2.Id, seriesList[1].Id);
-            Assert.Equal(seriesPosted2.SeriesInstanceUID, seriesList[1].SeriesInstanceUID);
+            Assert.Equal(seriesPosted1, seriesList[0]);
+            Assert.Equal(seriesPosted2, seriesList[1]);
         }
 
         [Fact]
@@ -64,8 +62,7 @@ namespace IntegTests
             Assert.Equal(HttpStatusCode.OK, responseGet.StatusCode);
             HBSeriesDto seriesGet = JsonConvert.DeserializeObject<HBSeriesDto>(responseGet.Content);
 
-            Assert.Equal(seriesPosted.Id, seriesGet.Id);
-            Assert.Equal(seriesPosted.SeriesInstanceUID, seriesGet.SeriesInstanceUID);
+            Assert.Equal(seriesPosted, seriesGet);
         }
 
         [Fact]
@@ -73,13 +70,31 @@ namespace IntegTests
         {
             var getSeriesIdRequest = new RestRequest("/api/Series/" + "toto", DataFormat.Json);
             var responseGet = client.Get(getSeriesIdRequest);
-            Assert.Equal(HttpStatusCode.NotFound, responseGet.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, responseGet.StatusCode);
         }
 
         [Fact]
         public void PutSeriesId()
         {
-            HBSeriesDto seriesPosted = CreateSeries("TestPutSeriesId");
+            HBSeriesDto seriesPosted = CreateSeries(new HBSeriesDto
+            {
+                SeriesInstanceUID = "TestPutSeriesId",
+                SpecificCharacterSet = "att2",
+                StudyDate = "att2",
+                StudyTime = "att2",
+                AccessionNumber = "att2",
+                Modality = "att2",
+                ReferringPhysiciansName = "att2",
+                SeriesDescription = "att2",
+                RetrieveURLAttribute = "att2",
+                PatientsName = "att2",
+                PatientID = "att2",
+                PatientsBirthDate = "att2",
+                PatientsSex = "att2",
+                StudyInstanceUID = "att2",
+                SeriesNumber = "att2",
+                NumberOfSeriesRelatedInstances = "att2"
+            });
 
             var putSeriesIdRequest = new RestRequest("/api/Series/" + seriesPosted.Id, DataFormat.Json);
             putSeriesIdRequest.AddJsonBody(new { SeriesInstanceUID = "TestPutSeriesIdModified" });
@@ -93,6 +108,21 @@ namespace IntegTests
 
             Assert.Equal(seriesPosted.Id, seriesGet.Id);
             Assert.Equal("TestPutSeriesIdModified", seriesGet.SeriesInstanceUID);
+            Assert.Equal("att2", seriesGet.SpecificCharacterSet);
+            Assert.Equal("att2", seriesGet.StudyDate);
+            Assert.Equal("att2", seriesGet.StudyTime);
+            Assert.Equal("att2", seriesGet.AccessionNumber);
+            Assert.Equal("att2", seriesGet.Modality);
+            Assert.Equal("att2", seriesGet.ReferringPhysiciansName);
+            Assert.Equal("att2", seriesGet.SeriesDescription);
+            Assert.Equal("att2", seriesGet.RetrieveURLAttribute);
+            Assert.Equal("att2", seriesGet.PatientsName);
+            Assert.Equal("att2", seriesGet.PatientID);
+            Assert.Equal("att2", seriesGet.PatientsBirthDate);
+            Assert.Equal("att2", seriesGet.PatientsSex);
+            Assert.Equal("att2", seriesGet.StudyInstanceUID);
+            Assert.Equal("att2", seriesGet.SeriesNumber);
+            Assert.Equal("att2", seriesGet.NumberOfSeriesRelatedInstances);
         }
 
         [Fact]
@@ -136,13 +166,19 @@ namespace IntegTests
             this.getSeriesRequest = new RestRequest("/api/Series", DataFormat.Json);
         }
 
-        private HBSeriesDto CreateSeries(string seriesInstanceUID)
+        private HBSeriesDto CreateSeries(HBSeriesDto series)
         {
             var postSeriesRequest = new RestRequest("/api/Series", DataFormat.Json);
-            postSeriesRequest.AddJsonBody(new { SeriesInstanceUID = seriesInstanceUID });
+            string json = series.toJson();
+            postSeriesRequest.AddJsonBody(json);
 
             var response = client.Post(postSeriesRequest);
             return JsonConvert.DeserializeObject<HBSeriesDto>(response.Content);
+        }
+
+        private HBSeriesDto CreateSeries(string seriesInstanceUID)
+        {
+            return CreateSeries(new HBSeriesDto { SeriesInstanceUID = seriesInstanceUID });
         }
 
         private void deleteAllSeries()
