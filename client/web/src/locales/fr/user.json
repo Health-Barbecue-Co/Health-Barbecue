@@ -1,7 +1,7 @@
 {
 	"signin": {
 		"title": "Connexion",
-		"email": "Adresse Email",
+		"login": "Identifiant",
 		"password": "Mot de passe",
 		"action": "Se Connecter",
 		"forgotten_password_link": "Mot de passe oublié ?",

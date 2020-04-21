@@ -2,7 +2,7 @@
 	"title": "Users",
 	"signin": {
 		"title": "Sign In",
-		"email": "Email Address",
+		"login": "Login",
 		"password": "Password",
 		"action": "Sign In",
 		"forgotten_password_link": "Forgotten password?",
