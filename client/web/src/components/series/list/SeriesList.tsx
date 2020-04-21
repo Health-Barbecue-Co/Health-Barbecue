@@ -16,8 +16,8 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { actionTypes, selectors } from '../../../features/series'
+import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
 import styles from './SeriesList.style'
-import { HttpRequest } from '../../../features/common/HttpRequest'
 
 const useStyles = makeStyles(styles)
 
@@ -34,10 +34,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   }, [dispatch])
 
   const synchronize = () => {
-    let httpRequest = new HttpRequest({ baseURL: '/api' })
-    httpRequest.get("/PacsMirror").then(()=> {
-      dispatch({ type: actionTypes.FETCH_ALL_SERIES })
-    });
+    dispatch({ type: mirrorPacsActionTypes.DO_A_MIRROR_UPDATE })
   }
 
   return (
