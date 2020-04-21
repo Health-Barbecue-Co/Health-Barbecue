@@ -26,5 +26,12 @@ namespace MetadataDatabase.Data
         public string SeriesNumber { get; set; }
         public string NumberOfSeriesRelatedInstances { get; set; }
 
+        // Complex metadata
+        public string BodyPartExamined { get; set; }
+
+        public void Update(Metadata metadata)
+        {
+            this.BodyPartExamined = metadata.GetValueOfDicomTag(Metadata.DicomTag.BodyPartExamined);
+        }
     }
 }

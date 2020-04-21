@@ -28,7 +28,7 @@ namespace MetadataDatabase.Services
         public void MirrorPacs()
         {
             // Get all series on PACS
-            Task<IEnumerable<QidoSeries>> task = this.pacsService.GetSeriesAsync();
+            Task<IEnumerable<QidoSeries>> task = this.pacsService.GetSeriesListAsync();
             task.Wait();
             var pacsSeries = task.Result?.ToDto();
             // Get all series on DB
@@ -48,7 +48,17 @@ namespace MetadataDatabase.Services
             foreach (string uid in seriesUidsNotInDb)
             {
                 IEnumerable<SeriesDto> query = pacsSeries.Where(series => series.SeriesInstanceUID == uid);
-                this.seriesService.Create(query.FirstOrDefault());
+                var seriesDto = query.FirstOrDefault();
+                // Get all series metadata
+                Task<Metadata> fetchMetadataTask = this.pacsService.GetMetadataSeriesAsync(
+                    seriesDto.StudyInstanceUID,
+                    seriesDto.SeriesInstanceUID);
+                fetchMetadataTask.Wait();
+                var seriesMetadata = fetchMetadataTask.Result;
+                // Update series with new metadata
+                seriesDto.Update(seriesMetadata);
+                // Create the series in database
+                this.seriesService.Create(seriesDto);
             }
         }
     }

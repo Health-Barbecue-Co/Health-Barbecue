@@ -1,11 +1,11 @@
 ﻿using MetadataDatabase.Controllers;
 using MetadataDatabase.Models;
 using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace MetadataDatabase.Services
@@ -20,11 +20,19 @@ namespace MetadataDatabase.Services
             this.settings = settings.Value;
         }
 
-        public async Task<IEnumerable<QidoSeries>> GetSeriesAsync()
+        public async Task<IEnumerable<QidoSeries>> GetSeriesListAsync()
         {
             var streamtask = client.GetStreamAsync($"http://{this.settings.Host}:{this.settings.Port}/{this.settings.Path}/series");
-            var orthancSeriesList = await JsonSerializer.DeserializeAsync<IEnumerable<QidoSeries>>(await streamtask);
-            return orthancSeriesList;
+            var pacsSeriesList = await JsonSerializer.DeserializeAsync<IEnumerable<QidoSeries>>(await streamtask);
+            return pacsSeriesList;
+        }
+
+        public async Task<Metadata> GetMetadataSeriesAsync(string studiesUid, string seriesUid)
+        {
+            var streamtask = client.GetStreamAsync(
+                $"http://{this.settings.Host}:{this.settings.Port}/{this.settings.Path}/studies/{studiesUid}/series/{seriesUid}/metadata");
+            var seriesMetadata = await JsonSerializer.DeserializeAsync<IEnumerable<Metadata>>(await streamtask);
+            return seriesMetadata.FirstOrDefault();
         }
     }
 }

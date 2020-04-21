@@ -47,7 +47,7 @@ namespace MetadataDatabase.Controllers
 
         // Name of the patient's referring physician (00080090)
         [JsonPropertyName("00080090")]
-        public DicomStringObject ReferringPhysiciansName { get; set; }
+        public DicomNameObject ReferringPhysiciansName { get; set; }
 
         // User provided description of the Series (0008103E)
         [JsonPropertyName("0008103E")]

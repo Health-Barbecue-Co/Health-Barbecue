@@ -6,6 +6,7 @@ namespace MetadataDatabase.Services
 {
     public interface IPacsService
     {
-        public Task<IEnumerable<QidoSeries>> GetSeriesAsync();
+        public Task<IEnumerable<QidoSeries>> GetSeriesListAsync();
+        public Task<Metadata> GetMetadataSeriesAsync(string studiesUid, string seriesUid);
     }
 }

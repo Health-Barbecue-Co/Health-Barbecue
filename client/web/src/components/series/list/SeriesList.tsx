@@ -49,24 +49,28 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>seriesInstanceUID</TableCell>
+            <TableCell>Patient Name</TableCell>
             <TableCell align="right">Series description</TableCell>
             <TableCell align="right">Modality</TableCell>
             <TableCell align="right">Number Of Instances</TableCell>
             <TableCell align="right">Body part</TableCell>
+            <TableCell>seriesInstanceUID</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {list &&
-            list.map(({ id, seriesInstanceUID, seriesDescription, modality, numberOfSeriesRelatedInstances }) => (
+            list.map(({ id, seriesInstanceUID, seriesDescription, modality, numberOfSeriesRelatedInstances, patientsName, bodyPartExamined }) => (
               <TableRow key={id}>
                 <TableCell component="th" scope="row">
-                  {seriesInstanceUID}
+                  {patientsName}
                 </TableCell>
                 <TableCell align="right">{seriesDescription}</TableCell>
                 <TableCell align="right">{modality}</TableCell>
                 <TableCell align="right">{numberOfSeriesRelatedInstances}</TableCell>
-                <TableCell align="right">---</TableCell>
+                <TableCell align="right">{bodyPartExamined}</TableCell>
+                <TableCell component="th" scope="row">
+                  {seriesInstanceUID}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>
