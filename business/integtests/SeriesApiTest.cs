@@ -10,11 +10,31 @@ namespace IntegTests
     public class SeriesApiTest : IDisposable
     {
         #region Integration tests
+
         [Fact]
         public void GetSeries()
         {
+            HBSeriesDto seriesPosted1 = CreateSeries("TestGetSeries1");
+            HBSeriesDto seriesPosted2 = CreateSeries("TestGetSeries2");
+
             var response = client.Get(getSeriesRequest);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            string responseString = response.Content;
+            List<HBSeriesDto> seriesList = JsonConvert.DeserializeObject<List<HBSeriesDto>>(responseString);
+
+            Assert.Equal(2, seriesList.Count);
+            Assert.Equal(seriesPosted1.Id, seriesList[0].Id);
+            Assert.Equal(seriesPosted1.SeriesInstanceUID, seriesList[0].SeriesInstanceUID);
+            Assert.Equal(seriesPosted2.Id, seriesList[1].Id);
+            Assert.Equal(seriesPosted2.SeriesInstanceUID, seriesList[1].SeriesInstanceUID);
+        }
+
+        [Fact]
+        public void GetSeriesEmpty()
+        {
+            var responseEmpty = client.Get(getSeriesRequest);
+            Assert.Equal(HttpStatusCode.OK, responseEmpty.StatusCode);
+            List<HBSeriesDto> seriesList = JsonConvert.DeserializeObject<List<HBSeriesDto>>(responseEmpty.Content);
+            Assert.Empty(seriesList);
         }
         
         [Fact]
