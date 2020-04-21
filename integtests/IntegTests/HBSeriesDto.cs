@@ -7,7 +7,7 @@ namespace IntegTests
     /// <summary>
     /// Class representing a Series
     /// </summary>
-    class HBSeriesDto
+    public class HBSeriesDto
     {
         public string Id { get; set; }
         public string SeriesInstanceUID { get; set; }

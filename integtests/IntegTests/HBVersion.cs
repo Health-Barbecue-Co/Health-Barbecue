@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IntegTests
 {
-    class HBVersion
+    public class HBVersion
     {
         public int Major { get; set; }
         public int Minor { get; set; }
