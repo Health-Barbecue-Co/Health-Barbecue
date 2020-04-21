@@ -1,6 +1,12 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useRouteMatch, Switch, Route, Link } from 'react-router-dom'
+import {
+  useRouteMatch,
+  Switch,
+  Route,
+  Link,
+  useHistory,
+} from 'react-router-dom'
 import { Typography, Toolbar, Button, makeStyles } from '@material-ui/core'
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
@@ -15,6 +21,7 @@ const useStyle = makeStyles(styles)
 export const UserMain: React.FC = () => {
   const match = useRouteMatch()
   const classes = useStyle()
+  const history = useHistory()
   const { t } = useTranslation()
 
   return (
@@ -30,7 +37,13 @@ export const UserMain: React.FC = () => {
 
       <Switch>
         <Route path={`${match.path}/list`} component={UserList} exact />
-        <Route path={`${match.path}/create`} component={UserRegister} exact />
+        <Route path={`${match.path}/create`} exact>
+          <UserRegister
+            afterValidate={() => {
+              history.goBack()
+            }}
+          />
+        </Route>
       </Switch>
     </>
   )

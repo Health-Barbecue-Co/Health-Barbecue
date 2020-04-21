@@ -55,9 +55,9 @@ export const SignIn: React.FC = () => {
             required
             fullWidth
             id="email"
-            label={t('user:signin.email')}
-            name="email"
-            autoComplete="email"
+            label={t('user:signin.login')}
+            name="login"
+            autoComplete="username"
             autoFocus
           />
           <TextField

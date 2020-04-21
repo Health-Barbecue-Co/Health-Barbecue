@@ -8,6 +8,7 @@ import {
   TableCell,
   TableBody,
   Paper,
+  Box,
 } from '@material-ui/core'
 
 import { useTranslation } from 'react-i18next'
@@ -34,23 +35,28 @@ export const UserList: React.FC<UserListProps> = () => {
   }, [dispatch])
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>{t('user:field.firstname')}</TableCell>
-            <TableCell align="right">{t('user:field.lastname')}</TableCell>
-            <TableCell align="right">{t('user:field.login')}</TableCell>
-            <TableCell align="right">{t('user:field.role')}</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {list &&
-            list.map((user: IUser) => (
-              <UserListRow user={user} key={user.id} />
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box p={1}>
+      <TableContainer
+        component={Paper}
+        classes={{ root: classes.tableContainer }}
+      >
+        <Table className={classes.table} aria-label="User list">
+          <TableHead>
+            <TableRow>
+              <TableCell>{t('user:field.firstname')}</TableCell>
+              <TableCell align="right">{t('user:field.lastname')}</TableCell>
+              <TableCell align="right">{t('user:field.login')}</TableCell>
+              <TableCell align="right">{t('user:field.role')}</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {list &&
+              list.map((user: IUser) => (
+                <UserListRow user={user} key={user.id} />
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   )
 }

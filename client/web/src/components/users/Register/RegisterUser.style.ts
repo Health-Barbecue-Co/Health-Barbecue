@@ -15,4 +15,8 @@ export default (theme: Theme) =>
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: '#fff',
+    },
   })

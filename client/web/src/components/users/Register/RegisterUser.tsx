@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
-// import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Box,
   TextField,
@@ -14,21 +14,37 @@ import {
   makeStyles,
   Container,
   CssBaseline,
+  Backdrop,
+  Snackbar,
 } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 import style from './RegisterUser.style'
+import { actionTypes, selectors } from '../../../features/user'
 
-type UserRegisterProps = {}
+type UserRegisterProps = {
+  afterValidate: () => void
+}
 const useStyle = makeStyles(style)
 
-export const UserRegister: React.FC<UserRegisterProps> = () => {
+export const UserRegister: React.FC<UserRegisterProps> = (
+  props: UserRegisterProps
+) => {
+  const { afterValidate } = props
   const { t } = useTranslation()
   const classes = useStyle()
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const formResult = useSelector(selectors.getFormResult)
+
+  const resetFormResult = useCallback(() => {
+    dispatch({ type: actionTypes.RESET_USER_FORM_RESULT })
+  }, [dispatch])
 
   const formik = useFormik({
     initialValues: {
@@ -38,10 +54,31 @@ export const UserRegister: React.FC<UserRegisterProps> = () => {
       password: '',
       role: 'admin',
     },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2))
+    onSubmit: (user) => {
+      setIsSubmitting(true)
+      dispatch({ type: actionTypes.SAVE_ONE_USER, user })
     },
   })
+
+  useEffect(() => {
+    // clean store
+    resetFormResult()
+  }, [resetFormResult])
+
+  useEffect(() => {
+    if (formResult) {
+      // finish loading
+      setIsSubmitting(false)
+
+      if (formResult.success) {
+        afterValidate()
+      }
+    }
+  }, [formResult, afterValidate])
+
+  // useEffect(() => {
+  //   console.log(formik)
+  // }, [formik])
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword)
@@ -56,13 +93,27 @@ export const UserRegister: React.FC<UserRegisterProps> = () => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Backdrop className={classes.backdrop} open={isSubmitting}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Snackbar open={!!formResult} autoHideDuration={6000}>
+        <Alert
+          severity={formResult && formResult.success ? 'success' : 'error'}
+        >
+          {t(
+            `user:message.register${
+              formResult && formResult.success ? 'Success' : 'Error'
+            }`
+          )}
+        </Alert>
+      </Snackbar>
       <div className={classes.paper}>
         <form onSubmit={formik.handleSubmit}>
           <Box display="flex" flexDirection="row" p={1}>
             <Box width={1 / 2} pr={1}>
               <TextField
                 error
-                id="firstname"
+                name="firstname"
                 label={t('user:field.firstname')}
                 defaultValue={formik.values.firstname}
                 variant="outlined"
@@ -74,7 +125,7 @@ export const UserRegister: React.FC<UserRegisterProps> = () => {
             <Box width={1 / 2} pl={1}>
               <TextField
                 error
-                id="lastname"
+                name="lastname"
                 label={t('user:field.lastname')}
                 defaultValue={formik.values.lastname}
                 variant="outlined"
@@ -88,13 +139,14 @@ export const UserRegister: React.FC<UserRegisterProps> = () => {
             <TextField
               error
               fullWidth
-              id="login"
+              name="login"
               label={t('user:field.login')}
               defaultValue={formik.values.login}
               variant="outlined"
               required
               helperText={formik.errors.login}
               onChange={formik.handleChange}
+              autoComplete="username"
             />
           </Box>
           <Box p={1}>
@@ -103,9 +155,10 @@ export const UserRegister: React.FC<UserRegisterProps> = () => {
                 {t('user:field.password')}
               </InputLabel>
               <OutlinedInput
-                id="password"
+                name="password"
                 fullWidth
                 type={showPassword ? 'text' : 'password'}
+                autoComplete="new-password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
                 endAdornment={
@@ -128,7 +181,7 @@ export const UserRegister: React.FC<UserRegisterProps> = () => {
             <TextField
               error
               fullWidth
-              id="role"
+              name="role"
               label={t('user:field.role')}
               defaultValue={formik.values.role}
               variant="outlined"
@@ -144,6 +197,7 @@ export const UserRegister: React.FC<UserRegisterProps> = () => {
               variant="contained"
               color="primary"
               className={classes.submit}
+              disabled={formik.isValidating && formik.isSubmitting}
             >
               {t('action.save')}
             </Button>
