@@ -1,10 +1,9 @@
+using Newtonsoft.Json;
+using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using Xunit;
-using RestSharp;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace IntegTests
 {
@@ -38,12 +37,12 @@ namespace IntegTests
         [Fact]
         public void GetSeriesId()
         {
-            HBSeries seriesPosted = CreateSeries("TestGetSeriesId");
+            HBSeriesDto seriesPosted = CreateSeries("TestGetSeriesId");
 
             var getSeriesIdRequest = new RestRequest("/api/Series/" + seriesPosted.Id, DataFormat.Json);
             var responseGet = client.Get(getSeriesIdRequest);
             Assert.Equal(HttpStatusCode.OK, responseGet.StatusCode);
-            HBSeries seriesGet = JsonConvert.DeserializeObject<HBSeries>(responseGet.Content);
+            HBSeriesDto seriesGet = JsonConvert.DeserializeObject<HBSeriesDto>(responseGet.Content);
 
             Assert.Equal(seriesPosted.Id, seriesGet.Id);
             Assert.Equal(seriesPosted.SeriesInstanceUID, seriesGet.SeriesInstanceUID);
@@ -60,7 +59,7 @@ namespace IntegTests
         [Fact]
         public void PutSeriesId()
         {
-            HBSeries seriesPosted = CreateSeries("TestPutSeriesId");
+            HBSeriesDto seriesPosted = CreateSeries("TestPutSeriesId");
 
             var putSeriesIdRequest = new RestRequest("/api/Series/" + seriesPosted.Id, DataFormat.Json);
             putSeriesIdRequest.AddJsonBody(new { SeriesInstanceUID = "TestPutSeriesIdModified" });
@@ -70,7 +69,7 @@ namespace IntegTests
             var getSeriesIdRequest = new RestRequest("/api/Series/" + seriesPosted.Id, DataFormat.Json);
             var responseGet = client.Get(getSeriesIdRequest);
             Assert.Equal(HttpStatusCode.OK, responseGet.StatusCode);
-            HBSeries seriesGet = JsonConvert.DeserializeObject<HBSeries>(responseGet.Content);
+            HBSeriesDto seriesGet = JsonConvert.DeserializeObject<HBSeriesDto>(responseGet.Content);
 
             Assert.Equal(seriesPosted.Id, seriesGet.Id);
             Assert.Equal("TestPutSeriesIdModified", seriesGet.SeriesInstanceUID);
@@ -88,17 +87,11 @@ namespace IntegTests
         [Fact]
         public void DeleteSeriesId()
         {
-            HBSeries series = CreateSeries("TestDeleteSeries");
+            HBSeriesDto series = CreateSeries("TestDeleteSeries");
 
             var deleteSeriesRequest = new RestRequest("/api/Series/" + series.Id, DataFormat.Json);
             var response = client.Delete(deleteSeriesRequest);
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-        }
-
-        public SeriesApiTest()
-        {
-            this.client = new RestClient("http://localhost:5000");
-            this.getSeriesRequest = new RestRequest("/api/Series", DataFormat.Json);
         }
 
         [Fact]
@@ -116,20 +109,27 @@ namespace IntegTests
         #endregion
 
         #region Test util methods
-        private HBSeries CreateSeries(string seriesInstanceUID)
+
+        public SeriesApiTest()
+        {
+            this.client = new RestClient("http://localhost:5000");
+            this.getSeriesRequest = new RestRequest("/api/Series", DataFormat.Json);
+        }
+
+        private HBSeriesDto CreateSeries(string seriesInstanceUID)
         {
             var postSeriesRequest = new RestRequest("/api/Series", DataFormat.Json);
             postSeriesRequest.AddJsonBody(new { SeriesInstanceUID = seriesInstanceUID });
 
             var response = client.Post(postSeriesRequest);
-            return JsonConvert.DeserializeObject<HBSeries>(response.Content);
+            return JsonConvert.DeserializeObject<HBSeriesDto>(response.Content);
         }
 
         private void deleteAllSeries()
         {
             var response = client.Get(getSeriesRequest);
             string responseString = response.Content;
-            List<HBSeries> seriesList = JsonConvert.DeserializeObject<List<HBSeries>>(responseString);
+            List<HBSeriesDto> seriesList = JsonConvert.DeserializeObject<List<HBSeriesDto>>(responseString);
 
             foreach (var series in seriesList)
             {
