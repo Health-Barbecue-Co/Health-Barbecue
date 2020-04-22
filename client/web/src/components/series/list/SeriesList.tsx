@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { makeStyles } from '@material-ui/core'
 import SyncIcon from '@material-ui/icons/Sync'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
