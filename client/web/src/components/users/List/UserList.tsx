@@ -18,12 +18,16 @@ import styles from './UserList.style'
 import { actionTypes, selectors } from '../../../features/user'
 import { IUser } from '../../../models/user'
 import { UserListRow } from './UserListRow'
+import { IColAction } from './IColAction'
 
-type UserListProps = {}
+type UserListProps = {
+  rowActions: (item: IUser) => IColAction[]
+}
 
 const useStyle = makeStyles(styles)
 
-export const UserList: React.FC<UserListProps> = () => {
+export const UserList: React.FC<UserListProps> = (props: UserListProps) => {
+  const { rowActions } = props
   const classes = useStyle()
   const { t } = useTranslation()
   const list = useSelector(selectors.getList)
@@ -47,12 +51,17 @@ export const UserList: React.FC<UserListProps> = () => {
               <TableCell align="right">{t('user:field.lastname')}</TableCell>
               <TableCell align="right">{t('user:field.login')}</TableCell>
               <TableCell align="right">{t('user:field.role')}</TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
             {list &&
               list.map((user: IUser) => (
-                <UserListRow user={user} key={user.id} />
+                <UserListRow
+                  user={user}
+                  key={user.id}
+                  actionCol={rowActions(user)}
+                />
               ))}
           </TableBody>
         </Table>

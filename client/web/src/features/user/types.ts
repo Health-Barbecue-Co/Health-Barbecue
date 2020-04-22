@@ -7,10 +7,16 @@ import {
   SAVE_ONE_USER,
   RESET_USER_FORM_RESULT,
   SET_USER_FORM_RESULT,
+  FETCH_ONE_USER,
 } from './actionTypes'
 
 interface FetchUsersAction {
   type: typeof FETCH_ALL_USERS
+}
+
+interface FetchOneUserAction {
+  type: typeof FETCH_ONE_USER
+  userId: string
 }
 
 interface SaveUserAction {
@@ -45,6 +51,7 @@ export type UserActionTypes =
   | SetCurrentUserAction
   | SetAllUserAction
   | FetchUsersAction
+  | FetchOneUserAction
   | SaveUserAction
   | SetUserFormResultAction
   | UnsetUserFormResultAction

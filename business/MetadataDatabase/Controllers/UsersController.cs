@@ -7,6 +7,8 @@ using MetadataDatabase.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MetadataDatabase.Models;
+using MetadataDatabase.Convertor;
+using MongoDB.Driver;
 
 namespace MetadataDatabase.Controllers
 {
@@ -30,10 +32,19 @@ namespace MetadataDatabase.Controllers
         }
 
         // GET: api/users/5
+        /// <summary>
+        /// Get one  user.
+        /// </summary>
         [HttpGet("{id}", Name = "GetUser")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<UserDto> Get(string id)
         {
-            return this.userService.Get(id);
+            var user = this.userService.Get(id);
+            if (user == null) {
+                return NotFound();
+            }
+            return user;
         }
 
         // POST: api/users
@@ -49,19 +60,45 @@ namespace MetadataDatabase.Controllers
         ///        "firstname": "user firstname"
         ///        "login": "user login"
         ///        "role": "user role"
+        ///        "password": "user password"
         ///     }
         ///
         /// </remarks>
         [HttpPost]
-        public ActionResult<UserDto> Post([FromBody] UserDto user)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public ActionResult<UserDto> Post([FromBody] User user)
         {
-            var userWithId = this.userService.Create(user);
-            return CreatedAtRoute("GetUser", new { id = userWithId.Id.ToString() }, userWithId);
+            var found = this.userService.FindByLogin(user.login).ToList();
+            if (found.Count > 0) {
+                return Conflict();
+            }
+            var toCreateDto = UserConvertor.ToDto(user);
+            var userWithId = this.userService.Create(toCreateDto);
+
+            if (userWithId != null) {
+                try {
+                    this.userService.SetPassword(userWithId.Id.ToString(), user.password);
+                    return CreatedAtRoute("GetUser", new { id = userWithId.Id.ToString() }, userWithId);
+                } catch (MongoException e) {
+                    return BadRequest(e.ToString());
+                }
+            } else {
+                return BadRequest();
+            }
         }
 
         // PUT: api/users/5
+        /// <summary>
+        /// update a specific user.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userIn"></param>
         [HttpPut("{id}")]
-        public IActionResult Put(string id, [FromBody] UserDto userIn)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Put(string id, [FromBody] User userIn)
         {
             var user = this.userService.Get(id);
 
@@ -70,7 +107,12 @@ namespace MetadataDatabase.Controllers
                 return NotFound();
             }
 
-            this.userService.Update(id, userIn);
+            var toUpdateDto = UserConvertor.ToDto(userIn);
+
+            this.userService.Update(id, toUpdateDto);
+            if (userIn.password == "" || userIn.password == null) {
+                this.userService.SetPassword(id, userIn.password);
+            }
 
             return NoContent();
         }

@@ -7,11 +7,11 @@ import {
   UserRegister,
   UserMain,
 } from '../components/users'
-import { selectors } from '../features/user'
+import { selectors } from '../features/auth'
 
 export const User: React.FC = () => {
   const match = useRouteMatch()
-  const user = useSelector(selectors.getSelected)
+  const user = useSelector(selectors.getAuth)
 
   return (
     <>

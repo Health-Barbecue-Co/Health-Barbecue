@@ -12,6 +12,16 @@ export function* fetchUsers() {
   })
 }
 
+export function* fetchOneUser(action: any) {
+  const { userId } = action
+  try {
+    const { data: user } = yield call([userService, 'getOne'], userId)
+    yield put({ type: actionTypes.SET_CURRENT_USER, user })
+  } catch (error) {
+    // yield put({ type: actionTypes.SET_USER_FORM_RESULT, result: { error } })
+  }
+}
+
 export function* createOrUpdateUser(action: any) {
   try {
     const { user } = action
@@ -34,6 +44,7 @@ export function* createOrUpdateUser(action: any) {
 export function* actionWatcher() {
   yield takeLatest(actionTypes.FETCH_ALL_USERS, fetchUsers)
   yield takeLatest(actionTypes.SAVE_ONE_USER, createOrUpdateUser)
+  yield takeLatest(actionTypes.FETCH_ONE_USER, fetchOneUser)
 }
 
 export default function* userSaga() {

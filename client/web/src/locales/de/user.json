@@ -14,5 +14,11 @@
 		"login": "Anmeldung",
 		"password": "Passwort",
 		"role": "Rolle"
+	},
+	"message": {
+		"register": {
+			"success": "Benutzer wurde erstellt",
+			"error": "Login existiert bereits / Beim Speichern ist ein Fehler aufgetreten"
+		}
 	}
 }

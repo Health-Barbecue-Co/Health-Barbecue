@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MetadataDatabase.Repository;
 using MetadataDatabase.Data;
 using MetadataDatabase.Convertor;
 using MetadataDatabase.framework.DAL;
 using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace MetadataDatabase.Services
 {
@@ -65,8 +67,34 @@ namespace MetadataDatabase.Services
         /// <param name="objectToUpdate">The series to update.</param>
         public void Update(string id, UserDto objectToUpdate)
         {
-            objectToUpdate.Id = id;
+            // objectToUpdate.Id = id;
             this.userRepository.Update(objectToUpdate.ToModel());
+        }
+
+        /// <summary>
+        /// set the password of specified series.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="password">The password to update.</param>
+        public UserDto SetPassword(string id, string password)
+        {
+            var user = this.userRepository.Get(id.ToObjectId());
+            if (user == null) {
+                throw new MongoException($"User not found with id='{id}'");
+            }
+
+            user.password = password;
+            this.userRepository.Update(user);
+            return user.ToDto();
+        }
+
+        /// <summary>
+        /// find user thanks to its login
+        /// </summary>
+        /// <param name="login">The identifier.</param>
+        public IEnumerable<UserDto> FindByLogin(string login)
+        {
+            return this.userRepository.GetBySpecification(user => user.login == login).ToDto();
         }
     }
 }

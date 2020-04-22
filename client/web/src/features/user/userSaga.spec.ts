@@ -3,6 +3,7 @@ import userSaga, {
   fetchUsers,
   actionWatcher,
   createOrUpdateUser,
+  fetchOneUser,
 } from './userSaga'
 import { IUser } from '../../models/user'
 import * as actionTypes from './actionTypes'
@@ -19,6 +20,10 @@ describe('User saga', () => {
 
     expect(generator.next().value).toEqual(
       takeLatest(actionTypes.SAVE_ONE_USER, createOrUpdateUser)
+    )
+
+    expect(generator.next().value).toEqual(
+      takeLatest(actionTypes.FETCH_ONE_USER, fetchOneUser)
     )
 
     expect(generator.next().done).toBeTruthy()

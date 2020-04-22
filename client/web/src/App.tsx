@@ -11,13 +11,13 @@ import { User } from './pages/User'
 import { Studies } from './pages/Studies'
 import { Series } from './pages/Series'
 
-import { selectors } from './features/user'
+import { selectors } from './features/auth'
 import style from './App.style'
 
 const useStyles = makeStyles(style)
 
 const App: React.FC = () => {
-  const user = useSelector(selectors.getSelected)
+  const user = useSelector(selectors.getAuth)
   const classes = useStyles()
 
   return (

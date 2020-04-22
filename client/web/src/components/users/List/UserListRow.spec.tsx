@@ -20,7 +20,9 @@ describe('UserListRow', () => {
       login: 'login',
       role: 'role',
     }
-    const wrapper = renderer.create(<UserListRow user={user} />).toJSON()
+    const wrapper = renderer
+      .create(<UserListRow user={user} actionCol={[]} />)
+      .toJSON()
     expect(wrapper).toMatchSnapshot()
   })
 })

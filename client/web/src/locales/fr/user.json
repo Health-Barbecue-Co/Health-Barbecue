@@ -13,5 +13,11 @@
 		"login": "Identifiant",
 		"role": "Rôle",
 		"password": "Mot de passe"
+	},
+	"message": {
+		"register": {
+			"success": "L'utilisateur a été crée",
+			"error": "L'identifiant existe déjà / une erreur est survenue lors de la sauvegarde"
+		}
 	}
 }

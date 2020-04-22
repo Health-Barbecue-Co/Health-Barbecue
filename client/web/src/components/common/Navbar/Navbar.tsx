@@ -29,7 +29,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import axios, { AxiosResponse } from 'axios'
 import { useTranslation } from 'react-i18next'
 
-import { selectors, actionTypes } from '../../../features/user'
+import { selectors, actionTypes } from '../../../features/auth'
 import { Version } from '../../../models/version'
 import menu from '../../../config/menu'
 
@@ -40,7 +40,7 @@ const useStyles = makeStyles(styles)
 export const Navbar: React.FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
-  const user = useSelector(selectors.getSelected)
+  const user = useSelector(selectors.getAuth)
   const theme = useTheme()
   const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false)
@@ -66,7 +66,7 @@ export const Navbar: React.FC = () => {
 
   const logout = () => {
     handleDrawerClose()
-    dispatch({ type: actionTypes.UNSET_CURRENT_USER })
+    dispatch({ type: actionTypes.UNSET_AUTH })
   }
 
   return (

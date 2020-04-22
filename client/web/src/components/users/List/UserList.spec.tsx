@@ -39,7 +39,7 @@ describe('UserList', () => {
 
     wrapper = mount(
       <Provider store={store}>
-        <UserList />
+        <UserList rowActions={() => []} />
       </Provider>
     )
   })

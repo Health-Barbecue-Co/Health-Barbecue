@@ -10,11 +10,13 @@ import {
 import { Typography, Toolbar, Button, makeStyles } from '@material-ui/core'
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
+import EditIcon from '@material-ui/icons/Edit'
 
 import styles from './UserMain.style'
 
 import { UserList } from '../List/UserList'
 import { UserRegister } from '../Register/RegisterUser'
+import { IUser } from '../../../models/user'
 
 const useStyle = makeStyles(styles)
 
@@ -23,6 +25,13 @@ export const UserMain: React.FC = () => {
   const classes = useStyle()
   const history = useHistory()
   const { t } = useTranslation()
+
+  const listItemAction = (user: IUser) => [
+    {
+      icon: <EditIcon />,
+      link: `${match.url}/edit/${user.id}`,
+    },
+  ]
 
   return (
     <>
@@ -36,7 +45,26 @@ export const UserMain: React.FC = () => {
       </Toolbar>
 
       <Switch>
-        <Route path={`${match.path}/list`} component={UserList} exact />
+        <Route path={`${match.path}/list`} exact>
+          <UserList rowActions={listItemAction} />
+        </Route>
+
+        <Route
+          path={`${match.path}/edit/:id`}
+          exact
+          render={(routerProps) => {
+            const { match: routeMatch } = routerProps
+            return (
+              <UserRegister
+                afterValidate={() => {
+                  history.goBack()
+                }}
+                id={routeMatch.params.id}
+              />
+            )
+          }}
+        />
+
         <Route path={`${match.path}/create`} exact>
           <UserRegister
             afterValidate={() => {
