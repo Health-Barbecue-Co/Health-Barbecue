@@ -4,6 +4,7 @@ import createSagaMiddleware from 'redux-saga'
 
 import { UserReducer, userSaga } from './features/user'
 import { seriesSaga } from './features/series'
+import { mirrorPacsSaga } from './features/mirrorPacs'
 import serieReducer from './features/series/seriesReducer'
 
 /* Create root reducer, containing all features of the application */
@@ -22,6 +23,7 @@ const store = createStore(
 
 sagaMiddleware.run(userSaga)
 sagaMiddleware.run(seriesSaga)
+sagaMiddleware.run(mirrorPacsSaga)
 
 export type RootState = ReturnType<typeof rootReducer>
 

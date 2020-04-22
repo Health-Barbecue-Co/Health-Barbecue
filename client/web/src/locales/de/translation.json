@@ -10,5 +10,6 @@
     "action": {
         "save": "sparen"
     },
-    "Translation test": "Übersetzungstest"
+    "Translation test": "Übersetzungstest",
+    "Refresh": "Aktualisierung"
 }

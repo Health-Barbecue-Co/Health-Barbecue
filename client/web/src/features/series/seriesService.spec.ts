@@ -1,10 +1,10 @@
 import { ISeries } from '../../models/series'
-import serieService, { SerieService } from './seriesService'
+import seriesService, { SeriesService } from './seriesService'
 import { HttpRequest } from '../common/HttpRequest'
 
 jest.mock('../common/HttpRequest')
 
-describe('SerieService', () => {
+describe('SeriesService', () => {
   let mockapiInstance: any
 
   beforeEach(() => {
@@ -18,66 +18,66 @@ describe('SerieService', () => {
   })
 
   it('is an instance of ICrudService', () => {
-    expect(serieService).toBeInstanceOf(SerieService)
+    expect(seriesService).toBeInstanceOf(SeriesService)
   })
 
-  describe('SerieService.getAll', () => {
+  describe('SeriesService.getAll', () => {
     it('exist', () => {
-      expect(serieService.getAll).toBeDefined()
+      expect(seriesService.getAll).toBeDefined()
     })
 
     it('calls an HttpRequest', () => {
       const mockGet = mockapiInstance.get
 
-      serieService.getAll()
+      seriesService.getAll()
 
       expect(mockGet).toHaveBeenCalled()
     })
   })
 
-  describe('SerieService.getOne', () => {
+  describe('SeriesService.getOne', () => {
     it('exists', () => {
-      expect(serieService.getOne).toBeDefined()
+      expect(seriesService.getOne).toBeDefined()
     })
 
     it('calls an HttpRequest', () => {
       const mockGet = mockapiInstance.get
-      serieService.getOne('my-id')
+      seriesService.getOne('my-id')
 
       expect(mockGet).toHaveBeenCalled()
       expect(mockGet).toHaveBeenCalledWith('my-id')
     })
   })
 
-  describe('SerieService.update', () => {
+  describe('SeriesService.update', () => {
     it('exists', () => {
-      expect(serieService.update).toBeDefined()
+      expect(seriesService.update).toBeDefined()
     })
 
     it('calls an HttpRequest', () => {
       const mockGet = mockapiInstance.put
-      serieService.update('my-id', { id: 'myId' } as ISeries)
+      seriesService.update('my-id', { id: 'myId' } as ISeries)
 
       expect(mockGet).toHaveBeenCalled()
       expect(mockGet).toHaveBeenCalledWith('my-id', { id: 'myId' })
     })
   })
 
-  describe('SerieService.create', () => {
+  describe('SeriesService.create', () => {
     it('exists', () => {
-      expect(serieService.create).toBeDefined()
+      expect(seriesService.create).toBeDefined()
     })
 
     it('calls an HttpRequest', () => {
       const mockPost = mockapiInstance.post
-      serieService.create({ id: 'myId' } as ISeries)
+      seriesService.create({ id: 'myId' } as ISeries)
 
       expect(mockPost).toHaveBeenCalled()
       expect(mockPost).toHaveBeenCalledWith('', { id: 'myId' })
     })
   })
 
-  describe('SerieService.remove', () => {
+  describe('SeriesService.remove', () => {
     let mockDelete: any
 
     beforeEach(() => {
@@ -85,12 +85,12 @@ describe('SerieService', () => {
       mockDelete = mockapiInstance.delete
     })
     it('exists', () => {
-      expect(serieService.remove).toBeDefined()
+      expect(seriesService.remove).toBeDefined()
     })
 
     it('calls an HttpRequest', () => {
       mockDelete = mockapiInstance.delete
-      serieService.remove({ id: 'myId' } as ISeries)
+      seriesService.remove({ id: 'myId' } as ISeries)
 
       expect(mockDelete).toHaveBeenCalled()
       expect(mockDelete).toHaveBeenCalledWith('myId')
@@ -98,7 +98,7 @@ describe('SerieService', () => {
 
     it('does nothing if there is no Id', () => {
       mockDelete = mockapiInstance.delete
-      serieService.remove({} as ISeries)
+      seriesService.remove({} as ISeries)
 
       expect(mockDelete).not.toHaveBeenCalled()
     })

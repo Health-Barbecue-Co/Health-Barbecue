@@ -10,5 +10,6 @@
     "action": {
         "save": "Save"
     },
-    "Translation test": "Translation test"
+    "Translation test": "Translation test",
+    "Refresh": "Refresh"
 }

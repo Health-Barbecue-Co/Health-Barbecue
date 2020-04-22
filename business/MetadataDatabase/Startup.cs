@@ -55,8 +55,6 @@ namespace MetadataDatabase
                 app.UseDeveloperExceptionPage();
             }
 
-            // app.UseHttpsRedirection();
-
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -83,13 +81,16 @@ namespace MetadataDatabase
         /// <param name="service"></param>
         private void RegisterIocContainer(IServiceCollection service)
         {
-            service.Configure<MongoConfiguration>(Configuration.GetSection("MongoConfiguration"));
-
+            service.Configure<MongoConfiguration>(Configuration.GetSection(nameof(MongoConfiguration)));
+            service.Configure<PacsConfiguration>(Configuration.GetSection(nameof(PacsConfiguration)));
             service.AddScoped<ISeriesServices, SeriesServices>();
             service.AddScoped<ISeriesRepository, SeriesRepository>();
 
             service.AddScoped<IUserServices, UserServices>();
             service.AddScoped<IUserRepository, UserRepository>();
+
+            service.AddScoped<IPacsService, PacsService>();
+            service.AddScoped<IPacsMirrorService, PacsMirrorService>();
         }
     }
 }

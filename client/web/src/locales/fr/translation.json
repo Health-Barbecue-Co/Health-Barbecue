@@ -11,5 +11,6 @@
     "action": {
         "save": "Sauvegarder"
     },
-    "Translation test": "Test de traduction"
+    "Translation test": "Test de traduction",
+    "Refresh": "Rafraîchir"
 }
