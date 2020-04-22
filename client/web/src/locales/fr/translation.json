@@ -1,8 +1,9 @@
 {
     "menu": {
-        "home": "tableau de bord",
-        "studies": "études",
-        "series": "séries"
+        "home": "Tableau de bord",
+        "projects": "Projets",
+        "series": "Séries",
+        "algorithms": "Algorithmes"
     },
     "Translation test": "Test de traduction",
     "Refresh": "Rafraîchir"

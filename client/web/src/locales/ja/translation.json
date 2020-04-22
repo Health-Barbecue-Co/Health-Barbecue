@@ -1,8 +1,9 @@
 {
     "menu": {
         "home": "ダッシュボード",
-        "studies": "研究",
-        "series": "シリーズ"
+        "projects": "プロジェクト",
+        "series": "シリーズ",
+        "algorithms": "アルゴリズム"
     },
     "Translation test": "翻訳テスト",
     "Refresh": "リフレッシュ"

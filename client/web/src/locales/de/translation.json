@@ -1,8 +1,9 @@
 {
     "menu": {
         "home": "Instrumententafel",
-        "studies": "Studien",
-        "series": "Serie"
+        "projects": "Projekte",
+        "series": "Serie",
+        "algorithms": "Algorithmen"
     },
     "Translation test": "Übersetzungstest",
     "Refresh": "Aktualisierung"
