@@ -7,19 +7,17 @@ using Xunit;
 
 namespace IntegTests
 {
+    [Collection("Sequential")]
     public class SeriesApiTest : IDisposable
     {
         #region Integration tests
-
         [Fact]
         public void GetSeries()
         {
-            HBSeriesDto seriesPosted1 = createSeries("TestGetSeries1");
-            HBSeriesDto seriesPosted2 = createSeries("TestGetSeries2");
+            HBSeriesDto seriesPosted1 = seriesClient.createSeries("TestGetSeries1");
+            HBSeriesDto seriesPosted2 = seriesClient.createSeries("TestGetSeries2");
 
-            var response = client.Get(getSeriesRequest);
-            string responseString = response.Content;
-            List<HBSeriesDto> seriesList = JsonConvert.DeserializeObject<List<HBSeriesDto>>(responseString);
+            List<HBSeriesDto> seriesList = seriesClient.getAllSeries();
 
             Assert.Equal(2, seriesList.Count);
             Assert.Equal(seriesPosted1, seriesList[0]);
@@ -29,24 +27,24 @@ namespace IntegTests
         [Fact]
         public void GetSeriesEmpty()
         {
-            var responseEmpty = client.Get(getSeriesRequest);
+            var responseEmpty = seriesClient.getAllSeriesResponse();
             Assert.Equal(HttpStatusCode.OK, responseEmpty.StatusCode);
             List<HBSeriesDto> seriesList = JsonConvert.DeserializeObject<List<HBSeriesDto>>(responseEmpty.Content);
             Assert.Empty(seriesList);
         }
-        
+
         [Fact]
         public void PostSeries()
         {
             var postSeriesRequest = new RestRequest("/api/Series", DataFormat.Json);
-            postSeriesRequest.AddJsonBody(new { SeriesInstanceUID="TestPostSeries" });
+            postSeriesRequest.AddJsonBody(new { SeriesInstanceUID = "TestPostSeries" });
 
-            var responsePost = client.Post(postSeriesRequest);
+            var responsePost = seriesClient.Client.Post(postSeriesRequest);
             Assert.Equal(HttpStatusCode.Created, responsePost.StatusCode);
             string newId = responsePost.Content;
 
             var getSeriesRequest = new RestRequest("/api/Series", DataFormat.Json);
-            var responseGet = client.Get(getSeriesRequest);
+            var responseGet = seriesClient.Client.Get(getSeriesRequest);
 
             Assert.Equal(HttpStatusCode.OK, responseGet.StatusCode);
             Assert.Contains(newId, responseGet.Content);
@@ -55,10 +53,10 @@ namespace IntegTests
         [Fact]
         public void GetSeriesId()
         {
-            HBSeriesDto seriesPosted = createSeries("TestGetSeriesId");
+            HBSeriesDto seriesPosted = seriesClient.createSeries("TestGetSeriesId");
 
             var getSeriesIdRequest = new RestRequest("/api/Series/" + seriesPosted.Id, DataFormat.Json);
-            var responseGet = client.Get(getSeriesIdRequest);
+            var responseGet = seriesClient.Client.Get(getSeriesIdRequest);
             Assert.Equal(HttpStatusCode.OK, responseGet.StatusCode);
             HBSeriesDto seriesGet = JsonConvert.DeserializeObject<HBSeriesDto>(responseGet.Content);
 
@@ -69,7 +67,7 @@ namespace IntegTests
         public void GetSeriesWrongId()
         {
             var getSeriesIdRequest = new RestRequest("/api/Series/" + "toto", DataFormat.Json);
-            var responseGet = client.Get(getSeriesIdRequest);
+            var responseGet = seriesClient.Client.Get(getSeriesIdRequest);
             Assert.Equal(HttpStatusCode.NoContent, responseGet.StatusCode);
         }
 
@@ -77,7 +75,7 @@ namespace IntegTests
         public void PutSeriesId()
         {
             // Create a new series and post it
-            HBSeriesDto seriesPosted = createSeries(new HBSeriesDto
+            HBSeriesDto seriesPosted = seriesClient.createSeries(new HBSeriesDto
             {
                 SeriesInstanceUID = "TestPutSeriesId",
                 SpecificCharacterSet = "att2",
@@ -122,11 +120,11 @@ namespace IntegTests
             // Put the modified series
             var putSeriesIdRequest = new RestRequest("/api/Series/" + seriesPosted.Id, DataFormat.Json);
             putSeriesIdRequest.AddJsonBody(seriesPut.toJson());
-            var responsePut = client.Put(putSeriesIdRequest);
+            var responsePut = seriesClient.Client.Put(putSeriesIdRequest);
             Assert.Equal(HttpStatusCode.NoContent, responsePut.StatusCode);
 
             // Get the series by Id
-            HBSeriesDto seriesGet = getSeriesId(seriesPosted.Id);
+            HBSeriesDto seriesGet = seriesClient.getSeriesId(seriesPosted.Id);
 
             // Assert the series
             Assert.Equal(seriesPut, seriesGet);
@@ -137,85 +135,47 @@ namespace IntegTests
         {
             var putSeriesIdRequest = new RestRequest("/api/Series/" + "toto", DataFormat.Json);
             putSeriesIdRequest.AddJsonBody(new { SeriesInstanceUID = "TestPutSeriesIdModified" });
-            var responsePut = client.Put(putSeriesIdRequest);
+            var responsePut = seriesClient.Client.Put(putSeriesIdRequest);
             Assert.Equal(HttpStatusCode.NotFound, responsePut.StatusCode);
         }
 
         [Fact]
         public void DeleteSeriesId()
         {
-            HBSeriesDto series = createSeries("TestDeleteSeries");
+            HBSeriesDto series = seriesClient.createSeries("TestDeleteSeries");
 
             var deleteSeriesRequest = new RestRequest("/api/Series/" + series.Id, DataFormat.Json);
-            var response = client.Delete(deleteSeriesRequest);
+            var response = seriesClient.Client.Delete(deleteSeriesRequest);
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
             // The series should be removed
-            Assert.Null(getSeriesId(series.Id));
+            Assert.Null(seriesClient.getSeriesId(series.Id));
         }
 
         [Fact]
         public void DeleteSeriesWrongId()
         {
             var deleteSeriesTotoRequest = new RestRequest("/api/Series/" + "Toto", DataFormat.Json);
-            var response = client.Delete(deleteSeriesTotoRequest);
+            var response = seriesClient.Client.Delete(deleteSeriesTotoRequest);
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
         #endregion
 
         #region Test attributes
-        private readonly RestClient client;
-        private readonly RestRequest getSeriesRequest;
+        private readonly SeriesApiUtils seriesClient;
         #endregion
 
         #region Test util methods
-
         public SeriesApiTest()
         {
-            this.client = new RestClient("http://localhost:5000");
-            this.getSeriesRequest = new RestRequest("/api/Series", DataFormat.Json);
-        }
-
-        private HBSeriesDto createSeries(HBSeriesDto series)
-        {
-            var postSeriesRequest = new RestRequest("/api/Series", DataFormat.Json);
-            string json = series.toJson();
-            postSeriesRequest.AddJsonBody(json);
-
-            var response = client.Post(postSeriesRequest);
-            return JsonConvert.DeserializeObject<HBSeriesDto>(response.Content);
-        }
-
-        private HBSeriesDto createSeries(string seriesInstanceUID)
-        {
-            return createSeries(new HBSeriesDto { SeriesInstanceUID = seriesInstanceUID });
-        }
-
-        private HBSeriesDto getSeriesId(string id)
-        {
-            // Get the series by Id
-            var getSeriesIdRequest = new RestRequest("/api/Series/" + id, DataFormat.Json);
-            var responseGet = client.Get(getSeriesIdRequest);
-            return JsonConvert.DeserializeObject<HBSeriesDto>(responseGet.Content);
-        }
-
-        private void deleteAllSeries()
-        {
-            var response = client.Get(getSeriesRequest);
-            string responseString = response.Content;
-            List<HBSeriesDto> seriesList = JsonConvert.DeserializeObject<List<HBSeriesDto>>(responseString);
-
-            foreach (var series in seriesList)
-            {
-                var deleteSeriesRequest = new RestRequest("/api/Series/" + series.Id, DataFormat.Json);
-                response = client.Delete(deleteSeriesRequest);
-            }
+            this.seriesClient = new SeriesApiUtils();
         }
 
         public void Dispose()
         {
-            deleteAllSeries();
+            seriesClient.deleteAllSeries();
         }
         #endregion
     }
+
 }
