@@ -38,7 +38,6 @@ namespace MetadataDatabase
             mockSeriesServices.Setup(mock => mock.GetAll())
                 .Returns(GetTestDatabaseSeries(4));
 
-            var mockPacsService = new Mock<IPacsService>();
             mockPacsService.Setup(repo => repo.GetSeriesAsync())
                 .ReturnsAsync(GetTestPacsSeries(4));
             
