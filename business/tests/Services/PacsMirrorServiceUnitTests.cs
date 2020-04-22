@@ -28,7 +28,6 @@ namespace MetadataDatabase
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
-            Assert.AreEqual(true, true);
             mockSeriesServices.Verify(mock => mock.Delete(It.IsAny<string>()), Times.Never());
             mockSeriesServices.Verify(mock => mock.Create(It.IsAny<SeriesDto>()), Times.Never());
         }
@@ -51,7 +50,6 @@ namespace MetadataDatabase
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
-            Assert.AreEqual(true, true);
             mockSeriesServices.Verify(mock => mock.Delete("id4"), Times.Once());
             mockSeriesServices.Verify(mock => mock.Delete("id5"), Times.Once());
             mockSeriesServices.Verify(mock => mock.Create(It.IsAny<SeriesDto>()), Times.Never());
@@ -75,7 +73,6 @@ namespace MetadataDatabase
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
-            Assert.AreEqual(true, true);
             mockSeriesServices.Verify(mock => mock.Delete(It.IsAny<string>()), Times.Never());
             mockSeriesServices.Verify(mock => mock.Create(It.IsAny<SeriesDto>()), Times.Exactly(3));
         }
@@ -104,7 +101,6 @@ namespace MetadataDatabase
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
-            Assert.AreEqual(true, true);
             mockSeriesServices.Verify(mock => mock.Delete("id99"), Times.Once());
             mockSeriesServices.Verify(mock => mock.Create(It.IsAny<SeriesDto>()), Times.Once());
         }
