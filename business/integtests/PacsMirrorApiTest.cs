@@ -14,19 +14,32 @@ namespace IntegTests
         [Fact]
         public void GetPacsMirror()
         {
+            // First call to PacsMirror : cannot test the series returned since the integ test doesn't control the Pacs yet.
+            RestRequest getPacsMirrorRequest = new RestRequest("/api/PacsMirror", DataFormat.Json);
+            var responseGet = seriesClient.Client.Get(getPacsMirrorRequest);
+            Assert.Equal(HttpStatusCode.OK, responseGet.StatusCode);
+            List<HBSeriesDto> listSeriesInPacs = seriesClient.getAllSeries();
+            int nbSeriesInPacs = listSeriesInPacs.Count;
+
+            // Add series
             HBSeriesDto seriesPosted1 = seriesClient.createSeries("TestGetSeries1");
             HBSeriesDto seriesPosted2 = seriesClient.createSeries("TestGetSeries2");
 
             List<HBSeriesDto> seriesList = seriesClient.getAllSeries();
-            Assert.Equal(2, seriesList.Count);
+            // Pre-check
+            Assert.Equal(2+ nbSeriesInPacs, seriesList.Count);
 
-            RestRequest getPacsMirrorRequest = new RestRequest("/api/PacsMirror", DataFormat.Json);
+            // Act
+            var responseGetMirror = seriesClient.Client.Get(getPacsMirrorRequest);
+            Assert.Equal(HttpStatusCode.OK, responseGetMirror.StatusCode);
 
-            var responsePost = seriesClient.Client.Get(getPacsMirrorRequest);
-            Assert.Equal(HttpStatusCode.OK, responsePost.StatusCode);
-
-            List<HBSeriesDto> seriesListEmpty = seriesClient.getAllSeries();
-            Assert.Empty(seriesListEmpty);
+            List<HBSeriesDto> listSeriesPacsOnly = seriesClient.getAllSeries();
+            Assert.Equal(nbSeriesInPacs, listSeriesPacsOnly.Count);
+            foreach (var seriesInPacs in listSeriesPacsOnly)
+            {
+                Assert.NotEqual(seriesPosted1, seriesInPacs);
+                Assert.NotEqual(seriesPosted2, seriesInPacs);
+            }
         }
         #endregion
 
