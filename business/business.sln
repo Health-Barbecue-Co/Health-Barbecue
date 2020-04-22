@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataDatabase", "MetadataDatabase\MetadataDatabase.csproj", "{D54708AD-78A4-4E93-B981-608B2EC68A82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetadataDatabase", "MetadataDatabase\MetadataDatabase.csproj", "{D54708AD-78A4-4E93-B981-608B2EC68A82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{4E0700AC-2609-4C92-BA3E-3DC89C3D32EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "tests\UnitTests.csproj", "{4E0700AC-2609-4C92-BA3E-3DC89C3D32EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D54708AD-78A4-4E93-B981-608B2EC68A82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +41,11 @@ Global
 		{4E0700AC-2609-4C92-BA3E-3DC89C3D32EE}.Release|x64.Build.0 = Release|Any CPU
 		{4E0700AC-2609-4C92-BA3E-3DC89C3D32EE}.Release|x86.ActiveCfg = Release|Any CPU
 		{4E0700AC-2609-4C92-BA3E-3DC89C3D32EE}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7439E8B7-DC48-4071-9F70-099660936248}
 	EndGlobalSection
 EndGlobal
