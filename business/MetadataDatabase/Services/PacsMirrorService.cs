@@ -50,13 +50,13 @@ namespace MetadataDatabase.Services
                 IEnumerable<SeriesDto> query = pacsSeries.Where(series => series.SeriesInstanceUID == uid);
                 var seriesDto = query.FirstOrDefault();
                 // Get all series metadata
-                Task<Metadata> fetchMetadataTask = this.pacsService.GetMetadataSeriesAsync(
+                Task<QidoSeries> fetchMetadataTask = this.pacsService.GetMetadataSeriesAsync(
                     seriesDto.StudyInstanceUID,
                     seriesDto.SeriesInstanceUID);
                 fetchMetadataTask.Wait();
-                var seriesMetadata = fetchMetadataTask.Result;
+                var allSeriesMetadata = fetchMetadataTask.Result?.ToDto();
                 // Update series with new metadata
-                seriesDto.Update(seriesMetadata);
+                seriesDto.Update(allSeriesMetadata);
                 // Create the series in database
                 this.seriesService.Create(seriesDto);
             }

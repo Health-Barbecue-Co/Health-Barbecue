@@ -25,13 +25,28 @@ namespace MetadataDatabase.Data
         public string StudyID { get; set; }
         public string SeriesNumber { get; set; }
         public string NumberOfSeriesRelatedInstances { get; set; }
-
-        // Complex metadata
         public string BodyPartExamined { get; set; }
 
-        public void Update(Metadata metadata)
+        public void Update(SeriesDto seriesDto)
         {
-            this.BodyPartExamined = metadata.GetValueOfDicomTag(Metadata.DicomTag.BodyPartExamined);
+            if (this.SeriesInstanceUID == null) this.SeriesInstanceUID = seriesDto.SeriesInstanceUID;
+            if (this.SpecificCharacterSet == null) this.SpecificCharacterSet = seriesDto.SpecificCharacterSet;
+            if (this.StudyDate == null) this.StudyDate = seriesDto.StudyDate;
+            if (this.StudyTime == null) this.StudyTime = seriesDto.StudyTime;
+            if (this.AccessionNumber == null) this.AccessionNumber = seriesDto.AccessionNumber;
+            if (this.Modality == null) this.Modality = seriesDto.Modality;
+            if (this.ReferringPhysiciansName == null) this.ReferringPhysiciansName = seriesDto.ReferringPhysiciansName;
+            if (this.SeriesDescription == null) this.SeriesDescription = seriesDto.SeriesDescription;
+            if (this.RetrieveURLAttribute == null) this.RetrieveURLAttribute = seriesDto.RetrieveURLAttribute;
+            if (this.PatientsName == null) this.PatientsName = seriesDto.PatientsName;
+            if (this.PatientID == null) this.PatientID = seriesDto.PatientID;
+            if (this.PatientsBirthDate == null) this.PatientsBirthDate = seriesDto.PatientsBirthDate;
+            if (this.PatientsSex == null) this.PatientsSex = seriesDto.PatientsSex;
+            if (this.StudyInstanceUID == null) this.StudyInstanceUID = seriesDto.StudyInstanceUID;
+            if (this.StudyID == null) this.StudyID = seriesDto.StudyID;
+            if (this.SeriesNumber == null) this.SeriesNumber = seriesDto.SeriesNumber;
+            if (this.NumberOfSeriesRelatedInstances == null) this.NumberOfSeriesRelatedInstances = seriesDto.NumberOfSeriesRelatedInstances;
+            if (this.BodyPartExamined == null) this.BodyPartExamined = seriesDto.BodyPartExamined;
         }
     }
 }
