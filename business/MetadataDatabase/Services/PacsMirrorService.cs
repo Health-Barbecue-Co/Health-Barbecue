@@ -28,11 +28,15 @@ namespace MetadataDatabase.Services
         public void MirrorPacs()
         {
             // Get all series on PACS
-            Task<IEnumerable<QidoSeries>> task = this.pacsService.GetSeriesListAsync();
-            task.Wait();
-            var pacsSeries = task.Result?.ToDto();
+            IEnumerable<SeriesDto> pacsSeries = this.pacsService.GetSeriesList();
             // Get all series on DB
             var dataBaseSeries = this.seriesService.GetAll();
+            DeleteSeriesNotInPacs(pacsSeries, dataBaseSeries);
+            CreateSeriesOnlyInPacs(pacsSeries, dataBaseSeries);
+        }
+
+        private void DeleteSeriesNotInPacs(IEnumerable<SeriesDto> pacsSeries, IEnumerable<SeriesDto> dataBaseSeries)
+        {
             // Get SeriesInstanceUID to compare
             IEnumerable<string> pacsSeriesUids = pacsSeries.Select(series => series.SeriesInstanceUID);
             IEnumerable<string> dataBaseSeriesUids = dataBaseSeries.Select(series => series.SeriesInstanceUID);
@@ -43,6 +47,13 @@ namespace MetadataDatabase.Services
                 IEnumerable<SeriesDto> query = dataBaseSeries.Where(series => series.SeriesInstanceUID == uid);
                 this.seriesService.Delete(query.FirstOrDefault().Id);
             }
+        }
+
+        private void CreateSeriesOnlyInPacs(IEnumerable<SeriesDto> pacsSeries, IEnumerable<SeriesDto> dataBaseSeries)
+        {
+            // Get SeriesInstanceUID to compare
+            IEnumerable<string> pacsSeriesUids = pacsSeries.Select(series => series.SeriesInstanceUID);
+            IEnumerable<string> dataBaseSeriesUids = dataBaseSeries.Select(series => series.SeriesInstanceUID);
             // Create into DB all series not in the DB but in PACS
             IEnumerable<string> seriesUidsNotInDb = pacsSeriesUids.Except(dataBaseSeriesUids);
             foreach (string uid in seriesUidsNotInDb)
@@ -50,11 +61,7 @@ namespace MetadataDatabase.Services
                 IEnumerable<SeriesDto> query = pacsSeries.Where(series => series.SeriesInstanceUID == uid);
                 var seriesDto = query.FirstOrDefault();
                 // Get all series metadata
-                Task<QidoSeries> fetchMetadataTask = this.pacsService.GetMetadataSeriesAsync(
-                    seriesDto.StudyInstanceUID,
-                    seriesDto.SeriesInstanceUID);
-                fetchMetadataTask.Wait();
-                var allSeriesMetadata = fetchMetadataTask.Result?.ToDto();
+                SeriesDto allSeriesMetadata = this.pacsService.GetMetadataSeries(seriesDto);
                 // Update series with new metadata
                 seriesDto.Update(allSeriesMetadata);
                 // Create the series in database
