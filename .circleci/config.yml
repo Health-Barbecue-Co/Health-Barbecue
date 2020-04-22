@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 version: 2.1
 
 orbs:
@@ -12,6 +13,14 @@ jobs:
   # Run all tests related to the web client
   test-webclient:
     executor: node-executor
+=======
+version: 2
+jobs:
+  # Run all tests related to the web client
+  test-webclient:
+    docker:
+      - image: circleci/node:13.12.0
+>>>>>>> Revert "Try to run test on ci."
     steps:
       - checkout
       - run:
@@ -27,16 +36,22 @@ jobs:
             
             # Build production web client
             yarn build
+<<<<<<< HEAD
   unit-tests-business:
     executor:
       name: windows/default
     steps:
       - checkout
       - run: dotnet test business\tests\UnitTests.csproj
+=======
+>>>>>>> Revert "Try to run test on ci."
     
 workflows:
-  version: 2.1
+  version: 2
   build_and_test:
     jobs:
       - test-webclient
+<<<<<<< HEAD
       - unit-tests-business
+=======
+>>>>>>> Revert "Try to run test on ci."
