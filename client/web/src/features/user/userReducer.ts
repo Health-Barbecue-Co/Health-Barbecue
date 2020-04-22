@@ -5,9 +5,9 @@ import {
   RESET_USER_FORM_RESULT,
   SET_USER_FORM_RESULT,
 } from './actionTypes'
-import { UserActionTypes } from './types'
+import { UserActionTypes, UserState } from './types'
 
-const initialState = {
+const initialState: UserState = {
   list: [],
   user: null,
   form: null,

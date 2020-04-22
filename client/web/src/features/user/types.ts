@@ -52,5 +52,5 @@ export type UserActionTypes =
 export interface UserState {
   user: IUser | null
   list: IUser[]
-  lastModification: string | null
+  form: any | null
 }

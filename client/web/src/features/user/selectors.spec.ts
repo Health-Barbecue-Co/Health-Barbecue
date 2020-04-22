@@ -1,10 +1,11 @@
 import { IUser } from '../../models/user'
-import { getSelected, getList } from './selectors'
+import { getSelected, getList, getFormResult } from './selectors'
 
 const storeState = {
   user: {
     user: { id: 'my-id' } as IUser,
     list: [{ id: 'my-id2' } as IUser],
+    form: 'my-form-result',
   },
 }
 
@@ -20,6 +21,13 @@ describe('user selectors', () => {
     it('returns the list of users', () => {
       const result = getList(storeState)
       expect(result).toEqual([{ id: 'my-id2' }])
+    })
+  })
+
+  describe('getFormResult', () => {
+    it('returns the form result', () => {
+      const result = getFormResult(storeState)
+      expect(result).toEqual('my-form-result')
     })
   })
 })
