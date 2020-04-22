@@ -12,12 +12,8 @@ namespace IntegTests
     {
         #region Integration tests
         [Fact]
-        public void GetSeries()
+        public void GetPacsMirror()
         {
-            seriesClient.deleteAllSeries();
-            List<HBSeriesDto> seriesList0 = seriesClient.getAllSeries();
-            Assert.Empty(seriesList0);
-
             HBSeriesDto seriesPosted1 = seriesClient.createSeries("TestGetSeries1");
             HBSeriesDto seriesPosted2 = seriesClient.createSeries("TestGetSeries2");
 
