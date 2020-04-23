@@ -74,18 +74,19 @@ namespace MetadataDatabase.Controllers
             if (found.Count > 0) {
                 return Conflict();
             }
-            var toCreateDto = UserConvertor.ToDto(user);
-            var userWithId = this.userService.Create(toCreateDto);
 
-            if (userWithId != null) {
-                try {
+            try {
+                var toCreateDto = UserConvertor.ToDto(user);
+                var userWithId = this.userService.Create(toCreateDto);
+
+                if (userWithId != null) {
                     this.userService.SetPassword(userWithId.Id.ToString(), user.password);
                     return CreatedAtRoute("GetUser", new { id = userWithId.Id.ToString() }, userWithId);
-                } catch (MongoException e) {
-                    return BadRequest(e.ToString());
+                } else {
+                    throw new Exception("An error occured during the creation");
                 }
-            } else {
-                return BadRequest();
+            } catch (Exception e) {
+                return BadRequest(e.ToString());
             }
         }
 
@@ -98,6 +99,7 @@ namespace MetadataDatabase.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Put(string id, [FromBody] UserRegisterDto userIn)
         {
             var user = this.userService.Get(id);
@@ -106,14 +108,16 @@ namespace MetadataDatabase.Controllers
                 return NotFound();
             }
 
-            var toUpdateDto = userIn.ToDto();
+            try {
+                this.userService.Update(id, userIn.ToUserDto());
+                if (userIn.password != "" && userIn.password != null) {
+                    this.userService.SetPassword(id, userIn.password);
+                }
 
-            this.userService.Update(id, toUpdateDto);
-            if (userIn.password != "" && userIn.password != null) {
-                this.userService.SetPassword(id, userIn.password);
+                return NoContent();
+            } catch (Exception e) {
+                return BadRequest(e.ToString());
             }
-
-            return NoContent();
         }
 
         /// <summary>

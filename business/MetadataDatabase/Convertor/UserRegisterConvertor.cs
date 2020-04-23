@@ -20,7 +20,7 @@ namespace MetadataDatabase.Convertor
                 password = userRegisterDto.password,
             };
         }
-        public static UserDto ToDto(this UserRegisterDto user)
+        public static UserDto ToUserDto(this UserRegisterDto user)
         {
             return new UserDto
             {
