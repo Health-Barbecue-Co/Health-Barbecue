@@ -40,7 +40,7 @@ namespace MetadataDatabase.Services
 
         private async Task<IEnumerable<QidoSeries>> GetSeriesListAsync()
         {
-            var streamtask = client.GetStreamAsync($"http://{this.settings.Host}:{this.settings.Port}/{this.settings.Path}/series");
+            var streamtask = client.GetStreamAsync($"{this.settings.Protocol}://{this.settings.Host}:{this.settings.Port}/{this.settings.Path}/series");
             var pacsSeriesList = await JsonSerializer.DeserializeAsync<IEnumerable<QidoSeries>>(await streamtask);
             return pacsSeriesList;
         }
@@ -48,7 +48,7 @@ namespace MetadataDatabase.Services
         private async Task<QidoSeries> GetSeriesMetadataAsync(string studiesUid, string seriesUid)
         {
             var streamtask = client.GetStreamAsync(
-                $"http://{this.settings.Host}:{this.settings.Port}/{this.settings.Path}/studies/{studiesUid}/series/{seriesUid}/metadata");
+                $"{this.settings.Protocol}://{this.settings.Host}:{this.settings.Port}/{this.settings.Path}/studies/{studiesUid}/series/{seriesUid}/metadata");
             var seriesMetadata = await JsonSerializer.DeserializeAsync<IEnumerable<QidoSeries>>(await streamtask);
             return seriesMetadata.FirstOrDefault();
         }
