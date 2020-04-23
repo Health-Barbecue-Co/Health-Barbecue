@@ -1,9 +1,25 @@
 {
     "menu": {
-        "home": "tableau de bord",
-        "studies": "études",
-        "series": "séries"
+        "home": "Tableau de bord",
+        "projects": "Projets",
+        "series": "Séries",
+        "algorithms": "Algorithmes"
     },
     "Translation test": "Test de traduction",
-    "Refresh": "Rafraîchir"
+    "Series instance UID": "UID d'instance de série",
+    "Series description": "Description de la série",
+    "Modality": "Modalité",
+    "Number of instances": "Nombre d'instances",
+    "Body part": "Partie du corps",
+    "Refresh": "Actualiser",
+    "Series list": "Liste des séries",
+    "No records to display": "Aucun enregistrement à afficher",
+    "Search": "Chercher",
+    "rows": "Lignes",
+    "of": "de",
+    "First Page": "Première page",
+    "Previous Page": "Page précédente",
+    "Next Page": "Page suivante",
+    "Last Page": "Dernière page",
+    "Filter": "Filter"
 }

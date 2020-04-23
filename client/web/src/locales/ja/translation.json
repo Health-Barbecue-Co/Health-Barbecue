@@ -1,10 +1,25 @@
 {
     "menu": {
         "home": "ダッシュボード",
-        "studies": "研究",
-        "series": "シリーズ"
+        "projects": "プロジェクト",
+        "series": "シリーズ",
+        "algorithms": "アルゴリズム"
     },
     "Translation test": "翻訳テスト",
-    "Refresh": "リフレッシュ"
-    
+    "Series instance UID": "シリーズインスタンスUID",
+    "Series description": "シリーズの説明",
+    "Modality": "モダリティ",
+    "Number of instances": "インスタンス数",
+    "Body part": "ボディパーツ",
+    "Refresh": "リフレッシュ",
+    "Series list": "シリーズ一覧",
+    "No records to display": "表示するレコードがありません",
+    "Search": "探す",
+    "rows": "行",
+    "of": "の",
+    "First Page": "一ページ目",
+    "Previous Page": "前のページ",
+    "Next Page": "次のページ",
+    "Last Page": "最後のページ",
+    "Filter": "フィルター"
 }
