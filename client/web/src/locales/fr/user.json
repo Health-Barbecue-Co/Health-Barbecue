@@ -16,7 +16,7 @@
 	},
 	"message": {
 		"register": {
-			"success": "L'utilisateur a été crée",
+			"success": "L'utilisateur a été créé",
 			"error": "L'identifiant existe déjà / une erreur est survenue lors de la sauvegarde"
 		}
 	}
