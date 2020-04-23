@@ -8,7 +8,7 @@ import { Navbar } from './components/common'
 import { About } from './pages/About'
 import { Home } from './pages/Home'
 import { User } from './pages/User'
-import { Studies } from './pages/Studies'
+import { Projects } from './pages/Projects'
 import { Series } from './pages/Series'
 
 import { selectors } from './features/user'
@@ -31,8 +31,8 @@ const App: React.FC = () => {
           <Route exact path="/">
             {!user ? <Redirect to="/user" /> : <Home />}
           </Route>
-          <Route path="/studies" exact>
-            {!user ? <Redirect to="/user" /> : <Studies />}
+          <Route path="/projects" exact>
+            {!user ? <Redirect to="/user" /> : <Projects />}
           </Route>
           <Route path="/series" exact>
             {!user ? <Redirect to="/user" /> : <Series />}
