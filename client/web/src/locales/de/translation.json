@@ -6,5 +6,20 @@
         "algorithms": "Algorithmen"
     },
     "Translation test": "Übersetzungstest",
-    "Refresh": "Aktualisierung"
+    "Series instance UID": "Serieninstanz UID",
+    "Series description": "Serienbeschreibung",
+    "Modality": "Modalität",
+    "Number of instances": "Anzahl der Instanzen",
+    "Body part": "Körperteil",
+    "Refresh": "Aktualisieren",
+    "Series list": "Serienliste",
+    "No records to display": "Keine Datensätze zum Anzeigen",
+    "Search": "Suche",
+    "rows": "Reihen",
+    "of": "von",
+    "First Page": "Erste Seite",
+    "Previous Page": "Vorherige Seite",
+    "Next Page": "Nächste Seite",
+    "Last Page": "Letzte Seite",
+    "Filter": "Filter"
 }

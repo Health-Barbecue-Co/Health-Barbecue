@@ -25,13 +25,13 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   return (
     <div style={{ maxWidth: '100%' }}>
       <MaterialTable
-        title="Series list"
+        title={t('Series list')}
         columns={[
-          { title: 'Series instance UID', field: 'seriesInstanceUID' },
-          { title: 'Series description', field: 'seriesDescription' },
-          { title: 'Modality', field: 'modality' },
-          { title: 'Number Of Instances', field: 'numberOfSeriesRelatedInstances' },
-          { title: 'Body part', field: 'birthCity' },
+          { title: t('Series instance UID'), field: 'seriesInstanceUID' },
+          { title: t('Series description'), field: 'seriesDescription' },
+          { title: t('Modality'), field: 'modality' },
+          { title: t('Number of instances'), field: 'numberOfSeriesRelatedInstances' },
+          { title: t('Body part'), field: 'birthCity' },
         ]}
         data={list}
         options={{
@@ -42,9 +42,29 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
             icon: () => <SyncIcon />,
             tooltip: t('Refresh'),
             isFreeAction: true,
-            onClick: (event) => synchronize()
+            onClick: () => synchronize()
           }
         ]}
+        localization={{
+          body: {
+            emptyDataSourceMessage: t('No records to display'),
+            filterRow: {
+              filterTooltip: t('Filter'),
+            }
+          },
+          toolbar: {
+            searchTooltip: t('Search'),
+            searchPlaceholder: t('Search')
+          },
+          pagination: {
+            labelRowsSelect: t('rows'),
+            labelDisplayedRows: '{from}-{to} ' + t('of') + ' {count}',
+            firstTooltip: t('First Page'),
+            previousTooltip: t('Previous Page'),
+            nextTooltip: t('Next Page'),
+            lastTooltip: t('Last Page')
+          }
+        }}
       />
     </div>
   )
