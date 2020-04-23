@@ -1,9 +1,16 @@
 {
+    "title": "ユーザー",
     "menu": {
         "home": "ダッシュボード",
         "projects": "プロジェクト",
         "series": "シリーズ",
         "algorithms": "アルゴリズム"
+    },
+    "about": "約",
+    "users": "ユーザー",
+    "logout": "ログアウト",
+    "action": {
+        "save": "セーブ"
     },
     "Translation test": "翻訳テスト",
     "Series instance UID": "シリーズインスタンスUID",

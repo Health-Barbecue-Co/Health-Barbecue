@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
-import { Container } from '@material-ui/core'
+import { Container, makeStyles } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 
 import { Navbar } from './components/common'
@@ -11,15 +11,23 @@ import { User } from './pages/User'
 import { Projects } from './pages/Projects'
 import { Series } from './pages/Series'
 
-import { selectors } from './features/user'
+import { selectors } from './features/auth'
+import style from './App.style'
+
+const useStyles = makeStyles(style)
 
 const App: React.FC = () => {
-  const { user } = useSelector(selectors.getUser)
+  const user = useSelector(selectors.getAuth)
+  const classes = useStyles()
 
   return (
     <BrowserRouter>
       <Navbar />
-      <Container>
+      <Container
+        classes={{
+          root: classes.container,
+        }}
+      >
         <Switch>
           <Route path="/home" exact>
             {!user ? <Redirect to="/user" /> : <Home />}

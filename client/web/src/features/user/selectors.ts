@@ -1,3 +1,13 @@
-import { SystemState } from './types'
+export const getSelected = (state: any) => {
+  const { user } = state
+  return user.user
+}
+export const getList = (state: any) => {
+  const { user } = state
+  return user.list
+}
 
-export const getUser = (state: SystemState) => state.user
+export const getFormResult = (state: any) => {
+  const { user } = state
+  return user.form
+}

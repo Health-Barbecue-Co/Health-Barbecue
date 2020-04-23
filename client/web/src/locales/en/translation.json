@@ -5,6 +5,12 @@
         "series": "Series",
         "algorithms": "Algorithms"
     },
+    "about": "About",
+    "users": "Users",
+    "logout": "Logout",
+    "action": {
+        "save": "Save"
+    },
     "Translation test": "Translation test",
     "Series instance UID": "Series instance UID",
     "Series description": "Series description",

@@ -1,9 +1,16 @@
 {
+    "title": "Utilisateurs",
     "menu": {
         "home": "Tableau de bord",
         "projects": "Projets",
         "series": "Séries",
         "algorithms": "Algorithmes"
+    },
+    "about": "A Propos",
+    "users": "Utilisateurs",
+    "logout": "Déconnexion",
+    "action": {
+        "save": "Sauvegarder"
     },
     "Translation test": "Test de traduction",
     "Series instance UID": "UID d'instance de série",

@@ -1,10 +1,24 @@
 {
+	"title": "Benutzer",
 	"signin": {
 		"title": "Verbindung",
-		"email": "E-Mail-Adresse",
+		"login": "Anmeldung",
 		"password": "Passwort",
 		"action": "Einloggen",
 		"forgotten_password_link": "Passwort vergessen ?",
 		"create_link": "Erstellen Sie ein neues Konto"
+	},
+	"field": {
+		"firstname": "Vorname",
+		"lastname": "Familienname, Nachname",
+		"login": "Anmeldung",
+		"password": "Passwort",
+		"role": "Rolle"
+	},
+	"message": {
+		"register": {
+			"success": "Benutzer wurde erstellt",
+			"error": "Login existiert bereits / Beim Speichern ist ein Fehler aufgetreten"
+		}
 	}
 }
