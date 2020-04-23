@@ -1,7 +1,8 @@
 import React from 'react'
-import CollectionIcon from '@material-ui/icons/Collections'
-import StudiesIcon from '@material-ui/icons/CollectionsBookmark'
+import SeriesIcon from '@material-ui/icons/StorageRounded'
+import ProjectIcon from '@material-ui/icons/Collections'
 import HomeIcon from '@material-ui/icons/Home'
+import AlgorithmIcon from '@material-ui/icons/CameraRounded';
 
 export default () => [
   {
@@ -10,13 +11,18 @@ export default () => [
     url: '/home',
   },
   {
-    icon: <StudiesIcon />,
-    label: 'menu.studies',
-    url: '/studies',
+    icon: <ProjectIcon />,
+    label: 'menu.projects',
+    url: '/projects',
   },
   {
-    icon: <CollectionIcon />,
+    icon: <SeriesIcon />,
     label: 'menu.series',
     url: '/series',
+  },
+  {
+    icon: <AlgorithmIcon />,
+    label: 'menu.algorithms',
+    url: '/algorithms',
   },
 ]

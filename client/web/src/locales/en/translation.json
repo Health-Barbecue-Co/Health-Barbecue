@@ -1,8 +1,9 @@
 {
     "menu": {
         "home": "Dashboard",
-        "studies": "Studies",
-        "series": "Series"
+        "projects": "Projects",
+        "series": "Series",
+        "algorithms": "Algorithms"
     },
     "about": "About",
     "users": "Users",
@@ -11,5 +12,20 @@
         "save": "Save"
     },
     "Translation test": "Translation test",
-    "Refresh": "Refresh"
+    "Series instance UID": "Series instance UID",
+    "Series description": "Series description",
+    "Modality": "Modality",
+    "Number of instances": "Number of instances",
+    "Body part": "Body part",
+    "Refresh": "Refresh",
+    "Series list": "Series list",
+    "No records to display": "No records to display",
+    "Search": "Search",
+    "rows": "rows",
+    "of": "of",
+    "First Page": "First Page",
+    "Previous Page": "Previous Page",
+    "Next Page": "Next Page",
+    "Last Page": "Last Page",
+    "Filter": "Filter"
 }
