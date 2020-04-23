@@ -98,19 +98,18 @@ namespace MetadataDatabase.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Put(string id, [FromBody] User userIn)
+        public IActionResult Put(string id, [FromBody] UserRegisterDto userIn)
         {
             var user = this.userService.Get(id);
-
             if (user == null)
             {
                 return NotFound();
             }
 
-            var toUpdateDto = UserConvertor.ToDto(userIn);
+            var toUpdateDto = userIn.ToDto();
 
             this.userService.Update(id, toUpdateDto);
-            if (userIn.password == "" || userIn.password == null) {
+            if (userIn.password != "" && userIn.password != null) {
                 this.userService.SetPassword(id, userIn.password);
             }
 

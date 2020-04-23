@@ -33,7 +33,7 @@ exports[`UserListRow a table row with user information 1`] = `
   </td>
   <td
     aria-sort={null}
-    className="MuiTableCell-root"
+    className="MuiTableCell-root MuiTableCell-alignRight"
   />
 </tr>
 `;

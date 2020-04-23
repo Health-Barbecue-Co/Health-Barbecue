@@ -14,12 +14,8 @@ export function* fetchUsers() {
 
 export function* fetchOneUser(action: any) {
   const { userId } = action
-  try {
-    const { data: user } = yield call([userService, 'getOne'], userId)
-    yield put({ type: actionTypes.SET_CURRENT_USER, user })
-  } catch (error) {
-    // yield put({ type: actionTypes.SET_USER_FORM_RESULT, result: { error } })
-  }
+  const { data: user } = yield call([userService, 'getOne'], userId)
+  yield put({ type: actionTypes.SET_CURRENT_USER, user })
 }
 
 export function* createOrUpdateUser(action: any) {

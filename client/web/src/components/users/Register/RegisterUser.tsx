@@ -96,6 +96,7 @@ export const UserRegister: React.FC<UserRegisterProps> = (
           enableReinitialize
           initialValues={defaultValues}
           onSubmit={(user) => {
+            resetFormResult()
             setIsSubmitting(true)
             dispatch({ type: actionTypes.SAVE_ONE_USER, user })
           }}

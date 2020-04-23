@@ -67,7 +67,7 @@ namespace MetadataDatabase.Services
         /// <param name="objectToUpdate">The series to update.</param>
         public void Update(string id, UserDto objectToUpdate)
         {
-            // objectToUpdate.Id = id;
+            objectToUpdate.Id = id;
             this.userRepository.Update(objectToUpdate.ToModel());
         }
 

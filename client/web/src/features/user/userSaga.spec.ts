@@ -40,6 +40,22 @@ describe('User saga', () => {
     expect(generator.next().done).toBeTruthy()
   })
 
+  it(`should dispatch action "${actionTypes.FETCH_ONE_USER}" to Fetch one user on API`, () => {
+    const generator = fetchOneUser({
+      type: actionTypes.FETCH_ONE_USER,
+      userId: 'my-id',
+    })
+
+    expect(generator.next().value).toEqual(
+      call([userService, 'getOne'], 'my-id')
+    )
+
+    expect(generator.next({ data: { id: 'my-id' } }).value).toEqual(
+      put({ type: actionTypes.SET_CURRENT_USER, user: { id: 'my-id' } })
+    )
+    expect(generator.next().done).toBeTruthy()
+  })
+
   describe(`dispatch action "${actionTypes.SAVE_ONE_USER}"`, () => {
     it(`the result is to add a user with API and dispatch action "${actionTypes.SET_USER_FORM_RESULT}" with success`, () => {
       const user = {

@@ -26,7 +26,7 @@ export const UserListRow: React.FC<UserListRowProps> = (
       <TableCell align="right">{user.lastname}</TableCell>
       <TableCell align="right">{user.login}</TableCell>
       <TableCell align="right">{user.role}</TableCell>
-      <TableCell>
+      <TableCell align="right">
         {actionCol.map((action) => (
           <Button component={Link} to={action.link} key={action.link}>
             {action.icon}
