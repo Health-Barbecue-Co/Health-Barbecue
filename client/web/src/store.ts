@@ -6,11 +6,13 @@ import { UserReducer, userSaga } from './features/user'
 import { seriesSaga } from './features/series'
 import { mirrorPacsSaga } from './features/mirrorPacs'
 import serieReducer from './features/series/seriesReducer'
+import authReducer from './features/auth/authReducer'
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({
   user: UserReducer,
   series: serieReducer,
+  auth: authReducer,
 })
 
 /* Configuration Redux Saga */

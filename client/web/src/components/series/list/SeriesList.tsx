@@ -1,32 +1,17 @@
 import React, { useEffect } from 'react'
-import {
-  TableContainer,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  makeStyles,
-  Button,
-  Grid,
-} from '@material-ui/core'
 import SyncIcon from '@material-ui/icons/Sync'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import MaterialTable from 'material-table'
 
 import { actionTypes, selectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
-import styles from './SeriesList.style'
-
-const useStyles = makeStyles(styles)
 
 type SeriesListProps = {}
 
 export const SeriesList: React.FC<SeriesListProps> = () => {
   const { list } = useSelector(selectors.getSeriesStore)
   const { t } = useTranslation()
-  const classes = useStyles()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -38,43 +23,50 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Grid container justify="flex-end">
-        <Button 
-          variant="contained"
-          onClick={() => synchronize()}
-          startIcon={<SyncIcon />}>{t('Refresh')}
-        </Button>
-      </Grid>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Patient Name</TableCell>
-            <TableCell align="right">Series description</TableCell>
-            <TableCell align="right">Modality</TableCell>
-            <TableCell align="right">Number Of Instances</TableCell>
-            <TableCell align="right">Body part</TableCell>
-            <TableCell>seriesInstanceUID</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {list &&
-            list.map(({ id, seriesInstanceUID, seriesDescription, modality, numberOfSeriesRelatedInstances, patientsName, bodyPartExamined }) => (
-              <TableRow key={id}>
-                <TableCell component="th" scope="row">
-                  {patientsName}
-                </TableCell>
-                <TableCell align="right">{seriesDescription}</TableCell>
-                <TableCell align="right">{modality}</TableCell>
-                <TableCell align="right">{numberOfSeriesRelatedInstances}</TableCell>
-                <TableCell align="right">{bodyPartExamined}</TableCell>
-                <TableCell component="th" scope="row">
-                  {seriesInstanceUID}
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div style={{ maxWidth: '100%' }}>
+      <MaterialTable
+        title={t('Series list')}
+        columns={[
+          { title: t('Patient name'), field: 'patientsName' },
+          { title: t('Series instance UID'), field: 'seriesInstanceUID' },
+          { title: t('Series description'), field: 'seriesDescription' },
+          { title: t('Modality'), field: 'modality' },
+          { title: t('Number of instances'), field: 'numberOfSeriesRelatedInstances' },
+          { title: t('Body part'), field: 'bodyPartExamined' },
+        ]}
+        data={list}
+        options={{
+          filtering: true
+        }}
+        actions={[
+          {
+            icon: () => <SyncIcon />,
+            tooltip: t('Refresh'),
+            isFreeAction: true,
+            onClick: () => synchronize()
+          }
+        ]}
+        localization={{
+          body: {
+            emptyDataSourceMessage: t('No records to display'),
+            filterRow: {
+              filterTooltip: t('Filter'),
+            }
+          },
+          toolbar: {
+            searchTooltip: t('Search'),
+            searchPlaceholder: t('Search')
+          },
+          pagination: {
+            labelRowsSelect: t('rows'),
+            labelDisplayedRows: '{from}-{to} ' + t('of') + ' {count}',
+            firstTooltip: t('First Page'),
+            previousTooltip: t('Previous Page'),
+            nextTooltip: t('Next Page'),
+            lastTooltip: t('Last Page')
+          }
+        }}
+      />
+    </div>
   )
 }

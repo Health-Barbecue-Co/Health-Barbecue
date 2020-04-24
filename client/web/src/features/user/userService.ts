@@ -3,23 +3,13 @@ import { IUser } from '../../models/user'
 import { ICrudService } from '../common/ICrudService'
 import { HttpRequest } from '../common/HttpRequest'
 
-class UserService implements ICrudService<IUser> {
-  private static instance: UserService
-
+export class UserService implements ICrudService<IUser> {
   private api: HttpRequest<IUser>
 
   constructor() {
     this.api = new HttpRequest({
       baseURL: '/api/users',
     })
-  }
-
-  static getInstance() {
-    if (!UserService.instance) {
-      UserService.instance = new UserService()
-    }
-
-    return UserService.instance
   }
 
   getAll(): Promise<IUser[]> {

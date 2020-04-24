@@ -1,3 +1,5 @@
 export * from './Signin/SignIn'
 export * from './ForgottenPassword/ForgottenPassword'
 export * from './Register/RegisterUser'
+export * from './List/UserList'
+export * from './Main/UserMain'

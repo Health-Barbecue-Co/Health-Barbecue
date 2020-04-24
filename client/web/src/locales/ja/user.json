@@ -1,10 +1,23 @@
 {
 	"signin": {
 		"title": "サインイン",
-		"email": "電子メールアドレス",
+		"login": "ログインする",
 		"password": "パスワード",
 		"action": "サインイン",
 		"forgotten_password_link": "パスワードを忘れました ？",
 		"create_link": "新しいアカウントを作成する"
+	},
+	"field": {
+		"firstname": "ファーストネーム",
+		"lastname": "苗字",
+		"login": "ログインする",
+		"role": "役割",
+		"password": "パスワード"
+	},
+	"message": {
+		"register": {
+			"success": "ユーザーが作成されました",
+			"error": "ログインはすでに存在しています/保存中にエラーが発生しました"
+		}
 	}
 }

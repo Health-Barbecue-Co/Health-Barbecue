@@ -1,10 +1,23 @@
 {
 	"signin": {
 		"title": "Connexion",
-		"email": "Adresse Email",
+		"login": "Identifiant",
 		"password": "Mot de passe",
 		"action": "Se Connecter",
 		"forgotten_password_link": "Mot de passe oublié ?",
 		"create_link": "Créer un nouveau compte"
+	},
+	"field": {
+		"firstname": "Prénom",
+		"lastname": "Nom",
+		"login": "Identifiant",
+		"role": "Rôle",
+		"password": "Mot de passe"
+	},
+	"message": {
+		"register": {
+			"success": "L'utilisateur a été créé",
+			"error": "L'identifiant existe déjà / une erreur est survenue lors de la sauvegarde"
+		}
 	}
 }

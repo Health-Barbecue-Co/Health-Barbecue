@@ -85,6 +85,10 @@ namespace MetadataDatabase
             service.Configure<PacsConfiguration>(Configuration.GetSection(nameof(PacsConfiguration)));
             service.AddScoped<ISeriesServices, SeriesServices>();
             service.AddScoped<ISeriesRepository, SeriesRepository>();
+
+            service.AddScoped<IUserServices, UserServices>();
+            service.AddScoped<IUserRepository, UserRepository>();
+
             service.AddScoped<IPacsService, PacsService>();
             service.AddScoped<IPacsMirrorService, PacsMirrorService>();
         }
