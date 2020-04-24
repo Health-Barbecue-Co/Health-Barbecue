@@ -23,7 +23,8 @@ namespace MetadataDatabase.Controllers
             SeriesInstanceUID,
             StudyID,
             SeriesNumber,
-            NumberOfSeriesRelatedInstances
+            NumberOfSeriesRelatedInstances,
+            BodyPartExamined
         }
         // Character Set that expands or replaces the Basic Graphic Set. (00080005)
         [JsonPropertyName("00080005")]
@@ -47,7 +48,7 @@ namespace MetadataDatabase.Controllers
 
         // Name of the patient's referring physician (00080090)
         [JsonPropertyName("00080090")]
-        public DicomStringObject ReferringPhysiciansName { get; set; }
+        public DicomNameObject ReferringPhysiciansName { get; set; }
 
         // User provided description of the Series (0008103E)
         [JsonPropertyName("0008103E")]
@@ -93,9 +94,13 @@ namespace MetadataDatabase.Controllers
         [JsonPropertyName("00201209")]
         public DicomIntObject NumberOfSeriesRelatedInstances { get; set; }
 
+        // Text description of the part of the body examined. (00180015)
+        [JsonPropertyName("00180015")]
+        public DicomStringObject BodyPartExamined { get; set; }
+
         public string GetValueOfDicomTag(DicomTag propertyName)
         {
-            string resultValue = "";
+            string resultValue = null;
             var dicomPrpertyType = this.GetType().GetProperty(propertyName.ToString()).PropertyType.Name;
             switch (dicomPrpertyType)
             {
