@@ -30,7 +30,7 @@ namespace MetadataDatabase.Services
         /// </summary>
         public void MirrorPacs()
         {
-            logger.LogInformation("Start miroring PACS");
+            logger.LogInformation("Start mirroring PACS");
             // Get all series on PACS
             Task<IEnumerable<QidoSeries>> task = this.pacsService.GetSeriesAsync();
             task.Wait();
@@ -47,7 +47,7 @@ namespace MetadataDatabase.Services
             {
                 IEnumerable<SeriesDto> query = dataBaseSeries.Where(series => series.SeriesInstanceUID == uid);
                 var serieIdToRemove = query.FirstOrDefault().Id;
-                logger.LogInformation($"Removed serie : {serieIdToRemove}");
+                logger.LogInformation($"Removed series : {serieIdToRemove}");
                 this.seriesService.Delete(serieIdToRemove);
             }
             // Create into DB all series not in the DB but in PACS
@@ -55,7 +55,7 @@ namespace MetadataDatabase.Services
             foreach (string uid in seriesUidsNotInDb)
             {
                 IEnumerable<SeriesDto> query = pacsSeries.Where(series => series.SeriesInstanceUID == uid);
-                logger.LogInformation($"Added serie : {uid}");
+                logger.LogInformation($"Added series : {uid}");
                 this.seriesService.Create(query.FirstOrDefault());
             }
             logger.LogInformation($"Synchronisation done");
