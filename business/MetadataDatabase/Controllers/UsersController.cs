@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 using MetadataDatabase.Models;
 using MetadataDatabase.Convertor;
 using MongoDB.Driver;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MetadataDatabase.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserServices userService;
@@ -65,10 +67,11 @@ namespace MetadataDatabase.Controllers
         ///
         /// </remarks>
         [HttpPost]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public ActionResult<UserDto> Post([FromBody] User user)
+        public ActionResult<UserDto> Post([FromBody] UserRegisterDto user)
         {
             var found = this.userService.FindByLogin(user.login).ToList();
             if (found.Count > 0) {
@@ -76,17 +79,17 @@ namespace MetadataDatabase.Controllers
             }
 
             try {
-                var toCreateDto = UserConvertor.ToDto(user);
+                var toCreateDto = UserRegisterConvertor.ToUserDto(user);
                 var userWithId = this.userService.Create(toCreateDto);
 
                 if (userWithId != null) {
                     this.userService.SetPassword(userWithId.Id.ToString(), user.password);
-                    return CreatedAtRoute("GetUser", new { id = userWithId.Id.ToString() }, userWithId);
+                    return CreatedAtRoute("GetUser", new { id = userWithId.Id.ToString()}, userWithId);
                 } else {
                     throw new Exception("An error occured during the creation");
                 }
-            } catch (Exception e) {
-                return BadRequest(e.ToString());
+            } catch (Exception err) {
+                return BadRequest(err.Message);
             }
         }
 
@@ -97,6 +100,7 @@ namespace MetadataDatabase.Controllers
         /// <param name="id"></param>
         /// <param name="userIn"></param>
         [HttpPut("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

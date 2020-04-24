@@ -7,5 +7,7 @@ namespace MetadataDatabase.Services
         public UserDto SetPassword(string id, string password);
 
         public IEnumerable<UserDto> FindByLogin(string login);
+
+        UserDto Authenticate(string username, string password);
     }
 }
