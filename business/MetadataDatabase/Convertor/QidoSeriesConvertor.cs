@@ -29,7 +29,8 @@ namespace MetadataDatabase.Convertor
                 StudyInstanceUID = series.GetValueOfDicomTag(QidoSeries.DicomTag.StudyInstanceUID),
                 StudyID = series.GetValueOfDicomTag(QidoSeries.DicomTag.StudyID),
                 SeriesNumber = series.GetValueOfDicomTag(QidoSeries.DicomTag.SeriesNumber),
-                NumberOfSeriesRelatedInstances = series.GetValueOfDicomTag(QidoSeries.DicomTag.NumberOfSeriesRelatedInstances)
+                NumberOfSeriesRelatedInstances = series.GetValueOfDicomTag(QidoSeries.DicomTag.NumberOfSeriesRelatedInstances),
+                BodyPartExamined = series.GetValueOfDicomTag(QidoSeries.DicomTag.BodyPartExamined)
             };
         }
 

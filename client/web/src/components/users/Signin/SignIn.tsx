@@ -14,7 +14,7 @@ import { Link as RouterLink, useRouteMatch, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import { actionTypes } from '../../../features/user'
+import { actionTypes } from '../../../features/auth'
 
 import style from './SignIn.style'
 
@@ -31,7 +31,7 @@ export const SignIn: React.FC = () => {
     event.preventDefault()
     // Call the API to login & returns informations about logged user
     dispatch({
-      type: actionTypes.SET_CURRENT_USER,
+      type: actionTypes.SET_AUTH,
       user: { lastname: 'damien' },
     })
 
@@ -55,9 +55,9 @@ export const SignIn: React.FC = () => {
             required
             fullWidth
             id="email"
-            label={t('user:signin.email')}
-            name="email"
-            autoComplete="email"
+            label={t('user:signin.login')}
+            name="login"
+            autoComplete="username"
             autoFocus
           />
           <TextField

@@ -38,5 +38,6 @@ namespace MetadataDatabase.Models
         public string StudyID { get; set; }
         public string SeriesNumber { get; set; }
         public string NumberOfSeriesRelatedInstances { get; set; }
+        public string BodyPartExamined { get; set; }
     }
 }

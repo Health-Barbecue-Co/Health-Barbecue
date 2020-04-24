@@ -30,7 +30,7 @@ namespace MetadataDatabase.Controllers
         }
 
         // GET: api/Series/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetSeries")]
         public ActionResult<SeriesDto> Get(string id)
         {
             return this.seriesService.Get(id);
@@ -53,7 +53,7 @@ namespace MetadataDatabase.Controllers
         public ActionResult<SeriesDto> Post([FromBody] SeriesDto series)
         {
             var seriesWithId = this.seriesService.Create(series);
-            return CreatedAtRoute("Get", new { id = seriesWithId.Id.ToString() }, seriesWithId);
+            return CreatedAtRoute("GetSeries", new { id = seriesWithId.Id.ToString() }, seriesWithId);
         }
 
         // PUT: api/Series/5
@@ -75,7 +75,7 @@ namespace MetadataDatabase.Controllers
         /// <summary>
         /// Deletes a specific Series.
         /// </summary>
-        /// <param name="id"></param> 
+        /// <param name="id"></param>
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {

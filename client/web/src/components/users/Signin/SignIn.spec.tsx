@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import { mount } from 'enzyme'
 import configureStore from 'redux-mock-store'
 
-import { actionTypes } from '../../../features/user'
+import { actionTypes } from '../../../features/auth'
 import { SignIn } from './SignIn'
 
 jest.mock('../../../features/common/HttpRequest')
@@ -52,7 +52,7 @@ describe('SignIn', () => {
     expect(store.dispatch).toBeCalledTimes(1)
 
     expect(store.dispatch).toBeCalledWith({
-      type: actionTypes.SET_CURRENT_USER,
+      type: actionTypes.SET_AUTH,
       user: {
         lastname: 'damien',
       }

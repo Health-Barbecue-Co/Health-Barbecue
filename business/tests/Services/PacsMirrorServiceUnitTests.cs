@@ -36,6 +36,8 @@ namespace MetadataDatabase
         {
             // Arrange
             mockSeriesServices.Setup(mock => mock.GetAll())
+                .Returns(GetTestSeries(4));
+
                 .Returns(GetTestDatabaseSeries(4));
 
             mockPacsService.Setup(repo => repo.GetSeriesAsync())
@@ -53,6 +55,8 @@ namespace MetadataDatabase
         {
             // Arrange
             mockSeriesServices.Setup(mock => mock.GetAll())
+                .Returns(GetTestSeries(6));
+
                 .Returns(GetTestDatabaseSeries(6));
 
             mockPacsService.Setup(repo => repo.GetSeriesAsync())
@@ -71,6 +75,8 @@ namespace MetadataDatabase
         {
             // Arrange
             mockSeriesServices.Setup(mock => mock.GetAll())
+                .Returns(GetTestSeries(3));
+
                 .Returns(GetTestDatabaseSeries(3));
 
             mockPacsService.Setup(repo => repo.GetSeriesAsync())
