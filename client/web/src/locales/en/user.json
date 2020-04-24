@@ -1,10 +1,24 @@
 {
+	"title": "Users",
 	"signin": {
 		"title": "Sign In",
-		"email": "Email Address",
+		"login": "Login",
 		"password": "Password",
 		"action": "Sign In",
 		"forgotten_password_link": "Forgotten password?",
 		"create_link": "Create a new account"
+	},
+	"field": {
+		"firstname": "Firstname",
+		"lastname": "Lastname",
+		"login": "Login",
+		"password": "Password",
+		"role": "Role"
+	},
+	"message": {
+		"register": {
+			"success": "User has been created",
+			"error": "Login already exists / An error occurred while saving"
+		}
 	}
 }
