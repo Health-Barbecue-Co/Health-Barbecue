@@ -4,4 +4,6 @@ export interface ISeries {
   seriesDescription: string
   modality: string
   numberOfSeriesRelatedInstances: string
+  patientsName: string
+  bodyPartExamined: string
 }
