@@ -100,6 +100,9 @@ namespace MetadataDatabase
             mockPacsService.Setup(repo => repo.GetSeriesList())
                 .Returns(GetTestSeries(4));
 
+            mockPacsService.Setup(repo => repo.GetMetadataSeries(It.IsAny<SeriesDto>()))
+               .Returns(new SeriesDto());
+
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
