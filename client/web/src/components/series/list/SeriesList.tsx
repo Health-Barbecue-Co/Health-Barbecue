@@ -6,6 +6,7 @@ import MaterialTable from 'material-table'
 
 import { actionTypes, selectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
+import { SeriesLabel } from '../../../components/series'
 
 type SeriesListProps = {}
 
@@ -17,7 +18,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   useEffect(() => {
     dispatch({ type: actionTypes.FETCH_ALL_SERIES })
   }, [dispatch])
-
+  
   const synchronize = () => {
     dispatch({ type: mirrorPacsActionTypes.DO_A_MIRROR_UPDATE })
   }
@@ -33,6 +34,11 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
           { title: t('Modality'), field: 'modality' },
           { title: t('Number of instances'), field: 'numberOfSeriesRelatedInstances' },
           { title: t('Body part'), field: 'bodyPartExamined' },
+          {
+            title: t('Labels'),
+            field: 'url',
+            render: rowData =>  <SeriesLabel series={rowData}/>
+          }
         ]}
         data={list}
         options={{

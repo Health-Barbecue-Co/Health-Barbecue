@@ -1,3 +1,5 @@
+import { ILabel } from "./ILabel"
+
 export interface ISeries {
   id: string
   seriesInstanceUID: string
@@ -6,4 +8,5 @@ export interface ISeries {
   numberOfSeriesRelatedInstances: string
   patientsName: string
   bodyPartExamined: string
+  labels: Array<ILabel>
 }
