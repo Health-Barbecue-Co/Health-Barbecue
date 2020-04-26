@@ -7,6 +7,7 @@ import MaterialTable from 'material-table'
 import { actionTypes, selectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
 import { SeriesLabel } from '../../../components/series'
+import { ISeries } from '../../../models/series'
 
 type SeriesListProps = {}
 
@@ -23,6 +24,20 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
     dispatch({ type: mirrorPacsActionTypes.DO_A_MIRROR_UPDATE })
   }
 
+  const customLabelFilter = (term: string, rowData: ISeries) => {
+    // If no label no matching
+    if (rowData.labels === null) { return false }
+    // Get array of label matching the filter
+    let labelMatching = rowData.labels.filter((value) => {
+      if (value.labelKeyId.includes(term)) {return value}
+      if (value.assignedValue.includes(term)) {return value}
+    });
+    // Returns if a label matching the filter is found
+    let isMatching = false;
+    if(labelMatching.length !== 0) {isMatching = true}
+    return isMatching;
+  }
+
   return (
     <div style={{ maxWidth: '100%' }}>
       <MaterialTable
@@ -37,7 +52,8 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
           {
             title: t('Labels'),
             field: 'url',
-            render: rowData =>  <SeriesLabel series={rowData}/>
+            render: rowData =>  <SeriesLabel series={rowData}/>,
+            customFilterAndSearch: (term, rowData) => customLabelFilter(term, rowData),
           }
         ]}
         data={list}
