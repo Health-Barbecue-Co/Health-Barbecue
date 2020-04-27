@@ -35,7 +35,6 @@ export const SeriesLabel: React.FC<SeriesLabelProps> = (props: SeriesLabelProps)
   };
 
   const handleDelete = (localSeries: ISeries | null, labelClicked: ILabel) => {
-    dispatch({ type: actionTypes.SET_CURRENT_SERIES, series: localSeries })
     if(localSeries == null)
     {
       throw Error("No series selected")

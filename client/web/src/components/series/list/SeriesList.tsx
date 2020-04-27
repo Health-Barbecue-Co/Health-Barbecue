@@ -19,7 +19,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   useEffect(() => {
     dispatch({ type: actionTypes.FETCH_ALL_SERIES })
   }, [dispatch])
-  
+
   const synchronize = () => {
     dispatch({ type: mirrorPacsActionTypes.DO_A_MIRROR_UPDATE })
   }
