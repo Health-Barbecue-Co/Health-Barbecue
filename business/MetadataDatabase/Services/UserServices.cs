@@ -115,12 +115,14 @@ namespace MetadataDatabase.Services
                 return null;
             }
 
-            var user = this.userRepository.GetBySpecification(user => user.login == login).ToList().First();
+            var found = this.userRepository.GetBySpecification(user => user.login == login).ToList();
 
             // check if login exists
-            if (user == null){
+            if (found.Count == 0) {
                 return null;
             }
+
+            var user = found.First();
 
             // check if password is correct
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))

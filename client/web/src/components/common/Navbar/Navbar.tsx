@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import clsx from 'clsx'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
@@ -25,12 +25,14 @@ import HelpIcon from '@material-ui/icons/Help'
 import UsersIcon from '@material-ui/icons/PeopleAlt'
 
 import { useSelector, useDispatch } from 'react-redux'
-
-import axios, { AxiosResponse } from 'axios'
 import { useTranslation } from 'react-i18next'
 
 import { selectors, actionTypes } from '../../../features/auth'
-import { Version } from '../../../models/version'
+import {
+  selectors as versionSelector,
+  actionTypes as versionActionTypes,
+} from '../../../features/version'
+
 import menu from '../../../config/menu'
 
 import styles from './Navbar.style'
@@ -41,20 +43,20 @@ export const Navbar: React.FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
   const user = useSelector(selectors.getAuth)
+  const version = useSelector(versionSelector.getVersion)
   const theme = useTheme()
   const dispatch = useDispatch()
-  const [open, setOpen] = React.useState(false)
+  const history = useHistory()
 
-  const [version, setVersion] = useState('')
+  const [open, setOpen] = useState(false)
+
+  const fetchVersion = useCallback(() => {
+    dispatch({ type: versionActionTypes.FETCH_VERSION })
+  }, [dispatch])
 
   useEffect(() => {
-    // @todo use Redux-Saga
-    axios.get('/api/version').then((response: AxiosResponse) => {
-      const vers: Version = response.data
-      const displayVersion = `${vers.major}.${vers.minor}.${vers.build}.${vers.revision}`
-      setVersion(displayVersion)
-    })
-  }, [])
+    fetchVersion()
+  }, [fetchVersion])
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -66,7 +68,12 @@ export const Navbar: React.FC = () => {
 
   const logout = () => {
     handleDrawerClose()
-    dispatch({ type: actionTypes.UNSET_AUTH })
+    dispatch({
+      type: actionTypes.AUTH_LOGOUT,
+      callback: () => {
+        history.push('/')
+      },
+    })
   }
 
   return (
@@ -91,7 +98,11 @@ export const Navbar: React.FC = () => {
             Health-Barbecue
           </Typography>
 
-          <Typography variant="subtitle1">{version}</Typography>
+          {version ? (
+            <Typography variant="subtitle1">
+              {`${version.major}.${version.minor}.${version.build}.${version.revision}`}
+            </Typography>
+          ) : null}
         </Toolbar>
       </AppBar>
       {user ? (
