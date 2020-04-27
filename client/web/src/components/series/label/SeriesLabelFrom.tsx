@@ -77,7 +77,7 @@ export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLab
             autoFocus
             margin="dense"
             id="labelKeyId"
-            label="labelKeyId"
+            label="Label Key"
             onChange={handleChange}
             value={values.labelKeyId}
             fullWidth
@@ -85,7 +85,7 @@ export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLab
           <TextField
             margin="dense"
             id="assignedValue"
-            label="assignedValue"
+            label="Value"
             onChange={handleChange}
             value={values.assignedValue}
             fullWidth

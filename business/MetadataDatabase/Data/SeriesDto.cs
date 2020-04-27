@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetadataDatabase.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ namespace MetadataDatabase.Data
         public string StudyID { get; set; }
         public string SeriesNumber { get; set; }
         public string NumberOfSeriesRelatedInstances { get; set; }
+        public IEnumerable<LabelDto> Labels { get; set; }
         public string BodyPartExamined { get; set; }
 
         public void Update(SeriesDto seriesDto)
