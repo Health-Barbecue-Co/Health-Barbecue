@@ -31,6 +31,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
     let labelMatching = rowData.labels.filter((value) => {
       if (value.labelKeyId.includes(term)) {return value}
       if (value.assignedValue.includes(term)) {return value}
+      return null;
     });
     // Returns if a label matching the filter is found
     let isMatching = false;
