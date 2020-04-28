@@ -4,27 +4,42 @@ using Moq;
 using MetadataDatabase.Services;
 using System.Collections.Generic;
 using MetadataDatabase.Data;
+using Microsoft.Extensions.Logging;
+using System.ComponentModel;
 
 namespace MetadataDatabase
 {
     [TestFixture]
     public class PacsMirrorServiceUnitTests
     {
+        private Mock<ILogger<PacsMirrorService>> mockLogger;
+        private Mock<ISeriesServices> mockSeriesServices;
+        private Mock<IPacsService> mockPacsService;
+        private PacsMirrorService pacsMirrorService;
+
+        [SetUp]
+        public void Init()
+        {
+            this.mockLogger = new Mock<ILogger<PacsMirrorService>>();
+            this.mockSeriesServices = new Mock<ISeriesServices>();
+            this.mockPacsService = new Mock<IPacsService>();
+
+            this.pacsMirrorService = new PacsMirrorService(
+                mockLogger.Object,
+                mockSeriesServices.Object,
+                mockPacsService.Object);
+        }
+
         [Test]
         public void TestMirrorPacsMethodWithNoChanges()
         {
             // Arrange
-            var mockSeriesServices = new Mock<ISeriesServices>();
             mockSeriesServices.Setup(mock => mock.GetAll())
-                .Returns(GetTestDatabaseSeries(4));
+                .Returns(GetTestSeries(4));
 
-            var mockPacsService = new Mock<IPacsService>();
-            mockPacsService.Setup(repo => repo.GetSeriesAsync())
-                .ReturnsAsync(GetTestPacsSeries(4));
+            mockPacsService.Setup(repo => repo.GetSeriesList())
+                .Returns(GetTestSeries(4));
 
-            IPacsMirrorService pacsMirrorService = new PacsMirrorService(
-                mockSeriesServices.Object, 
-                mockPacsService.Object);
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
@@ -36,17 +51,12 @@ namespace MetadataDatabase
         public void TestMirrorPacsMethodWith2SeriesToDelete()
         {
             // Arrange
-            var mockSeriesServices = new Mock<ISeriesServices>();
             mockSeriesServices.Setup(mock => mock.GetAll())
-                .Returns(GetTestDatabaseSeries(6));
+                .Returns(GetTestSeries(6));
 
-            var mockPacsService = new Mock<IPacsService>();
-            mockPacsService.Setup(repo => repo.GetSeriesAsync())
-                .ReturnsAsync(GetTestPacsSeries(4));
+            mockPacsService.Setup(repo => repo.GetSeriesList())
+                .Returns(GetTestSeries(4));
 
-            IPacsMirrorService pacsMirrorService = new PacsMirrorService(
-                mockSeriesServices.Object,
-                mockPacsService.Object);
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
@@ -59,17 +69,14 @@ namespace MetadataDatabase
         public void TestMirrorPacsMethodWith3SeriesToCreate()
         {
             // Arrange
-            var mockSeriesServices = new Mock<ISeriesServices>();
             mockSeriesServices.Setup(mock => mock.GetAll())
-                .Returns(GetTestDatabaseSeries(3));
+                .Returns(GetTestSeries(3));
 
-            var mockPacsService = new Mock<IPacsService>();
-            mockPacsService.Setup(repo => repo.GetSeriesAsync())
-                .ReturnsAsync(GetTestPacsSeries(6));
+            mockPacsService.Setup(repo => repo.GetSeriesList())
+                .Returns(GetTestSeries(6));
 
-            IPacsMirrorService pacsMirrorService = new PacsMirrorService(
-                mockSeriesServices.Object,
-                mockPacsService.Object);
+            mockPacsService.Setup(repo => repo.GetMetadataSeries(It.IsAny<SeriesDto>()))
+               .Returns(new SeriesDto());
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
@@ -81,8 +88,7 @@ namespace MetadataDatabase
         public void TestMirrorPacsMethodWithCreateAndDelete()
         {
             // Arrange
-            var mockSeriesServices = new Mock<ISeriesServices>();
-            List<SeriesDto> testDatabaseSeries = (List<SeriesDto>)GetTestDatabaseSeries(3);
+            List<SeriesDto> testDatabaseSeries = (List<SeriesDto>)GetTestSeries(3);
             testDatabaseSeries.Add(new SeriesDto()
             {
                 Id = $"id99",
@@ -91,13 +97,12 @@ namespace MetadataDatabase
             mockSeriesServices.Setup(mock => mock.GetAll())
                 .Returns(testDatabaseSeries);
 
-            var mockPacsService = new Mock<IPacsService>();
-            mockPacsService.Setup(repo => repo.GetSeriesAsync())
-                .ReturnsAsync(GetTestPacsSeries(4));
+            mockPacsService.Setup(repo => repo.GetSeriesList())
+                .Returns(GetTestSeries(4));
 
-            IPacsMirrorService pacsMirrorService = new PacsMirrorService(
-                mockSeriesServices.Object,
-                mockPacsService.Object);
+            mockPacsService.Setup(repo => repo.GetMetadataSeries(It.IsAny<SeriesDto>()))
+               .Returns(new SeriesDto());
+
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
@@ -105,40 +110,7 @@ namespace MetadataDatabase
             mockSeriesServices.Verify(mock => mock.Create(It.IsAny<SeriesDto>()), Times.Once());
         }
 
-        private IEnumerable<QidoSeries> GetTestPacsSeries(int numberOfSeries)
-        {
-            var QidoSeriesList = new List<QidoSeries>();
-            for (int i = 0; i < numberOfSeries; i++)
-            {
-                QidoSeriesList.Add(new QidoSeries()
-                {
-                    SpecificCharacterSet = new DicomStringObject(),
-                    StudyDate = new DicomStringObject(),
-                    StudyTime = new DicomStringObject(),
-                    AccessionNumber = new DicomStringObject(),
-                    Modality = new DicomStringObject(),
-                    ReferringPhysiciansName = new DicomStringObject(),
-                    SeriesDescription = new DicomStringObject(),
-                    RetrieveURLAttribute = new DicomStringObject(),
-                    PatientsName = new DicomNameObject(),
-                    PatientID = new DicomStringObject(),
-                    PatientsBirthDate = new DicomStringObject(),
-                    PatientsSex = new DicomStringObject(),
-                    StudyInstanceUID = new DicomStringObject(),
-                    SeriesInstanceUID = new DicomStringObject()
-                    {
-                        Value = new string[] { $"uid{i}" },
-                        vr = ""
-                    },
-                    StudyID = new DicomStringObject(),
-                    SeriesNumber = new DicomIntObject(),
-                    NumberOfSeriesRelatedInstances = new DicomIntObject()
-                });
-            }
-            return QidoSeriesList;
-        }
-
-        private IEnumerable<SeriesDto> GetTestDatabaseSeries(int numberOfSeries)
+        private IEnumerable<SeriesDto> GetTestSeries(int numberOfSeries)
         {
             var DatabaseSeriesList = new List<SeriesDto>();
             for (int i = 0; i < numberOfSeries; i++)

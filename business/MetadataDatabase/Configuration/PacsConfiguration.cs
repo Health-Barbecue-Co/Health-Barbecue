@@ -5,5 +5,7 @@ namespace MetadataDatabase.Models
         public string Host { get; set; }
         public string Port { get; set; }
         public string Path { get; set; }
+        public string Protocol { get; set; }
+        
     }
 }

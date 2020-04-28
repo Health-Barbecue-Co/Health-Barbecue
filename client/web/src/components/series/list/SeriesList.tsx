@@ -27,11 +27,12 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
       <MaterialTable
         title={t('Series list')}
         columns={[
+          { title: t('Patient name'), field: 'patientsName' },
           { title: t('Series instance UID'), field: 'seriesInstanceUID' },
           { title: t('Series description'), field: 'seriesDescription' },
           { title: t('Modality'), field: 'modality' },
           { title: t('Number of instances'), field: 'numberOfSeriesRelatedInstances' },
-          { title: t('Body part'), field: 'birthCity' },
+          { title: t('Body part'), field: 'bodyPartExamined' },
         ]}
         data={list}
         options={{
