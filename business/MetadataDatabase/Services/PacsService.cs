@@ -14,18 +14,18 @@ namespace MetadataDatabase.Services
 {
     public class PacsService: IPacsService
     {
-        private static readonly HttpClient client = new HttpClient();
+        private readonly HttpClient client;
         private readonly PacsConfiguration settings;
 
         public PacsService(IOptions<PacsConfiguration> settings)
         {
             this.settings = settings.Value;
+            this.client = new HttpClient();
         }
 
         public IEnumerable<SeriesDto> GetSeriesList()
         {
             Task<IEnumerable<QidoSeries>> task = this.GetSeriesListAsync();
-            task.Wait();
             return task.Result?.ToDto();
         }
 
