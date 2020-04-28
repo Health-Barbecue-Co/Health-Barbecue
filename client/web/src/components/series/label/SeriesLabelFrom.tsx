@@ -7,7 +7,7 @@ import {
   Button
 } from '@material-ui/core'
 
-import { actionTypes, SeriesService } from '../../../features/series'
+import { actionTypes } from '../../../features/series'
 import { ILabel } from '../../../models/ILabel'
 import { ISeries } from '../../../models/series'
 
@@ -20,6 +20,7 @@ type SeriesLabelFromProps = {
 export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLabelFromProps) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const localSeries = props.series;
 
   const onCancel = () => {
     if(props.onCancel !== undefined) props.onCancel();
@@ -62,7 +63,7 @@ export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLab
             props.series.labels = new Array<ILabel>();
           }
           props.series.labels.push(values);
-          SeriesService.update(props.series.id, props.series).then(()=> {dispatch({ type: actionTypes.FETCH_ALL_SERIES })});
+          dispatch({ type: actionTypes.UPDATE_SERIES, series: localSeries});
           if(props.onCreate !== undefined) props.onCreate();
         }}
       >

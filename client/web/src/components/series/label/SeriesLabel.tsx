@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
-import { actionTypes, SeriesService } from '../../../features/series'
+import { actionTypes } from '../../../features/series'
 import { ILabel } from '../../../models/ILabel'
 import { ISeries } from '../../../models/series'
 import { SeriesLabelFrom } from './SeriesLabelFrom'
@@ -43,16 +43,8 @@ export const SeriesLabel: React.FC<SeriesLabelProps> = (props: SeriesLabelProps)
     {
       localSeries.labels = new Array<ILabel>();
     }
-    localSeries.labels.forEach((label: ILabel) => {
-      var newLabels = localSeries.labels.filter((label) => { 
-        if(label !== labelClicked){
-          return label;
-        }
-        return null;
-      });
-      localSeries.labels = newLabels;
-    });
-    SeriesService.update(localSeries.id, localSeries).then(()=> {dispatch({ type: actionTypes.FETCH_ALL_SERIES })});
+    localSeries.labels = localSeries.labels.filter((label: ILabel) => label !== labelClicked)
+    dispatch({ type: actionTypes.UPDATE_SERIES, series: localSeries});
   }
 
   return (
