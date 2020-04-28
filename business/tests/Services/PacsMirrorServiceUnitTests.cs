@@ -4,27 +4,42 @@ using Moq;
 using MetadataDatabase.Services;
 using System.Collections.Generic;
 using MetadataDatabase.Data;
+using Microsoft.Extensions.Logging;
+using System.ComponentModel;
 
 namespace MetadataDatabase
 {
     [TestFixture]
     public class PacsMirrorServiceUnitTests
     {
+        private Mock<ILogger<PacsMirrorService>> mockLogger;
+        private Mock<ISeriesServices> mockSeriesServices;
+        private Mock<IPacsService> mockPacsService;
+        private PacsMirrorService pacsMirrorService;
+
+        [SetUp]
+        public void Init()
+        {
+            this.mockLogger = new Mock<ILogger<PacsMirrorService>>();
+            this.mockSeriesServices = new Mock<ISeriesServices>();
+            this.mockPacsService = new Mock<IPacsService>();
+
+            this.pacsMirrorService = new PacsMirrorService(
+                mockLogger.Object,
+                mockSeriesServices.Object,
+                mockPacsService.Object);
+        }
+
         [Test]
         public void TestMirrorPacsMethodWithNoChanges()
         {
             // Arrange
-            var mockSeriesServices = new Mock<ISeriesServices>();
             mockSeriesServices.Setup(mock => mock.GetAll())
                 .Returns(GetTestSeries(4));
 
-            var mockPacsService = new Mock<IPacsService>();
             mockPacsService.Setup(repo => repo.GetSeriesList())
                 .Returns(GetTestSeries(4));
 
-            IPacsMirrorService pacsMirrorService = new PacsMirrorService(
-                mockSeriesServices.Object, 
-                mockPacsService.Object);
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
@@ -36,17 +51,12 @@ namespace MetadataDatabase
         public void TestMirrorPacsMethodWith2SeriesToDelete()
         {
             // Arrange
-            var mockSeriesServices = new Mock<ISeriesServices>();
             mockSeriesServices.Setup(mock => mock.GetAll())
                 .Returns(GetTestSeries(6));
 
-            var mockPacsService = new Mock<IPacsService>();
             mockPacsService.Setup(repo => repo.GetSeriesList())
                 .Returns(GetTestSeries(4));
 
-            IPacsMirrorService pacsMirrorService = new PacsMirrorService(
-                mockSeriesServices.Object,
-                mockPacsService.Object);
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
@@ -59,20 +69,14 @@ namespace MetadataDatabase
         public void TestMirrorPacsMethodWith3SeriesToCreate()
         {
             // Arrange
-            var mockSeriesServices = new Mock<ISeriesServices>();
             mockSeriesServices.Setup(mock => mock.GetAll())
                 .Returns(GetTestSeries(3));
 
-            var mockPacsService = new Mock<IPacsService>();
             mockPacsService.Setup(repo => repo.GetSeriesList())
                 .Returns(GetTestSeries(6));
 
             mockPacsService.Setup(repo => repo.GetMetadataSeries(It.IsAny<SeriesDto>()))
-                .Returns(new SeriesDto());
-
-            IPacsMirrorService pacsMirrorService = new PacsMirrorService(
-                mockSeriesServices.Object,
-                mockPacsService.Object);
+               .Returns(new SeriesDto());
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
@@ -84,7 +88,6 @@ namespace MetadataDatabase
         public void TestMirrorPacsMethodWithCreateAndDelete()
         {
             // Arrange
-            var mockSeriesServices = new Mock<ISeriesServices>();
             List<SeriesDto> testDatabaseSeries = (List<SeriesDto>)GetTestSeries(3);
             testDatabaseSeries.Add(new SeriesDto()
             {
@@ -94,15 +97,12 @@ namespace MetadataDatabase
             mockSeriesServices.Setup(mock => mock.GetAll())
                 .Returns(testDatabaseSeries);
 
-            var mockPacsService = new Mock<IPacsService>();
             mockPacsService.Setup(repo => repo.GetSeriesList())
                 .Returns(GetTestSeries(4));
-            mockPacsService.Setup(repo => repo.GetMetadataSeries(It.IsAny<SeriesDto>()))
-                .Returns(new SeriesDto());
 
-            IPacsMirrorService pacsMirrorService = new PacsMirrorService(
-                mockSeriesServices.Object,
-                mockPacsService.Object);
+            mockPacsService.Setup(repo => repo.GetMetadataSeries(It.IsAny<SeriesDto>()))
+               .Returns(new SeriesDto());
+
             // Act
             pacsMirrorService.MirrorPacs();
             // Assert
