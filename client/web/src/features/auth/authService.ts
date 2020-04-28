@@ -1,9 +1,9 @@
 import { AxiosResponse } from 'axios'
 import { HttpRequest } from '../common/HttpRequest'
-import { AuthenticatedUser } from '../../models/authenticatedUser'
+import { IAuthenticatedUser } from '../../models/authenticatedUser'
 
 export class AuthService {
-  private api: HttpRequest<AuthenticatedUser>
+  private api: HttpRequest<IAuthenticatedUser>
 
   constructor() {
     this.api = new HttpRequest({
@@ -11,7 +11,7 @@ export class AuthService {
     })
   }
 
-  login(login: string, password: string): Promise<AuthenticatedUser> {
+  login(login: string, password: string): Promise<IAuthenticatedUser> {
     return this.api
       .post('authenticate', { Username: login, Password: password })
       .then((response: AxiosResponse) => {
@@ -22,7 +22,7 @@ export class AuthService {
       })
   }
 
-  checkAuth(): Promise<AuthenticatedUser> {
+  checkAuth(): Promise<IAuthenticatedUser> {
     return this.api.get('is-authenticate')
   }
 

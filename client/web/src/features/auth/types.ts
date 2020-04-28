@@ -7,7 +7,7 @@ import {
   AUTH_LOGIN,
   AUTH_CHECK,
 } from './actionTypes'
-import { AuthenticatedUser } from '../../models/authenticatedUser'
+import { IAuthenticatedUser } from '../../models/authenticatedUser'
 
 interface UnsetAuthAction {
   type: typeof UNSET_AUTH
@@ -15,7 +15,7 @@ interface UnsetAuthAction {
 
 interface SetAuthAction {
   type: typeof SET_AUTH
-  auth: AuthenticatedUser
+  auth: IAuthenticatedUser
 }
 
 interface SetAuthMessageAction {
@@ -52,6 +52,6 @@ export type AuthActionTypes =
   | CheckAuthAction
 
 export interface AuthState {
-  auth: AuthenticatedUser | null
+  auth: IAuthenticatedUser | null
   message: any | null
 }
