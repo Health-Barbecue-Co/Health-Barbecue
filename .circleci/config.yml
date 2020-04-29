@@ -1,42 +1,54 @@
 version: 2.1
-
 orbs:
-  windows: circleci/windows@2.2.0
-
-executors:
-  node-executor:
-    docker:
-      - image: circleci/node:13.12.0
-
-jobs:
-  # Run all tests related to the web client
-  test-webclient:
-    executor: node-executor
-    steps:
-      - checkout
-      - run:
-          name: Tests for Web Client
-          command: |
-            cd client/web
-            yarn install --silent
-            # Run unit tests
-            yarn test
-            
-            ## lint [Seems to be long to run. Should we keep it on every build?]
-            # yarn lint
-            
-            # Build production web client
-            yarn build
-  unit-tests-business:
-    executor:
-      name: windows/default
-    steps:
-      - checkout
-      - run: dotnet test business\tests\UnitTests.csproj
-    
+  cypress: cypress-io/cypress@1.20.0
 workflows:
-  version: 2.1
-  build_and_test:
+  build:
     jobs:
-      - test-webclient
-      - unit-tests-business
+      - cypress/run:
+          yarn: true
+          working_directory: end-to-end-tests
+          start: 'npm run serve'
+          cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
+
+# version: 2.1
+
+# orbs:
+#   windows: circleci/windows@2.2.0
+
+# executors:
+#   node-executor:
+#     docker:
+#       - image: circleci/node:13.12.0
+
+# jobs:
+#   # Run all tests related to the web client
+#   test-webclient:
+#     executor: node-executor
+#     steps:
+#       - checkout
+#       - run:
+#           name: Tests for Web Client
+#           command: |
+#             cd client/web
+#             yarn install --silent
+#             # Run unit tests
+#             yarn test
+            
+#             ## lint [Seems to be long to run. Should we keep it on every build?]
+#             # yarn lint
+            
+#             # Build production web client
+#             yarn build
+#   unit-tests-business:
+#     executor:
+#       name: windows/default
+#     steps:
+#       - checkout
+#       - run: dotnet test business\tests\UnitTests.csproj
+    
+# workflows:
+#   version: 2.1
+#   build_and_test:
+#     jobs:
+#       - test-webclient
+#       - unit-tests-business
