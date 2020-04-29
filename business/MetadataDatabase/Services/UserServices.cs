@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Linq;
+using System;
 using System.Collections.Generic;
 using MetadataDatabase.Repository;
 using MetadataDatabase.Data;
@@ -6,6 +7,7 @@ using MetadataDatabase.Convertor;
 using MetadataDatabase.framework.DAL;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MetadataDatabase.Models;
 
 namespace MetadataDatabase.Services
 {
@@ -83,7 +85,12 @@ namespace MetadataDatabase.Services
                 throw new MongoException($"User not found with id='{id}'");
             }
 
-            user.password = password;
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
             this.userRepository.Update(user);
             return user.ToDto();
         }
@@ -95,6 +102,66 @@ namespace MetadataDatabase.Services
         public IEnumerable<UserDto> FindByLogin(string login)
         {
             return this.userRepository.GetBySpecification(user => user.login == login).ToDto();
+        }
+
+        /// <summary>
+        /// authenticate someone
+        /// </summary>
+        /// <param name="authentication">login/password</param>
+        public UserDto Authenticate(Authenticate authentication)
+        {
+            if (string.IsNullOrEmpty(authentication.Username) || string.IsNullOrEmpty(authentication.Password)){
+                return null;
+            }
+
+            var found = this.userRepository.GetBySpecification(user => user.login == authentication.Username).ToList();
+
+            // check if login exists
+            if (found.Count == 0) {
+                return null;
+            }
+
+            var user = found.First();
+
+            // check if password is correct
+            if (!VerifyPasswordHash(authentication.Password, user.PasswordHash, user.PasswordSalt)) {
+                return null;
+            }
+
+            // authentication successful
+            return user.ToDto();
+        }
+
+
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+        private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+            if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
+            if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != storedHash[i]) return false;
+                }
+            }
+
+            return true;
         }
     }
 }

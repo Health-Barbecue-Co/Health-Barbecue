@@ -1,12 +1,15 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { authHeader } from './AuthHeader'
 
 export class HttpRequest<T> {
   private api: AxiosInstance
 
   public constructor(config: AxiosRequestConfig) {
+    const authHeaderConfig = authHeader()
     const customConfig = {
       headers: {
         common: {
+          ...authHeaderConfig,
           'Cache-Control': 'no-cache, no-store, must-revalidate',
           Pragma: 'no-cache',
           'Content-Type': 'application/json',

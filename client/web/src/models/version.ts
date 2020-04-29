@@ -1,9 +1,9 @@
-export class Version {
-  major: number = 0
+export interface IVersion {
+  major: number
 
-  minor: number = 0
+  minor: number
 
-  build: number = 0
+  build: number
 
-  revision: number = 0
+  revision: number
 }

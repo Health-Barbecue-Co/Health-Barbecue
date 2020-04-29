@@ -6,13 +6,15 @@ import { UserReducer, userSaga } from './features/user'
 import { seriesSaga } from './features/series'
 import { mirrorPacsSaga } from './features/mirrorPacs'
 import serieReducer from './features/series/seriesReducer'
-import authReducer from './features/auth/authReducer'
+import { authSaga, AuthReducer } from './features/auth'
+import { VersionReducer, versionSaga } from './features/version'
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({
   user: UserReducer,
   series: serieReducer,
-  auth: authReducer,
+  auth: AuthReducer,
+  version: VersionReducer,
 })
 
 /* Configuration Redux Saga */
@@ -26,6 +28,8 @@ const store = createStore(
 sagaMiddleware.run(userSaga)
 sagaMiddleware.run(seriesSaga)
 sagaMiddleware.run(mirrorPacsSaga)
+sagaMiddleware.run(authSaga)
+sagaMiddleware.run(versionSaga)
 
 export type RootState = ReturnType<typeof rootReducer>
 
