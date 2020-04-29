@@ -42,7 +42,7 @@ const App: React.FC = () => {
           <Route path="/projects" exact>
             {!user ? <Redirect to="/user" /> : <Projects />}
           </Route>
-          <Route path="/series" exact>
+          <Route path="/series">
             {!user ? <Redirect to="/user" /> : <Series />}
           </Route>
         </Switch>
