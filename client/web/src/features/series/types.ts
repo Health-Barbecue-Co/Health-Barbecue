@@ -4,6 +4,7 @@ import {
   UNSET_CURRENT_SERIES,
   SET_ALL_SERIES,
   FETCH_ALL_SERIES,
+  UPDATE_SERIES,
 } from './actionTypes'
 
 interface FetchSeriesAction {
@@ -22,11 +23,17 @@ interface SetAllSeriesAction {
   series: ISeries[]
 }
 
+export interface UpdateSeriesAction {
+  type: typeof UPDATE_SERIES
+  series: ISeries
+}
+
 export type SeriesActionTypes =
   | UnsetCurrentSeriesAction
   | SetCurrentSeriesAction
   | SetAllSeriesAction
   | FetchSeriesAction
+  | UpdateSeriesAction
 
 export interface SeriesState {
   series: ISeries | null
