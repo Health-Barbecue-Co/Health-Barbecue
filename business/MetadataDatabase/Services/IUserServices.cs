@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MetadataDatabase.Data;
+using MetadataDatabase.Models;
 
 namespace MetadataDatabase.Services
 {
@@ -8,6 +9,6 @@ namespace MetadataDatabase.Services
 
         public IEnumerable<UserDto> FindByLogin(string login);
 
-        UserDto Authenticate(string username, string password);
+        UserDto Authenticate(Authenticate authentication);
     }
 }

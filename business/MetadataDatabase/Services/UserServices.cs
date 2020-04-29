@@ -107,15 +107,14 @@ namespace MetadataDatabase.Services
         /// <summary>
         /// authenticate someone
         /// </summary>
-        /// <param name="login">user login</param>
-        /// <param name="password">user password</param>
-        public UserDto Authenticate(string login, string password)
+        /// <param name="authentication">login/password</param>
+        public UserDto Authenticate(Authenticate authentication)
         {
-            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password)){
+            if (string.IsNullOrEmpty(authentication.Username) || string.IsNullOrEmpty(authentication.Password)){
                 return null;
             }
 
-            var found = this.userRepository.GetBySpecification(user => user.login == login).ToList();
+            var found = this.userRepository.GetBySpecification(user => user.login == authentication.Username).ToList();
 
             // check if login exists
             if (found.Count == 0) {
@@ -125,8 +124,9 @@ namespace MetadataDatabase.Services
             var user = found.First();
 
             // check if password is correct
-            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            if (!VerifyPasswordHash(authentication.Password, user.PasswordHash, user.PasswordSalt)) {
                 return null;
+            }
 
             // authentication successful
             return user.ToDto();

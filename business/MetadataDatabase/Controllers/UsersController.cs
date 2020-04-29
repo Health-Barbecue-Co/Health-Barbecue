@@ -100,7 +100,6 @@ namespace MetadataDatabase.Controllers
         /// <param name="id"></param>
         /// <param name="userIn"></param>
         [HttpPut("{id}")]
-        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -30,6 +30,23 @@ namespace MetadataDatabase.Controllers {
             this.signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.settings.Secret));
         }
 
+        // Generate a Token with expiration date and Claim meta-data.
+        // And sign the token with the signinKey
+        private string GenerateToken(string id) {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(this.settings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor {
+                Subject = new ClaimsIdentity(new Claim[] {
+                    new Claim(ClaimTypes.Name, id)
+                }),
+                NotBefore = new DateTimeOffset(DateTime.Now).DateTime,
+                Expires = DateTime.UtcNow.AddMinutes(this.settings.TokenValidityDuration),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
         [AllowAnonymous]
         [HttpPost("authenticate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -38,13 +55,13 @@ namespace MetadataDatabase.Controllers {
         public ActionResult<UserAuthenticatedDto> Authenticate([FromBody] Authenticate model) {
             try {
                 var userList= this.userService.FindByLogin(model.Username).ToList();
-                if (users.Count == 0) {
+                if (userList.Count == 0) {
                     return NotFound(new {
                         message = "Username not found"
                     });
                 }
 
-                var user = this.userService.Authenticate(model.Username, model.Password);
+                var user = this.userService.Authenticate(model);
 
                 if (user == null) {
                     return BadRequest(new {
@@ -52,17 +69,7 @@ namespace MetadataDatabase.Controllers {
                     });
                 }
 
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(this.settings.Secret);
-                var tokenDescriptor = new SecurityTokenDescriptor {
-                    Subject = new ClaimsIdentity(new Claim[] {
-                        new Claim(ClaimTypes.Name, user.Id.ToString())
-                    }),
-                    Expires = DateTime.UtcNow.AddMinutes(this.settings.TokenValidityDuration),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var tokenString = tokenHandler.WriteToken(token);
+                var tokenString = GenerateToken(user.Id.ToString());
 
                 // return basic user info and authentication token
                 return Ok(new UserAuthenticatedDto {
@@ -97,31 +104,6 @@ namespace MetadataDatabase.Controllers {
                 lastname = user.lastname,
                 token = token
             });
-        }
-
-        [AllowAnonymous]
-        [HttpGet("token/{username}/{password}")]
-        public IActionResult GetToken(string username, string password) {
-            if (username == password) {
-                return new ObjectResult(GenerateToken(username));
-            } else {
-                return BadRequest();
-            }
-        }
-
-        // Generate a Token with expiration date and Claim meta-data.
-        // And sign the token with the signinKey
-        private string GenerateToken(string username) {
-            var token = new JwtSecurityToken(
-                claims: new Claim[] {
-                    new Claim(ClaimTypes.Name, username)
-                },
-                notBefore: new DateTimeOffset(DateTime.Now).DateTime,
-                expires: new DateTimeOffset(DateTime.Now.AddMinutes(this.settings.TokenValidityDuration)).DateTime,
-                signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
