@@ -37,7 +37,7 @@ namespace MetadataDatabase.Controllers {
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<UserAuthenticatedDto> Authenticate([FromBody] Authenticate model) {
             try {
-                var users = this.userService.FindByLogin(model.Username).ToList();
+                var userList= this.userService.FindByLogin(model.Username).ToList();
                 if (users.Count == 0) {
                     return NotFound(new {
                         message = "Username not found"
