@@ -41,5 +41,5 @@ workflows:
           yarn: true
           working_directory: end-to-end-tests
           start: 'cd ../client/web && yarn && yarn start'
-          #wait-on: 'http://localhost:4000'
+          wait-on: 'http://localhost:4000'
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
