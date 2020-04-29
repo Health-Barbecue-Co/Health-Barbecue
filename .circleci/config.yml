@@ -32,6 +32,20 @@ jobs:
       - checkout
       - run: dotnet test business\tests\UnitTests.csproj
 
+  # Runthe web client
+  run-webclient:
+    executor: cypress/node
+    steps:
+      - checkout
+      - run:
+          name: Run Web Client
+          command: |
+            cd client/web
+            yarn && yarn build
+            cd build
+            yarn && yarn start
+          background: true
+
 workflows:
   build:
     jobs:
@@ -40,6 +54,6 @@ workflows:
       - cypress/run:
           yarn: true
           working_directory: end-to-end-tests
-          start: 'cd ../client/web && yarn && yarn build && cd build && yarn start'
+          start: run-webclient
           wait-on: 'http://localhost:4000'
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
