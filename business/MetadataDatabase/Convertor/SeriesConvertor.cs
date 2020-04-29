@@ -31,6 +31,7 @@ namespace MetadataDatabase.Convertor
                 StudyID = seriesDto.StudyID,
                 NumberOfSeriesRelatedInstances = seriesDto.NumberOfSeriesRelatedInstances,
                 BodyPartExamined = seriesDto.BodyPartExamined,
+                Labels = seriesDto.Labels,
             };
         }
         public static SeriesDto ToDto(this Series series)
@@ -56,6 +57,7 @@ namespace MetadataDatabase.Convertor
                 SeriesNumber = series.SeriesNumber,
                 NumberOfSeriesRelatedInstances = series.NumberOfSeriesRelatedInstances,
                 BodyPartExamined = series.BodyPartExamined,
+                Labels = series.Labels,
             };
         }
 

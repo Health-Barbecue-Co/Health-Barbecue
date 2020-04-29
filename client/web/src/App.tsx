@@ -1,53 +1,54 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 import { Container, makeStyles } from '@material-ui/core'
-import { useSelector } from 'react-redux'
 
-import { Navbar } from './components/common'
+import { Navbar, ConnectedRoute } from './components/common'
+import { AuthProvider } from './components/auth'
+
 import { About } from './pages/About'
 import { Home } from './pages/Home'
 import { User } from './pages/User'
 import { Projects } from './pages/Projects'
 import { Series } from './pages/Series'
 
-import { selectors } from './features/auth'
 import style from './App.style'
 
 const useStyles = makeStyles(style)
 
 const App: React.FC = () => {
-  const user = useSelector(selectors.getAuth)
   const classes = useStyles()
 
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Container
-        classes={{
-          root: classes.container,
-        }}
-      >
-        <Switch>
-          <Route path="/home" exact>
-            {!user ? <Redirect to="/user" /> : <Home />}
-          </Route>
-          <Route path="/about" exact>
-            {!user ? <Redirect to="/user" /> : <About />}
-          </Route>
-          <Route path="/user" component={User} />
-          <Route exact path="/">
-            {!user ? <Redirect to="/user" /> : <Home />}
-          </Route>
-          <Route path="/projects" exact>
-            {!user ? <Redirect to="/user" /> : <Projects />}
-          </Route>
-          <Route path="/series">
-            {!user ? <Redirect to="/user" /> : <Series />}
-          </Route>
-        </Switch>
-      </Container>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Container
+          classes={{
+            root: classes.container,
+          }}
+        >
+          <Switch>
+            <ConnectedRoute path="/home" exact>
+              <Home />
+            </ConnectedRoute>
+            <ConnectedRoute path="/about" exact>
+              <About />
+            </ConnectedRoute>
+            <Route path="/user" component={User} />
+            <ConnectedRoute exact path="/">
+              <Home />
+            </ConnectedRoute>
+            <ConnectedRoute path="/projects" exact>
+              <Projects />
+            </ConnectedRoute>
+            <ConnectedRoute path="/series">
+              <Series />
+            </ConnectedRoute>
+          </Switch>
+        </Container>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
 

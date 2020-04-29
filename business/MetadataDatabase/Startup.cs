@@ -19,6 +19,13 @@ using System.Reflection;
 using System.IO;
 using MetadataDatabase.framework.DAL;
 
+
+using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+
+
 namespace MetadataDatabase
 {
     public class Startup
@@ -35,6 +42,43 @@ namespace MetadataDatabase
         {
             services.AddControllers();
             RegisterIocContainer(services);
+
+            // Configure the JWT Authentication Service
+            var authSettings = Configuration.GetSection(nameof(AuthConfiguration)).Get<AuthConfiguration>();
+            var key = Encoding.ASCII.GetBytes(authSettings.Secret);
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(jwtOptions =>
+            {
+                jwtOptions.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = context =>
+                    {
+                        var userService = context.HttpContext.RequestServices.GetRequiredService<IUserServices>();
+                        var userId = context.Principal.Identity.Name;
+                        var user = userService.Get(userId);
+                        if (user == null)
+                        {
+                            // return unauthorized if user no longer exists
+                            context.Fail("Unauthorized");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+                jwtOptions.RequireHttpsMetadata = false;
+                jwtOptions.SaveToken = true;
+                jwtOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             // add suport for swagger
             services.AddSwaggerGen(c =>
@@ -67,6 +111,7 @@ namespace MetadataDatabase
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -83,6 +128,8 @@ namespace MetadataDatabase
         {
             service.Configure<MongoConfiguration>(Configuration.GetSection(nameof(MongoConfiguration)));
             service.Configure<PacsConfiguration>(Configuration.GetSection(nameof(PacsConfiguration)));
+            service.Configure<AuthConfiguration>(Configuration.GetSection(nameof(AuthConfiguration)));
+
             service.AddScoped<ISeriesServices, SeriesServices>();
             service.AddScoped<ISeriesRepository, SeriesRepository>();
 

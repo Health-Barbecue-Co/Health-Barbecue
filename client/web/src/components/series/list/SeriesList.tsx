@@ -6,6 +6,8 @@ import MaterialTable from 'material-table'
 
 import { actionTypes, selectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
+import { SeriesLabel } from '../label/SeriesLabel'
+import { ISeries } from '../../../models/series'
 
 type SeriesListProps = {}
 
@@ -22,6 +24,29 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
     dispatch({ type: mirrorPacsActionTypes.DO_A_MIRROR_UPDATE })
   }
 
+  const customLabelFilter = (term: string, rowData: ISeries) => {
+    // If no label no matching
+    if (rowData.labels === null) {
+      return false
+    }
+    // Get array of label matching the filter
+    const labelMatching = rowData.labels.filter((value) => {
+      if (value.labelKeyId.includes(term)) {
+        return value
+      }
+      if (value.assignedValue.includes(term)) {
+        return value
+      }
+      return null
+    })
+    // Returns if a label matching the filter is found
+    let isMatching = false
+    if (labelMatching.length !== 0) {
+      isMatching = true
+    }
+    return isMatching
+  }
+
   return (
     <div style={{ maxWidth: '100%' }}>
       <MaterialTable
@@ -31,40 +56,50 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
           { title: t('Series instance UID'), field: 'seriesInstanceUID' },
           { title: t('Series description'), field: 'seriesDescription' },
           { title: t('Modality'), field: 'modality' },
-          { title: t('Number of instances'), field: 'numberOfSeriesRelatedInstances' },
+          {
+            title: t('Number of instances'),
+            field: 'numberOfSeriesRelatedInstances',
+          },
           { title: t('Body part'), field: 'bodyPartExamined' },
+          {
+            title: t('Labels'),
+            field: 'url',
+            render: (rowData) => <SeriesLabel series={rowData} />,
+            customFilterAndSearch: (term, rowData) =>
+              customLabelFilter(term, rowData),
+          },
         ]}
         data={list}
         options={{
-          filtering: true
+          filtering: true,
         }}
         actions={[
           {
             icon: () => <SyncIcon />,
             tooltip: t('Refresh'),
             isFreeAction: true,
-            onClick: () => synchronize()
-          }
+            onClick: () => synchronize(),
+          },
         ]}
         localization={{
           body: {
             emptyDataSourceMessage: t('No records to display'),
             filterRow: {
               filterTooltip: t('Filter'),
-            }
+            },
           },
           toolbar: {
             searchTooltip: t('Search'),
-            searchPlaceholder: t('Search')
+            searchPlaceholder: t('Search'),
           },
           pagination: {
             labelRowsSelect: t('rows'),
-            labelDisplayedRows: '{from}-{to} ' + t('of') + ' {count}',
+            labelDisplayedRows: `{from}-{to} ${t('of')} {count}`,
             firstTooltip: t('First Page'),
             previousTooltip: t('Previous Page'),
             nextTooltip: t('Next Page'),
-            lastTooltip: t('Last Page')
-          }
+            lastTooltip: t('Last Page'),
+          },
         }}
       />
     </div>

@@ -1,6 +1,8 @@
+using MetadataDatabase.Data;
 using MetadataDatabase.framework.DAL;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 
 namespace MetadataDatabase.Models
 {
@@ -39,5 +41,6 @@ namespace MetadataDatabase.Models
         public string SeriesNumber { get; set; }
         public string NumberOfSeriesRelatedInstances { get; set; }
         public string BodyPartExamined { get; set; }
+        public IEnumerable<LabelDto> Labels { get; set; }
     }
 }
