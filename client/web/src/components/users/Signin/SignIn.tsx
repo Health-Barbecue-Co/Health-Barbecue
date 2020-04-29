@@ -78,7 +78,7 @@ export const SignIn: React.FC = () => {
             </Link>
           </Grid>
           <Grid item>
-            <Link component={RouterLink} to={`${location.url}/register`}>
+            <Link component={RouterLink} to={`${location.url}/register`} id="create-user-link">
               {t('user:signin.create_link')}
             </Link>
           </Grid>

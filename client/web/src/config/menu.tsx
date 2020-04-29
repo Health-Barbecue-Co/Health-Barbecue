@@ -6,22 +6,22 @@ import AlgorithmIcon from '@material-ui/icons/CameraRounded';
 
 export default () => [
   {
-    icon: <HomeIcon />,
+    icon: <HomeIcon id="home-icon"/>,
     label: 'menu.home',
     url: '/home',
   },
   {
-    icon: <ProjectIcon />,
+    icon: <ProjectIcon id="project-icon"/>,
     label: 'menu.projects',
     url: '/projects',
   },
   {
-    icon: <SeriesIcon />,
+    icon: <SeriesIcon  id="series-icon"/>,
     label: 'menu.series',
     url: '/series',
   },
   {
-    icon: <AlgorithmIcon />,
+    icon: <AlgorithmIcon  id="algorithm-icon"/>,
     label: 'menu.algorithms',
     url: '/algorithms',
   },

@@ -30,6 +30,7 @@ export const SignInForm: React.FC<SignInFormProps> = (
         fullWidth
         label={t('user:signin.login')}
         name="login"
+        id="login-field"
         value={values?.login}
         autoComplete="username"
         autoFocus
@@ -41,6 +42,7 @@ export const SignInForm: React.FC<SignInFormProps> = (
         required
         fullWidth
         name="password"
+        id="password-field"
         label={t('user:signin.password')}
         type="password"
         value={values?.password}
@@ -49,6 +51,7 @@ export const SignInForm: React.FC<SignInFormProps> = (
       />
       <Button
         type="submit"
+        id="signin-button"
         fullWidth
         variant="contained"
         color="primary"
