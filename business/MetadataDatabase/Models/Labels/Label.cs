@@ -1,10 +1,15 @@
-﻿using MetadataDatabase.Models;
+﻿using MetadataDatabase.framework.DAL;
+using MongoDB.Bson;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace MetadataDatabase.Data
+namespace MetadataDatabase.Models
 {
-    public class LabelDto
+    public class Label : IMongoEntity
     {
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
         public string User { get; set; }
         public string LabelKey { get; set; }
         public string LabelType { get; set; }
