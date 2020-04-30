@@ -5,11 +5,18 @@ import {
   SET_ALL_SERIES,
   FETCH_ALL_SERIES,
   UPDATE_SERIES,
+  FETCH_ONE_SERIES,
 } from './actionTypes'
 
 interface FetchSeriesAction {
   type: typeof FETCH_ALL_SERIES
 }
+
+export interface FetchOneSeriesAction {
+  type: typeof FETCH_ONE_SERIES
+  id: string
+}
+
 interface SetCurrentSeriesAction {
   type: typeof SET_CURRENT_SERIES
   series: ISeries
@@ -33,6 +40,7 @@ export type SeriesActionTypes =
   | SetCurrentSeriesAction
   | SetAllSeriesAction
   | FetchSeriesAction
+  | FetchOneSeriesAction
   | UpdateSeriesAction
 
 export interface SeriesState {

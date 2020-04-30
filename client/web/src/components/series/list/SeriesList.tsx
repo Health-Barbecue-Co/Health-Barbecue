@@ -4,6 +4,9 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import MaterialTable from 'material-table'
 
+import DescriptionIcon from '@material-ui/icons/Description'
+
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { actionTypes, selectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
 import { SeriesLabel } from '../label/SeriesLabel'
@@ -15,6 +18,8 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   const { list } = useSelector(selectors.getSeriesStore)
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const history = useHistory()
+  const match = useRouteMatch()
 
   useEffect(() => {
     dispatch({ type: actionTypes.FETCH_ALL_SERIES })
@@ -50,7 +55,6 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   return (
     <div style={{ maxWidth: '100%' }}>
       <MaterialTable
-        title={t('Series list')}
         columns={[
           { title: t('Patient name'), field: 'patientsName' },
           { title: t('Series instance UID'), field: 'seriesInstanceUID' },
@@ -72,6 +76,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
         data={list}
         options={{
           filtering: true,
+          showTitle: false,
         }}
         actions={[
           {
@@ -79,6 +84,14 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
             tooltip: t('Refresh'),
             isFreeAction: true,
             onClick: () => synchronize(),
+          },
+          {
+            icon: () => <DescriptionIcon />,
+            tooltip: t('Show'),
+            onClick: (event, rowData: ISeries | ISeries[]) => {
+              const elt: ISeries = Array.isArray(rowData) ? rowData[0] : rowData
+              history.push(`${match.url}/show/${elt.id}`)
+            },
           },
         ]}
         localization={{

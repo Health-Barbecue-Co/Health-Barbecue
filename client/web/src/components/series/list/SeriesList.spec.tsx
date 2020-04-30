@@ -6,6 +6,14 @@ import configureStore from 'redux-mock-store'
 import { SeriesList } from './SeriesList'
 
 jest.mock('../../../features/common/HttpRequest')
+jest.mock('react-router-dom', () => ({
+  useHistory: () => ({
+    push: jest.fn(),
+  }),
+  useRouteMatch: () => ({
+    url: 'my-url',
+  }),
+}))
 
 describe('SeriesList', () => {
   const mockStore = configureStore([])
