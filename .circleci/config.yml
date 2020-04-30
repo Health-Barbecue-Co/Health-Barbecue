@@ -40,7 +40,7 @@ workflows:
       - cypress/install:
           name: 'Start web client'
           working_directory: end-to-end-tests
-          build: pwd && cd client/web && yarn && yarn build &
+          build: pwd & cd client/web & yarn & yarn build &
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
           post-steps:
             - run:
@@ -73,5 +73,6 @@ workflows:
             pwd 
             echo "Will start web client: yarn start"
             yarn start --parallel
+            echo "Server is supposed to be start. Cyril"
           wait-on: 'http://localhost:4000'
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
