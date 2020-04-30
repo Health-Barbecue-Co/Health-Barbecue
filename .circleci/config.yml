@@ -37,24 +37,24 @@ workflows:
     jobs:
       - test-webclient
       - unit-tests-business
-      # - cypress/install:
-      #     name: 'Start web client'
-      #     working_directory: end-to-end-tests
-      #     build: pwd #&& cd client/web && yarn && yarn build &
-      #     cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
-      #     post-steps:
-      #       - run:
-      #           name: 'Run client web'
-      #           command: echo "Could have done something here"
-      #             #cd build && yarn && yarn start &
-      #           background: true
+      - cypress/install:
+          name: 'Start web client'
+          working_directory: end-to-end-tests
+          build: pwd && cd client/web && yarn && yarn build &
+          cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
+          post-steps:
+            - run:
+                name: 'Run client web'
+                command: echo "Could have done something here"
+                  #cd build && yarn && yarn start &
+                background: true
       - cypress/run:
-          #requires: 
-          #  - Start web client
+          requires: 
+            - Start web client
           yarn: true
           record: true
           parallel: true
-          #working_directory: end-to-end-tests
+          working_directory: end-to-end-tests
           start: |
             pwd
             ls
