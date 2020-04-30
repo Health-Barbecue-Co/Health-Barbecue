@@ -47,16 +47,12 @@ workflows:
             pwd
             ls
             cd client/web
-#            yarn
-#            yarn build
+            yarn
+            yarn build
             ls
             cd build 
             pwd 
-            yarn 
-            pwd 
             echo "Will start web client: yarn start"
-            yarn start --parallel
-            echo "Server is supposed to be started. Cyril"
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
           post-steps:
             - run:
@@ -83,13 +79,6 @@ workflows:
             ls
             yarn global add serve
             serve -s build
-#            yarn
-#            yarn build
-#            ls
-#            cd build 
-#            pwd 
-#            yarn 
-#            pwd 
             echo "Will start web client yarn start"
             yarn start --parallel
             echo "Server is supposed to be started. Cyril"
