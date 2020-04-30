@@ -82,5 +82,5 @@ workflows:
             echo "Will start web client yarn start"
             yarn start --parallel
             echo "Server is supposed to be started. Cyril"
-          wait-on: 'http://localhost:4000'
+          wait-on: 'http://localhost:5000'
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
