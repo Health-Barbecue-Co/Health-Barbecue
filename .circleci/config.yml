@@ -6,6 +6,9 @@ executors:
   node-executor:
     docker:
       - image: circleci/node:13.12.0
+  with-chrome:
+    docker:
+      - image: 'cypress/browsers:chrome69'
 jobs:
   # Run all tests related to the web client
   test-webclient:
@@ -49,6 +52,7 @@ workflows:
                   #cd build && yarn && yarn start &
                 background: true
       - cypress/run:
+          executor: with-chrome
           requires: 
             - Start web client
           yarn: true
@@ -73,6 +77,6 @@ workflows:
             pwd 
             echo "Will start web client: yarn start"
             yarn start --parallel
-            echo "Server is supposed to be start. Cyril"
+            echo "Server is supposed to be started. Cyril"
           wait-on: 'http://localhost:4000'
           cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
