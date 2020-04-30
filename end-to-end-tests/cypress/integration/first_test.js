@@ -1,8 +1,8 @@
 describe('My First Test', function () { 
     it('Connect to the main page', function () {
-        const fakestring='cyril8'
+        const fakestring='cyril9'
         // Go to home page
-        cy.visit('http://localhost:4000')
+        cy.visit('http://localhost:5000')
         cy.url()
           .should('equal', 'http://localhost:4000/user')
 
