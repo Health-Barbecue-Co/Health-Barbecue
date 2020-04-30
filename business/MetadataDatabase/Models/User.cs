@@ -48,11 +48,19 @@ namespace MetadataDatabase.Models
         public string role { get; set; }
 
         /// <summary>
-        /// Gets or sets the user instance password.
+        /// Gets or sets the hash password.
         /// </summary>
         /// <value>
-        /// The user instance password.
+        /// The user hash of password.
         /// </value>
-        public string password { get; set; }
+        public byte[] PasswordHash { get; set; }
+
+        /// <summary>
+        /// Gets or sets the salt password.
+        /// </summary>
+        /// <value>
+        /// The user salt of password.
+        /// </value>
+        public byte[] PasswordSalt { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MetadataDatabase.Data;
+﻿using System;
+using MetadataDatabase.Data;
 using MetadataDatabase.Models;
 using MongoDB.Bson;
 using System.Collections.Generic;
@@ -8,27 +9,15 @@ namespace MetadataDatabase.Convertor
 {
     public static class UserRegisterConvertor
     {
-        public static User ToModel(this UserRegisterDto userRegisterDto)
-        {
-            return new User
-            {
-                Id = userRegisterDto.Id.ToObjectId(),
-                lastname = userRegisterDto.lastname,
-                firstname = userRegisterDto.firstname,
-                login = userRegisterDto.login,
-                role = userRegisterDto.role,
-                password = userRegisterDto.password,
-            };
-        }
         public static UserDto ToUserDto(this UserRegisterDto user)
         {
             return new UserDto
             {
-                Id = user.Id.ToString(),
+                Id = user.Id,
                 lastname = user.lastname,
                 firstname = user.firstname,
                 login = user.login,
-                role = user.role
+                role = user.role,
             };
         }
     }

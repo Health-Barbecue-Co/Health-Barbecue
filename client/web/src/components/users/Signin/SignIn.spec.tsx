@@ -3,8 +3,8 @@ import { Provider } from 'react-redux'
 import { mount } from 'enzyme'
 import configureStore from 'redux-mock-store'
 
-import { actionTypes } from '../../../features/auth'
 import { SignIn } from './SignIn'
+import { SignInForm } from './SignInForm'
 
 jest.mock('../../../features/common/HttpRequest')
 
@@ -18,8 +18,10 @@ jest.mock('react-router-dom', () => ({
 describe('SignIn', () => {
   const mockStore = configureStore([])
   const store = mockStore({
-    user: {
-      name: 'test',
+    auth: {
+      auth: {
+        name: 'test',
+      },
     },
   })
 
@@ -37,25 +39,6 @@ describe('SignIn', () => {
         <SignIn />
       </Provider>
     )
-    expect(wrapper.find('form').exists()).toBeTruthy()
-  })
-
-  it('should set current user on submit', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <SignIn />
-      </Provider>
-    )
-
-    wrapper.find('button[type="submit"]').simulate('submit')
-
-    expect(store.dispatch).toBeCalledTimes(1)
-
-    expect(store.dispatch).toBeCalledWith({
-      type: actionTypes.SET_AUTH,
-      user: {
-        lastname: 'damien',
-      }
-    })
+    expect(wrapper.find(SignInForm).exists()).toBeTruthy()
   })
 })
