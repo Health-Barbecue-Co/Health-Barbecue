@@ -1,15 +1,16 @@
 describe('My First Test', function () { 
     it('Connect to the main page', function () {
         const fakestring='cyril9'
+        const base_url='http://localhost:5000'
         // Go to home page
-        cy.visit('http://localhost:5000')
+        cy.visit(base_url)
         cy.url()
-          .should('equal', 'http://localhost:4000/user')
+          .should('equal', base_url+'/user')
 
         // Go to create user
         cy.get('[id="create-user-link"]').click()
         cy.url()
-          .should('equal', 'http://localhost:4000/user/register')
+          .should('equal', base_url+'/user/register')
 
         // Create user
         cy.get('[id="firstname-field"]').type(fakestring)
@@ -18,14 +19,14 @@ describe('My First Test', function () {
         cy.get('[id="password-field"]').type(fakestring)
         cy.get('[id="save-button"]').click()
         cy.url()
-          .should('equal', 'http://localhost:4000/user')
+          .should('equal', base_url+'/user')
 
         //
         cy.get('[id="login-field"]').type(fakestring)
         cy.get('[id="password-field"]').type(fakestring)
         cy.get('[id="signin-button"]').click()
         cy.url()
-          .should('equal', 'http://localhost:4000/')
+          .should('equal', base_url)
 
         // 
         cy.get('[id="project-icon"]').click()
