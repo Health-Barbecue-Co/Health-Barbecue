@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -35,8 +35,9 @@ export const LabelAdding: React.FC<LabelAddingProps> = (props: LabelAddingProps)
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { labelsList } = useSelector(LabelsSelectors.getLabelStore)
-  const [selectedLabel, setSelectedLabel] = React.useState<ILabel>(defaultLabel);
-  const [selectedLabelValue, setSelectedLabelValue] = React.useState<string>('');
+  const [selectedLabel, setSelectedLabel] = useState<ILabel>(defaultLabel);
+  const [selectedLabelValue, setSelectedLabelValue] = useState<string>('');
+  const [areInputsValid, setAreInputsValid] = useState<boolean>(false);
   const itemLabelizable = props.itemLabelizable;
 
   useEffect(() => {
@@ -55,31 +56,38 @@ export const LabelAdding: React.FC<LabelAddingProps> = (props: LabelAddingProps)
     {
       setSelectedLabel(newSelectedLabel);
     }
+    setSelectedLabelValue('');
   }
 
   const handleSelectedLabelValueChange = (event: any) => {
-    let newSelectedLabel = selectedLabel;
-    newSelectedLabel.assignedValue = event.target.value;
-    if (newSelectedLabel !== undefined)
-    {
-      setSelectedLabel(newSelectedLabel);
-    }
     setSelectedLabelValue(event.target.value);
   }
 
   const handleSubmit = () => {
-    if(itemLabelizable == null)
-    {
-      throw Error("No series selected")
-    }
     if(itemLabelizable.labels == null)
     {
       itemLabelizable.labels = new Array<ILabel>();
     }
-    itemLabelizable.labels.push(selectedLabel);
+    
+    let newSelectedLabel = selectedLabel;
+    newSelectedLabel.assignedValue = selectedLabelValue;
+
+    itemLabelizable.labels.push(newSelectedLabel);
     dispatch({ type: actionTypes.UPDATE_SERIES, series: itemLabelizable});
     if(props.onCreate !== undefined) props.onCreate();
   }
+
+  const checkInputs = () => {
+    if(selectedLabelValue !==  '') 
+    {
+      setAreInputsValid(true)
+    } else
+    {
+      setAreInputsValid(false)
+    }
+  }
+
+  useEffect(checkInputs, [selectedLabelValue]);
 
   return (
     <form>
@@ -141,7 +149,7 @@ export const LabelAdding: React.FC<LabelAddingProps> = (props: LabelAddingProps)
         <Button color="primary" onClick={onCancel}>
           {t("Cancel")}
         </Button>
-        <Button color="primary" onClick={handleSubmit}>
+        <Button color="primary" onClick={handleSubmit} disabled={!areInputsValid}>
           {t("Add")}
         </Button>
       </div>

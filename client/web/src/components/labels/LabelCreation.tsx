@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -31,10 +31,15 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
   const dispatch = useDispatch()
   const user: IUser = useSelector(selectors.getAuth)
 
-  const [LabelKey, setLabelKey] = useState<string>('');
+  const [labelKey, setLabelKey] = useState<string>('');
   const [selectedLabelType, setSelectedLabelType] = useState<string>('');
   const [inputPredefineValue, setInputPredefineValue] = useState<string>('');
   const [listPredefineValue, setListPredefineValue] = useState<string[]>([]);
+  const [areInputsValid, setAreInputsValid] = useState<boolean>(false);
+
+  useEffect(() => {
+    checkInputs();
+  }, [listPredefineValue, labelKey, selectedLabelType, inputPredefineValue]);
 
   const handleLabelKeyChange = (event: any) => {
     setLabelKey(event.target.value);
@@ -52,7 +57,7 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
     let newLabel: ILabel = {
       'id': '',
       'user': user.login,
-      'labelKey': LabelKey,
+      'labelKey': labelKey,
       'labelType': selectedLabelType,
       'labelValue': listPredefineValue,
       'isPublic': true,
@@ -77,6 +82,22 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
 
   const handleInputPredefineValueChange = (event: any) => {
     setInputPredefineValue(event.target.value);
+  }
+
+  const checkInputs = () => {
+    if(labelKey !== ''
+    && selectedLabelType === 'Multi' 
+    && listPredefineValue.length !== 0)
+    {
+      setAreInputsValid(true)
+    } else if (labelKey !== ''
+    && selectedLabelType === 'String')
+    {
+      setAreInputsValid(true)
+    } else
+    {
+      setAreInputsValid(false)
+    }
   }
 
   return (
@@ -140,7 +161,7 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
         <Button color="primary" onClick={onCancel}>
           {t("Cancel")}
         </Button>
-        <Button color="primary" onClick={onCreate}>
+        <Button color="primary" onClick={onCreate} disabled={!areInputsValid}>
           {t("Create")}
         </Button>
       </div>
