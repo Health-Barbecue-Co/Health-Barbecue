@@ -37,10 +37,6 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
   const [listPredefineValue, setListPredefineValue] = useState<string[]>([]);
   const [areInputsValid, setAreInputsValid] = useState<boolean>(false);
 
-  useEffect(() => {
-    checkInputs();
-  }, [listPredefineValue, labelKey, selectedLabelType, inputPredefineValue]);
-
   const handleLabelKeyChange = (event: any) => {
     setLabelKey(event.target.value);
   };
@@ -99,6 +95,8 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
       setAreInputsValid(false)
     }
   }
+
+  useEffect(checkInputs, [listPredefineValue, labelKey, selectedLabelType, inputPredefineValue]);
 
   return (
     <form >
