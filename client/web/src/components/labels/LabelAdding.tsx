@@ -87,6 +87,8 @@ export const LabelAdding: React.FC<LabelAddingProps> = (props: LabelAddingProps)
       <Select
         value={selectedLabel?.labelKey}
         onChange={(event: any) => handleSelectedLabelChange(event, labelsList)}
+        variant="outlined"
+        margin="dense" 
       >
         {
           labelsList && labelsList.map((label: ILabel) => (
@@ -105,6 +107,8 @@ export const LabelAdding: React.FC<LabelAddingProps> = (props: LabelAddingProps)
             <Select
               value={selectedLabelValue}
               onChange={handleSelectedLabelValueChange}
+              variant="outlined"
+              margin="dense" 
             >
               {
                 selectedLabel?.labelValue && selectedLabel?.labelValue.map((value: string) => (
@@ -121,20 +125,26 @@ export const LabelAdding: React.FC<LabelAddingProps> = (props: LabelAddingProps)
         : null 
       }
       {selectedLabel?.labelType === 'String' 
-        ? <TextField
-            label="Value"
-            onChange={handleSelectedLabelValueChange}
-            value={selectedLabelValue}
-            fullWidth
-          />
+        ? <div>
+            <InputLabel>{t("Label value")}</InputLabel>
+            <TextField
+              label="Value"
+              onChange={handleSelectedLabelValueChange}
+              value={selectedLabelValue}
+              variant="outlined"
+              margin="dense" 
+            />
+          </div>
         : null
       }
-      <Button color="primary" onClick={onCancel}>
-        {t("Cancel")}
-      </Button>
-      <Button color="primary" onClick={handleSubmit}>
-        {t("Add")}
-      </Button>
+      <div>
+        <Button color="primary" onClick={onCancel}>
+          {t("Cancel")}
+        </Button>
+        <Button color="primary" onClick={handleSubmit}>
+          {t("Add")}
+        </Button>
+      </div>
     </form>
   )
 }

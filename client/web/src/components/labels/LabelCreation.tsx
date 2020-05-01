@@ -97,6 +97,7 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
         value={selectedLabelType}
         onChange={handleLabelTypeChange}
         variant="outlined"
+        margin="dense"
       >
         <MenuItem 
           key='Multi' 
@@ -114,17 +115,17 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
       {
         (selectedLabelType === 'Multi') 
         ? <div>
-          <TextField id="outlined-basic" label="Value" variant="outlined" value={inputPredefineValue} onChange={handleInputPredefineValueChange} />
+          <TextField label="Value"  value={inputPredefineValue} onChange={handleInputPredefineValueChange} margin="dense" variant="outlined"/>
           <IconButton color="primary" onClick={handleAddPredefineValue}>
             <AddCircleOutlineIcon />
           </IconButton>
           <List>
             {
               listPredefineValue.map((value) => (
-                <ListItem>
+                <ListItem key={value}>
                   <ListItemText>{value}</ListItemText>
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete" onClick={() => handleDeletePredefineValue(value)}>
+                    <IconButton edge="end" onClick={() => handleDeletePredefineValue(value)}>
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
@@ -135,12 +136,14 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
         </div>
         : null
       }
-      <Button color="primary" onClick={onCancel}>
-        {t("Cancel")}
-      </Button>
-      <Button color="primary" onClick={onCreate}>
-        {t("Create")}
-      </Button>
+      <div>
+        <Button color="primary" onClick={onCancel}>
+          {t("Cancel")}
+        </Button>
+        <Button color="primary" onClick={onCreate}>
+          {t("Create")}
+        </Button>
+      </div>
     </form>
   )
 }
