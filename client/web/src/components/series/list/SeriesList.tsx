@@ -7,8 +7,8 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'
 
 import { actionTypes, selectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
-import { SeriesLabel } from '../../../components/series'
 import { ISeries } from '../../../models/series'
+import { SeriesLabel } from '../../labels/SeriesLabel'
 
 type SeriesListProps = {}
 
@@ -53,6 +53,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
     },
 
   });
+  
   return (
     <div style={{ maxWidth: '100%' }}>
       <MuiThemeProvider theme={theme}>

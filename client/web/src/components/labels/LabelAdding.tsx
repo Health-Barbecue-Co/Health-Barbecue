@@ -9,14 +9,14 @@ import {
   MenuItem,
 } from '@material-ui/core'
 
-import { actionTypes } from '../../../features/series'
-import { ILabel } from '../../../models/ILabel'
-import { ISeries } from '../../../models/series'
-import { LabelsSelectors, LabelsActionTypes } from '../../../features/labels'
+import { actionTypes } from '../../features/series'
+import { ILabel } from '../../models/ILabel'
+import { LabelsSelectors, LabelsActionTypes } from '../../features/labels'
+import { ILabelizable } from '../../models/ILabelizable'
 
-type SeriesLabelFromProps = { 
-  series: ISeries, 
-  onCreate?: () => void ,
+type LabelAddingProps = { 
+  itemLabelizable: ILabelizable, 
+  onCreate?: () => void,
   onCancel?: () => void
 }
 
@@ -31,13 +31,13 @@ const defaultLabel: ILabel = {
   assignedValue: '',
 }
 
-export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLabelFromProps) => {
+export const LabelAdding: React.FC<LabelAddingProps> = (props: LabelAddingProps) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { labelsList } = useSelector(LabelsSelectors.getLabelStore)
   const [selectedLabel, setSelectedLabel] = React.useState<ILabel>(defaultLabel);
   const [selectedLabelValue, setSelectedLabelValue] = React.useState<string>('');
-  const localSeries = props.series;
+  const itemLabelizable = props.itemLabelizable;
 
   useEffect(() => {
     dispatch({ type: LabelsActionTypes.FETCH_ALL_LABELS })
@@ -47,7 +47,7 @@ export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLab
     if(props.onCancel !== undefined) props.onCancel();
   }
 
-  const handleChange1 = (event: any, labelsList: ILabel[]) => {
+  const handleSelectedLabelChange = (event: any, labelsList: ILabel[]) => {
     let newSelectedLabel = labelsList.find( (label: ILabel) => (
       label.labelKey === event.target.value
     ));
@@ -57,17 +57,7 @@ export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLab
     }
   }
 
-  const handleSelectLabelMultiValue = (event: any) => {
-    let newSelectedLabel = selectedLabel;
-    newSelectedLabel.assignedValue = event.target.value;
-    if (newSelectedLabel !== undefined)
-    {
-      setSelectedLabel(newSelectedLabel);
-    }
-    setSelectedLabelValue(event.target.value);
-  }
-
-  const handleSelectLabelValueChange = (event: any) => {
+  const handleSelectedLabelValueChange = (event: any) => {
     let newSelectedLabel = selectedLabel;
     newSelectedLabel.assignedValue = event.target.value;
     if (newSelectedLabel !== undefined)
@@ -78,25 +68,25 @@ export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLab
   }
 
   const handleSubmit = () => {
-    if(props.series == null)
+    if(itemLabelizable == null)
     {
       throw Error("No series selected")
     }
-    if(props.series.labels == null)
+    if(itemLabelizable.labels == null)
     {
-      props.series.labels = new Array<ILabel>();
+      itemLabelizable.labels = new Array<ILabel>();
     }
-    props.series.labels.push(selectedLabel);
-    dispatch({ type: actionTypes.UPDATE_SERIES, series: localSeries});
+    itemLabelizable.labels.push(selectedLabel);
+    dispatch({ type: actionTypes.UPDATE_SERIES, series: itemLabelizable});
     if(props.onCreate !== undefined) props.onCreate();
   }
 
   return (
     <form>
-      <InputLabel>Labels available</InputLabel>
+      <InputLabel>{t("Labels available")}</InputLabel>
       <Select
         value={selectedLabel?.labelKey}
-        onChange={(event: any) => handleChange1(event, labelsList)}
+        onChange={(event: any) => handleSelectedLabelChange(event, labelsList)}
       >
         {
           labelsList && labelsList.map((label: ILabel) => (
@@ -111,10 +101,10 @@ export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLab
       </Select>
       { selectedLabel?.labelType === 'Multi' 
         ? <div>
-            <InputLabel>Predefined Label values</InputLabel>
+            <InputLabel>{t("Predefined Label values")}</InputLabel>
             <Select
               value={selectedLabelValue}
-              onChange={handleSelectLabelMultiValue}
+              onChange={handleSelectedLabelValueChange}
             >
               {
                 selectedLabel?.labelValue && selectedLabel?.labelValue.map((value: string) => (
@@ -133,7 +123,7 @@ export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLab
       {selectedLabel?.labelType === 'String' 
         ? <TextField
             label="Value"
-            onChange={handleSelectLabelValueChange}
+            onChange={handleSelectedLabelValueChange}
             value={selectedLabelValue}
             fullWidth
           />
