@@ -123,6 +123,16 @@ dotnet run
 
 You are using cypress.io, and to launch them thanks to docker compose :
 
+### Locally
+
+```bash
+# you must run api (with dotnet run) and frontend (with yarn start)
+cd end-to-end-tests
+yarn cy-open:local
+```
+
+### Docker
+
 ```bash
 docker-compose up --exit-code-from hb_end_to_end_test
 ```
