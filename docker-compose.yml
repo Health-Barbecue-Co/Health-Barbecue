@@ -57,6 +57,7 @@ services:
 
   hb_web_server:
     container_name: hb_web_server
+    restart: always
     build:
       context: .
       dockerfile: server.Dockerfile
@@ -70,6 +71,21 @@ services:
     links:
       - hb_business_server
       - hb_pacs_server
+
+  # End to End test
+  hb_end_to_end_test:
+    # the Docker image to use from https://github.com/cypress-io/cypress-docker-images
+    image: cypress/included:4.0.2
+    depends_on:
+      - hb_web_server
+      # - hb_business_server
+    environment:
+      # pass base url to test pointing at the web application
+      - CYPRESS_baseUrl=http://hb_web_server
+    # share the current folder as volume to avoid copying
+    working_dir: /e2e
+    volumes:
+      - ./end-to-end-tests:/e2e
 
 volumes:
   mongodata: {}
