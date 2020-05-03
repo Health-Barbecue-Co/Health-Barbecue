@@ -4,18 +4,26 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import MaterialTable from 'material-table'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'
+import OutdoorGrillIcon from '@material-ui/icons/OutdoorGrill';
 
-import { actionTypes, selectors } from '../../../features/series'
+import { actionTypes, seriesSelectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
 import { ISeries } from '../../../models/series'
 import { SeriesLabel } from '../../labels/SeriesLabel'
+import { algoActionTypes, AlgoSelectors } from '../../../features/algo'
+import { IUser } from '../../../models/user'
+import { selectors } from '../../../features/auth'
+import { AlgoResultDialog } from '../../algo/AlgoResultDialog'
 
 type SeriesListProps = {}
 
 export const SeriesList: React.FC<SeriesListProps> = () => {
-  const { list } = useSelector(selectors.getSeriesStore)
+  const { list } = useSelector(seriesSelectors.getSeriesStore)
+  const { algoResult } = useSelector(AlgoSelectors.getAlgoStore)
+  const user: IUser = useSelector(selectors.getAuth)
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  
   const [selectedSeries, setSelectedSeries ] =  useState<ISeries[]>([]);
 
   useEffect(() => {
@@ -43,6 +51,18 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
 
   const checkDisplay = (rowData: ISeries) =>{
     return selectedSeries.includes(rowData);
+  }
+
+  const executeAlgo = () => {
+    dispatch(
+    { 
+      type: algoActionTypes.EXECUTE_ALGO,
+      algoExeInfo: {
+        user: user.login,
+        name: "Fake Algo Name",
+        seriesUid: selectedSeries[0].seriesInstanceUID
+      }
+    })
   }
 
   const theme = createMuiTheme({
@@ -84,7 +104,12 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
               tooltip: t('Refresh'),
               isFreeAction: true,
               onClick: () => synchronize()
-            }
+            },
+            {
+              icon: () => <OutdoorGrillIcon />,
+              tooltip: t('Launch IA'),
+              onClick: () => executeAlgo()
+            },
           ]}
           onSelectionChange={(rows) => {
             setSelectedSeries(rows);
@@ -110,6 +135,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
             }
           }}
         />
+        <AlgoResultDialog result={algoResult}/>
       </MuiThemeProvider>
     </div>
   )

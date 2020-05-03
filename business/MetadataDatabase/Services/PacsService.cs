@@ -47,7 +47,7 @@ namespace MetadataDatabase.Services
         public string DownloadSeries(string seriesUID)
         {
             string zipFilzName = $"{seriesUID}.zip";
-            string workspaceName = "workspace";
+            
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, $"{this.settings.Protocol}://{this.settings.Host}:{this.settings.Port}/tools/find");
             OrthancFindRequest orthancFindRequest = new OrthancFindRequest() {
                 Level = "series",
@@ -65,43 +65,7 @@ namespace MetadataDatabase.Services
             var orthancSeriesId = listOfSeries[0];
             var task2 = this.client.GetByteArrayAsync($"{this.settings.Protocol}://{this.settings.Host}:{this.settings.Port}/series/{orthancSeriesId}/archive");
             File.WriteAllBytes(zipFilzName, task2.Result);
-            if(Directory.Exists(workspaceName)) Directory.Delete(workspaceName, true);
-            ZipFile.ExtractToDirectory(zipFilzName, workspaceName);
-
-            File.Delete(zipFilzName);
-            // Get path to dicom files
-            ZipArchive archive = ZipFile.OpenRead("zob.zip");
-            var relativeFilePath = Path.Join(@"workspace\" + archive.Entries[0].FullName.Replace('/','\\'));
-            Debug.WriteLine(relativeFilePath);
-            var fullFilePath = Path.GetFullPath(relativeFilePath);
-            Debug.WriteLine(fullFilePath);
-            var fullFilesDirectoryPath = Path.GetDirectoryName(fullFilePath);
-            Debug.WriteLine(fullFilesDirectoryPath);
-            var directoryOfSeries = Path.GetDirectoryName(fullFilesDirectoryPath);
-            Debug.WriteLine(directoryOfSeries);
-
-            var mainFilePath = Path.GetFullPath("basic_python.py");
-            Debug.WriteLine(mainFilePath);
-
-            // Execute algo
-            Process process = new Process();
-            process.StartInfo.FileName= "python";
-            //process.StartInfo.Arguments = $"{mainFilePath} {directoryOfSeries}", "";
-            process.StartInfo.ArgumentList.Add($"{mainFilePath}");
-            process.StartInfo.ArgumentList.Add($"{directoryOfSeries}");
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.Start();
-
-            // Synchronously read the standard output of the spawned process. 
-            StreamReader reader = process.StandardOutput;
-            string output = reader.ReadToEnd();
-
-            // Write the redirected output to this application's window.
-            Debug.WriteLine(output);
-
-            process.WaitForExit();
-            return output;
+            return zipFilzName;
         }
 
         private async Task<IEnumerable<QidoSeries>> GetSeriesListAsync()

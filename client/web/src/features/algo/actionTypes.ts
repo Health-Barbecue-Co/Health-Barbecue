@@ -1,0 +1,2 @@
+export const EXECUTE_ALGO = 'EXECUTE_ALGO'
+export const SET_ALGO_RESULT = 'SET_ALGO_RESULT'

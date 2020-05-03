@@ -133,6 +133,7 @@ namespace MetadataDatabase
             service.AddScoped<IPacsMirrorService, PacsMirrorService>();
             service.AddScoped<ILabelRepository, LabelRepository>();
             service.AddScoped<ILabelService, LabelService>();
+            service.AddScoped<IAlgoService, AlgoService>();
         }
     }
 }
