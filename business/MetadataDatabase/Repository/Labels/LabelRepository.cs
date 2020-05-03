@@ -12,9 +12,6 @@ namespace MetadataDatabase.Repository
         /// Initializes a new instance of the <see cref="LabelRepository"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public LabelRepository(IOptions<MongoConfiguration> configuration) : base(configuration.Value)
-        {
-
-        }
+        public LabelRepository(IOptions<MongoConfiguration> configuration) : base(configuration.Value) { }
     }
 }
