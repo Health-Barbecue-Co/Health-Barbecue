@@ -40,6 +40,11 @@ namespace MetadataDatabase.Services
             CreateSeriesOnlyInPacs(pacsSeries, dataBaseSeries);
         }
 
+        public string DownloadSeries(string seriesUID)
+        {
+            return this.pacsService.DownloadSeries(seriesUID);
+        }
+
         private void DeleteSeriesNotInPacs(IEnumerable<SeriesDto> pacsSeries, IEnumerable<SeriesDto> dataBaseSeries)
         {
             // Get SeriesInstanceUID to compare

@@ -59,7 +59,8 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
         ]}
         data={list}
         options={{
-          filtering: true
+          filtering: true,
+          exportButton: true
         }}
         actions={[
           {
