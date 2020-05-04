@@ -59,7 +59,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
       type: algoActionTypes.EXECUTE_ALGO,
       algoExeInfo: {
         user: user.login,
-        name: "Fake Algo Name",
+        name: "basic_python.py",
         seriesUid: selectedSeries[0].seriesInstanceUID
       }
     })

@@ -56,7 +56,6 @@ namespace MetadataDatabase.Services
             };
             orthancFindRequest.Query.Add("SeriesInstanceUID", $"{seriesUID}");
             var jsonString = JsonSerializer.Serialize(orthancFindRequest);
-            //var data = "{ \"Level\": \"Series\", \"Limit\": 2, \"Query\": { \"SeriesInstanceUID\": \"1.3.12.2.1107.5.2.30.26626.30000011032311153339000012977\"} }";
             httpRequestMessage.Content = new StringContent(jsonString);
             var task = this.client.SendAsync(httpRequestMessage);
             var res = task.Result.Content.ReadAsStringAsync().Result;

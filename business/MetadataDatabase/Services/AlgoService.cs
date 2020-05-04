@@ -1,71 +1,71 @@
-﻿using MetadataDatabase.Controllers;
-using MetadataDatabase.Convertor;
-using MetadataDatabase.Data;
+﻿using MetadataDatabase.Data;
 using MetadataDatabase.Models;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System.Diagnostics;
+using System;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+
 
 namespace MetadataDatabase.Services
 {
     public class AlgoService: IAlgoService
     {
+        IaConfiguration settings;
         IPacsService pacsService;
         string workspaceName = "workspace";
+        private readonly HttpClient client;
 
-        public AlgoService(IPacsService pacsService)
+        public AlgoService(IOptions<IaConfiguration> settings, IPacsService pacsService)
         {
+            this.settings = settings.Value;
             this.pacsService = pacsService;
+            this.client = new HttpClient();
         }
 
         public string Execute(AlgoExeInfoDto algoExeInfo)
         {
             var zipFilzName = this.pacsService.DownloadSeries(algoExeInfo.SeriesUid);
             // Clean workspace
-            if (Directory.Exists(workspaceName)) Directory.Delete(workspaceName, true);
+            DirectoryInfo di = new DirectoryInfo(workspaceName);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
+
             // Extract zip file in workspace
             ZipFile.ExtractToDirectory(zipFilzName, workspaceName);
             // Get path to dicom files
             ZipArchive archive = ZipFile.OpenRead(zipFilzName);
-            var relativeFilePath = Path.Join(@"workspace\" + archive.Entries[0].FullName.Replace('/', '\\'));
-            Debug.WriteLine(relativeFilePath);
+            var fullworkspacePath = Path.GetFullPath(workspaceName);
+            Console.WriteLine(fullworkspacePath);
+            var relativeFilePath = Path.Join(@"workspace/" + archive.Entries[0].FullName);
+            Console.WriteLine(relativeFilePath);
             var fullFilePath = Path.GetFullPath(relativeFilePath);
-            Debug.WriteLine(fullFilePath);
+            Console.WriteLine(fullFilePath);
             var fullFilesDirectoryPath = Path.GetDirectoryName(fullFilePath);
-            Debug.WriteLine(fullFilesDirectoryPath);
+            Console.WriteLine(fullFilesDirectoryPath);
             var directoryOfSeries = Path.GetDirectoryName(fullFilesDirectoryPath);
-            Debug.WriteLine(directoryOfSeries);
-            var mainFilePath = Path.GetFullPath("basic_python.py");
-            Debug.WriteLine(mainFilePath);
+            Console.WriteLine(directoryOfSeries);
+            var relatifPathOfSeriesDirectory = Path.GetRelativePath(fullworkspacePath, directoryOfSeries);
+            Console.WriteLine(relatifPathOfSeriesDirectory);
             archive.Dispose();
             File.Delete(zipFilzName);
 
             // Execute algo
-            Process process = new Process();
-            process.StartInfo.FileName = "python";
-            //process.StartInfo.Arguments = $"{mainFilePath} {directoryOfSeries}", "";
-            process.StartInfo.ArgumentList.Add($"{mainFilePath}");
-            process.StartInfo.ArgumentList.Add($"{directoryOfSeries}");
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.Start();
-
-            // Synchronously read the standard output of the spawned process. 
-            StreamReader reader = process.StandardOutput;
-            string output = reader.ReadToEnd();
-
-            // Write the redirected output to this application's window.
-            Debug.WriteLine(output);
-
-            process.WaitForExit();
-            return output;
+            algoExeInfo.Folder = relatifPathOfSeriesDirectory;
+            Console.WriteLine(algoExeInfo.Folder);
+            var jsonString = JsonSerializer.Serialize(algoExeInfo);
+            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            var task = this.client.PostAsync($"{this.settings.Protocol}://{this.settings.Host}:{this.settings.Port}/executeAlgo", content);
+            var res = task.Result.Content.ReadAsStringAsync();
+            return res.Result;
         }
     }
 }

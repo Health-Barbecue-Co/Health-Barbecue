@@ -122,6 +122,7 @@ namespace MetadataDatabase
             service.Configure<MongoConfiguration>(Configuration.GetSection(nameof(MongoConfiguration)));
             service.Configure<PacsConfiguration>(Configuration.GetSection(nameof(PacsConfiguration)));
             service.Configure<AuthConfiguration>(Configuration.GetSection(nameof(AuthConfiguration)));
+            service.Configure<IaConfiguration>(Configuration.GetSection(nameof(IaConfiguration)));
 
             service.AddScoped<ISeriesServices, SeriesServices>();
             service.AddScoped<ISeriesRepository, SeriesRepository>();
