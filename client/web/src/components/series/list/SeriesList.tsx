@@ -10,7 +10,7 @@ import { actionTypes, seriesSelectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
 import { ISeries } from '../../../models/series'
 import { SeriesLabel } from '../../labels/SeriesLabel'
-import { algoActionTypes, AlgoSelectors } from '../../../features/algo'
+import { algoActionTypes } from '../../../features/algo'
 import { IUser } from '../../../models/user'
 import { selectors } from '../../../features/auth'
 import { AlgoResultDialog } from '../../algo/AlgoResultDialog'
@@ -19,7 +19,6 @@ type SeriesListProps = {}
 
 export const SeriesList: React.FC<SeriesListProps> = () => {
   const { list } = useSelector(seriesSelectors.getSeriesStore)
-  const { algoResult } = useSelector(AlgoSelectors.getAlgoStore)
   const user: IUser = useSelector(selectors.getAuth)
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -135,7 +134,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
             }
           }}
         />
-        <AlgoResultDialog result={algoResult}/>
+        <AlgoResultDialog />
       </MuiThemeProvider>
     </div>
   )

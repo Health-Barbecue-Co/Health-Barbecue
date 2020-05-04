@@ -10,8 +10,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux'
 import { AlgoSelectors, algoActionTypes } from '../../features/algo'
 
-type AlgoResultDialogProps = { 
-  result: string
+type AlgoResultDialogProps = {
   onClose?: () => void
 }
 
