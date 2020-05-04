@@ -11,26 +11,21 @@
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 
 /**
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
+  mongoose.connect(`${process.env.dbUrl}/healthbarbecue`, {useUnifiedTopology: true, useNewUrlParser: true})
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
   on('task', {
     cleanTable (collection) {
-      return new Promise((resolve) => {
-        MongoClient.connect('mongodb://localhost:27017', (err, client) => {
-          if (!err) {
-            const db = client.db('healthbarbecue');
-            db.collection(collection).deleteMany({});
-            // client.close();
-            console.log(`Flush table ${collection} done`)
-          }
-          resolve(null);
-        });
+      return new Promise(resolve => {
+       const col = mongoose.connection.collection(collection);
+       col.deleteMany({});
+       resolve(null);
       })
     }
   })

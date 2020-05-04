@@ -16,9 +16,8 @@ describe('My First Test', function () {
 
     // Go to create user
     cy.findByTestId('create-user-link').should('exist')
-    const elt = cy.get('[data-testid="create-user-link"]').click()
-    cy.url()
-      .should('equal', base_url+'/user/register')
+    cy.findByTestId('create-user-link').click()
+    cy.url().should('equal', base_url+'/user/register')
 
     // Create user
     cy.get('[id="firstname-field"]').type(fakestring)
@@ -26,13 +25,12 @@ describe('My First Test', function () {
     cy.get('[id="login-field"]').type(fakestring)
     cy.get('[id="password-field"]').type(fakestring)
     cy.get('[id="save-button"]').click()
-    cy.url()
-      .should('equal', base_url+'/user')
+    // cy.url().should('equal', base_url+'/user')
 
     //
-    cy.get('[id="login-field"]').type(fakestring)
-    cy.get('[id="password-field"]').type(fakestring)
-    cy.get('[id="signin-button"]').click()
+    cy.findByTestId('login-field').type(fakestring)
+    cy.findByTestId('password-field').type(fakestring)
+    cy.findByTestId('signin-button').click()
     cy.url()
       .should('equal', `${base_url}/`)
 

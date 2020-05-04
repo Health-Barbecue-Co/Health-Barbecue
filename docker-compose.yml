@@ -4,7 +4,7 @@ services:
   hb_database:
     image: mongo:latest
     container_name: "hb_database"
-    restart: unless-stopped
+    restart: always
     environment:
       - MONGO_DATA_DIR=/data/mongo/db
       - MONGO_LOG_DIR=/dev/null
@@ -75,7 +75,7 @@ services:
   # End to End test
   hb_end_to_end_test:
     # the Docker image to use from https://github.com/cypress-io/cypress-docker-images
-    image: cypress/included:4.0.2
+    image: cypress/included:4.5.0
     container_name: hb_end_to_end_test
     links:
       - hb_web_server
@@ -87,6 +87,7 @@ services:
     working_dir: /e2e
     volumes:
       - ./end-to-end-tests:/e2e
+    command: yarn install
     command: npx cypress run
 
 volumes:
