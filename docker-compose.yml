@@ -75,7 +75,9 @@ services:
   # End to End test
   hb_end_to_end_test:
     # the Docker image to use from https://github.com/cypress-io/cypress-docker-images
-    image: cypress/included:4.5.0
+    build:
+      context: ./end-to-end-tests
+      dockerfile: Dockerfile
     container_name: hb_end_to_end_test
     links:
       - hb_web_server
@@ -83,12 +85,8 @@ services:
       # pass base url to test pointing at the web application
       - CYPRESS_baseUrl=http://hb_web_server
       - dbUrl=mongodb://hb_database
-    # share the current folder as volume to avoid copying
-    working_dir: /e2e
     volumes:
-      - ./end-to-end-tests:/e2e
-    command: yarn install
-    command: npx cypress run
+      - ./end-to-end-tests:/app
 
 volumes:
   mongodata: {}
