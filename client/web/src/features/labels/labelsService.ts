@@ -5,7 +5,7 @@ import { HttpRequest } from '../common/HttpRequest'
 import { ILabel } from '../../models/ILabel'
 
 export class LabelsService implements ICrudService<ILabel> {
-  private api: HttpRequest<ISeries>
+  private api: HttpRequest<ILabel>
 
   constructor() {
     this.api = new HttpRequest({ baseURL: '/api/Label' })
@@ -28,9 +28,9 @@ export class LabelsService implements ICrudService<ILabel> {
   }
 
   remove(item: ILabel) {
-    // if (item.id) {
-    //   this.api.delete(item.id)
-    // }
+    if (item.id) {
+      this.api.delete(item.id)
+    }
   }
 }
 

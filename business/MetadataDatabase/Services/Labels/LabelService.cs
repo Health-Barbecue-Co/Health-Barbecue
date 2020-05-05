@@ -2,6 +2,7 @@
 using MetadataDatabase.Data;
 using MetadataDatabase.Models;
 using MetadataDatabase.Repository;
+using System;
 using System.Collections.Generic;
 
 namespace MetadataDatabase.Services
@@ -17,6 +18,7 @@ namespace MetadataDatabase.Services
 
         public LabelDto Create(LabelDto objectToCreate)
         {
+            if (!IsValid(objectToCreate)) { throw new Exception("A value of label is not valid."); }
             return this.labelRepository.Create(objectToCreate.ToModel()).ToDto();
         }
 
@@ -27,7 +29,7 @@ namespace MetadataDatabase.Services
 
         public LabelDto Get(string id)
         {
-            return this.labelRepository.Get(id.ToObjectId()).ToDto();
+            return this.labelRepository.Get(id.ToObjectId())?.ToDto();
         }
 
         public IEnumerable<LabelDto> GetAll()
@@ -38,10 +40,11 @@ namespace MetadataDatabase.Services
         public void Update(string id, LabelDto objectToUpdate)
         {
             objectToUpdate.Id = id;
+            if (!IsValid(objectToUpdate)) { throw new Exception("A value of label is not valid."); }
             this.labelRepository.Update(objectToUpdate.ToModel());
         }
 
-        public bool IsValid(LabelDto label)
+        private bool IsValid(LabelDto label)
         {
             if(label.LabelType == "Multi")
             {

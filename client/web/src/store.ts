@@ -5,11 +5,10 @@ import createSagaMiddleware from 'redux-saga'
 import { UserReducer, userSaga } from './features/user'
 import { seriesSaga } from './features/series'
 import { mirrorPacsSaga } from './features/mirrorPacs'
-import { labelsSaga } from './features/labels'
+import { labelsSaga, labelsReducer } from './features/labels'
 import serieReducer from './features/series/seriesReducer'
 import { authSaga, AuthReducer } from './features/auth'
 import { VersionReducer, versionSaga } from './features/version'
-import labelsReducer from './features/labels/labelsReducer'
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({

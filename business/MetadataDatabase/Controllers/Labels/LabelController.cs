@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MetadataDatabase.Models;
 using MetadataDatabase.Data;
+using System;
 
 namespace MetadataDatabase.Controllers
 {
@@ -30,7 +31,12 @@ namespace MetadataDatabase.Controllers
         [HttpGet("{id}", Name = "GetLabel")]
         public ActionResult<LabelDto> GetLabel(string id)
         {
-            return this.labelService.Get(id);
+            var label = this.labelService.Get(id);
+            if (label == null)
+            {
+                return NotFound();
+            }
+            return label;
         }
 
         // POST: api/Label
@@ -40,12 +46,14 @@ namespace MetadataDatabase.Controllers
         [HttpPost]
         public ActionResult<LabelDto> Post([FromBody] LabelDto label)
         {
-            if (!this.labelService.IsValid(label))
+            try
             {
-                return BadRequest("A value of label is not valid.");   
+                var labelWithId = this.labelService.Create(label);
+                return CreatedAtRoute("GetLabel", new { id = labelWithId.Id }, labelWithId);
+            } catch(Exception e)
+            {
+                return BadRequest(e.ToString());
             }
-            var labelWithId = this.labelService.Create(label);
-            return CreatedAtRoute("GetLabel", new { id = labelWithId.Id }, labelWithId);
         }
 
         // PUT: api/Label/5
@@ -59,8 +67,16 @@ namespace MetadataDatabase.Controllers
                 return NotFound();
             }
 
-            this.labelService.Update(id, labelIn);
+            try
+            {
+                this.labelService.Update(id, labelIn);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
 
+     
             return NoContent();
         }
 

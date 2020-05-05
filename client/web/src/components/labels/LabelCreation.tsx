@@ -122,13 +122,13 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
           key='Multi' 
           value='Multi' 
         >
-          Multi values
+          {t("Multi values")}
         </MenuItem>
         <MenuItem 
           key='String' 
           value='String' 
         >
-          Free text
+          {t("Free text")}
         </MenuItem>
       </Select>
       {
