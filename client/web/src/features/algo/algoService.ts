@@ -1,5 +1,6 @@
 import { HttpRequest } from '../common/HttpRequest'
-import { IAlgoExeInfo } from '../../models/IAlgo'
+import { IAlgo } from '../../models/IAlgo'
+import { IAlgoExeInfo } from '../../models/IAlgoExeInfo';
 
 export class AlgoService {
   private api: HttpRequest<string>
@@ -8,8 +9,20 @@ export class AlgoService {
     this.api = new HttpRequest({ baseURL: '/api/Algo' })
   }
 
-  executeAlgo(algoInfo: IAlgoExeInfo): Promise<string> {
-    return this.api.post('', algoInfo);
+  executeAlgo(algoExecInfo: IAlgoExeInfo): Promise<string> {
+    return this.api.post('/execute', algoExecInfo);
+  }
+
+  getAllAlgo(): Promise<IAlgo[]> {
+    return this.api.get('');
+  }
+
+  CreateAlgo(algo: IAlgo) {
+    this.api.post('', algo);
+  }
+
+  DeleteAlgo(algo: IAlgo) {
+    this.api.delete(algo.id);
   }
 }
 

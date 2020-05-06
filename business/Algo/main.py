@@ -1,30 +1,34 @@
 import os
 import shutil
 import glob
-from flask import Flask, render_template, send_file, request
 import io
 import subprocess
 import json
+import sys
+from flask import Flask, render_template, send_file, request
 
 dockerWorkspacePath = '/usr/src/app/workspace/'
+algosWorkspacePath = dockerWorkspacePath + 'algos/'
+dataWorkspacePath = dockerWorkspacePath + 'data/'
 
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return "hello_world"
+def home():
+    return "algo service is running."
 
 @app.route('/executeAlgo', methods=['POST'])
 def executeAlgo():
     res = ''
-    shutil.copy('basic_python.py', dockerWorkspacePath)
     requestJson = request.get_json()
-    argArray = ['python', (dockerWorkspacePath + requestJson['Name']), (dockerWorkspacePath + requestJson['Folder'])]
-
+    print(requestJson, file=sys.stderr)
+    argArray = ['python', (algosWorkspacePath + requestJson['MainFile']), (dataWorkspacePath + requestJson['Folder'])]
+    print(argArray, file=sys.stderr)
+    # ToDo try
     process = subprocess.Popen(argArray, 
         stdout=subprocess.PIPE,
         universal_newlines=True)
-
+    # Get log of executed python script
     while True:
         output = process.stdout.readline()
         res = res + output.strip()

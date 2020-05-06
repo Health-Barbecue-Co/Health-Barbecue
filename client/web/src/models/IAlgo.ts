@@ -1,5 +1,8 @@
-export interface IAlgoExeInfo {
+export interface IAlgo {
+  'id': string
   'user': string
   'name': string
-  'seriesUid': string
+  'mainFile': string
+  'contentFile': string
+  'description': string
 }

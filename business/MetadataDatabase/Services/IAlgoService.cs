@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MetadataDatabase.Services
 {
-    public interface IAlgoService
+    public interface IAlgoService : ICrudService<AlgoDto>
     {
         public string Execute(AlgoExeInfoDto algoExeInfo);
     }

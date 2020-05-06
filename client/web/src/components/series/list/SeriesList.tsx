@@ -10,20 +10,17 @@ import { actionTypes, seriesSelectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
 import { ISeries } from '../../../models/series'
 import { SeriesLabel } from '../../labels/SeriesLabel'
-import { algoActionTypes } from '../../../features/algo'
-import { IUser } from '../../../models/user'
-import { selectors } from '../../../features/auth'
 import { AlgoResultDialog } from '../../algo/AlgoResultDialog'
 
 type SeriesListProps = {}
 
 export const SeriesList: React.FC<SeriesListProps> = () => {
   const { list } = useSelector(seriesSelectors.getSeriesStore)
-  const user: IUser = useSelector(selectors.getAuth)
   const { t } = useTranslation()
   const dispatch = useDispatch()
   
-  const [selectedSeries, setSelectedSeries ] =  useState<ISeries[]>([]);
+  const [selectedSeriesList, setSelectedSeriesList ] =  useState<ISeries[]>([]);
+  const [algoDialogOpen, setAlgoDialogOpen ] =  useState<boolean>(false);
 
   useEffect(() => {
     dispatch({ type: actionTypes.FETCH_ALL_SERIES })
@@ -49,19 +46,15 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   }
 
   const checkDisplay = (rowData: ISeries) =>{
-    return selectedSeries.includes(rowData);
+    return selectedSeriesList.includes(rowData);
   }
 
-  const executeAlgo = () => {
-    dispatch(
-    { 
-      type: algoActionTypes.EXECUTE_ALGO,
-      algoExeInfo: {
-        user: user.login,
-        name: "basic_python.py",
-        seriesUid: selectedSeries[0].seriesInstanceUID
-      }
-    })
+  const openAlgoSelection = () => {
+    setAlgoDialogOpen(true);
+  }
+
+  const closeAlgoSelection = () => {
+    setAlgoDialogOpen(false);
   }
 
   const theme = createMuiTheme({
@@ -107,11 +100,11 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
             {
               icon: () => <OutdoorGrillIcon />,
               tooltip: t('Launch IA'),
-              onClick: () => executeAlgo()
+              onClick: () => openAlgoSelection()
             },
           ]}
           onSelectionChange={(rows) => {
-            setSelectedSeries(rows);
+            setSelectedSeriesList(rows);
           }}
           localization={{
             body: {
@@ -134,7 +127,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
             }
           }}
         />
-        <AlgoResultDialog />
+        <AlgoResultDialog open={algoDialogOpen} onClose={closeAlgoSelection} selectedSeriesList={selectedSeriesList}/>
       </MuiThemeProvider>
     </div>
   )

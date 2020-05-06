@@ -1,7 +1,10 @@
-﻿using MetadataDatabase.Data;
+﻿using MetadataDatabase.Convertor;
+using MetadataDatabase.Data;
 using MetadataDatabase.Models;
+using MetadataDatabase.Repository;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
@@ -13,22 +16,26 @@ namespace MetadataDatabase.Services
 {
     public class AlgoService: IAlgoService
     {
-        IaConfiguration settings;
+        AlgoConfiguration settings;
+        readonly IAlgosRepository algoRepository;
         IPacsService pacsService;
-        string workspaceName = "workspace";
+        string workspaceName = "workspace/data/";
         private readonly HttpClient client;
 
-        public AlgoService(IOptions<IaConfiguration> settings, IPacsService pacsService)
+        public AlgoService(IOptions<AlgoConfiguration> settings, IAlgosRepository algoRepository, IPacsService pacsService)
         {
             this.settings = settings.Value;
+            this.algoRepository = algoRepository;
             this.pacsService = pacsService;
             this.client = new HttpClient();
         }
 
         public string Execute(AlgoExeInfoDto algoExeInfo)
         {
-            var zipFilzName = this.pacsService.DownloadSeries(algoExeInfo.SeriesUid);
-            // Clean workspace
+            Directory.CreateDirectory("workspace/data/");
+            var zipFilzName = this.pacsService.DownloadSeries(algoExeInfo.SeriesInstanceUID);
+
+            // Clean workspace data
             DirectoryInfo di = new DirectoryInfo(workspaceName);
             foreach (FileInfo file in di.GetFiles())
             {
@@ -45,7 +52,7 @@ namespace MetadataDatabase.Services
             ZipArchive archive = ZipFile.OpenRead(zipFilzName);
             var fullworkspacePath = Path.GetFullPath(workspaceName);
             Console.WriteLine(fullworkspacePath);
-            var relativeFilePath = Path.Join(@"workspace/" + archive.Entries[0].FullName);
+            var relativeFilePath = Path.Join(workspaceName + archive.Entries[0].FullName);
             Console.WriteLine(relativeFilePath);
             var fullFilePath = Path.GetFullPath(relativeFilePath);
             Console.WriteLine(fullFilePath);
@@ -66,6 +73,31 @@ namespace MetadataDatabase.Services
             var task = this.client.PostAsync($"{this.settings.Protocol}://{this.settings.Host}:{this.settings.Port}/executeAlgo", content);
             var res = task.Result.Content.ReadAsStringAsync();
             return res.Result;
+        }
+
+        public IEnumerable<AlgoDto> GetAll()
+        {
+            return this.algoRepository.GetAll()?.ToDto();
+        }
+
+        public AlgoDto Get(string id)
+        {
+            return this.algoRepository.Get(id.ToObjectId()).ToDto();
+        }
+
+        public AlgoDto Create(AlgoDto objectToCreate)
+        {
+            return this.algoRepository.Create(objectToCreate.ToModel()).ToDto();
+        }
+
+        public void Update(string id, AlgoDto objectToUpdate)
+        {
+            this.algoRepository.Update(objectToUpdate.ToModel());
+        }
+
+        public void Delete(string id)
+        {
+            this.algoRepository.Delete(id.ToObjectId());
         }
     }
 }

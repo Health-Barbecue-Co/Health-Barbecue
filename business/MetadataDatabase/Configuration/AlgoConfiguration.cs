@@ -1,6 +1,6 @@
 namespace MetadataDatabase.Models
 {
-    public class IaConfiguration
+    public class AlgoConfiguration
     {
         public string Host { get; set; }
         public int Port { get; set; }
