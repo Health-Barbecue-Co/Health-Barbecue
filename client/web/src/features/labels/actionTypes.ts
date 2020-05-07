@@ -1,0 +1,4 @@
+export const SET_ALL_LABELS = 'SET_ALL_LABELS'
+export const FETCH_ALL_LABELS = 'FETCH_ALL_LABELS'
+export const POST_LABEL = 'POST_LABEL'
+

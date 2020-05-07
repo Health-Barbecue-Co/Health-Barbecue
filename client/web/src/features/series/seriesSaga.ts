@@ -21,8 +21,14 @@ export function* fetchOneSeries(action: FetchOneSeriesAction) {
 
 export function* updateSeries(action: UpdateSeriesAction) {
   const { series } = action
-  yield call([seriesService, 'update'], series.id, series)
-  yield call(fetchSeries)
+  try
+  {
+    yield call([seriesService, 'update'], series.id, series)
+    yield call(fetchSeries)
+  } catch (error)
+  {
+    console.log(error);
+  }
 }
 
 export function* actionWatcher() {
