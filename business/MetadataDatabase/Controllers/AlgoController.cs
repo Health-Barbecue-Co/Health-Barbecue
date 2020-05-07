@@ -64,7 +64,12 @@ namespace MetadataDatabase.Controllers
         [HttpGet("{id}", Name = "GetAlgo")]
         public ActionResult<AlgoDto> Get(string id)
         {
-            return this.algoService.Get(id);
+            var algo = this.algoService.Get(id);
+            if (algo == null)
+            {
+                return NotFound();
+            }
+            return algo;
         }
 
         // POST: api/Algo

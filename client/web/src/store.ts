@@ -9,7 +9,6 @@ import { labelsSaga, labelsReducer } from './features/labels'
 import serieReducer from './features/series/seriesReducer'
 import { authSaga, AuthReducer } from './features/auth'
 import { VersionReducer, versionSaga } from './features/version'
-import labelsReducer from './features/labels/labelsReducer'
 import algoSaga from './features/algo/algoSaga'
 import algoReducer from './features/algo/algoReducer'
 

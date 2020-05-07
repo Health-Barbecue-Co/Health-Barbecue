@@ -71,7 +71,7 @@ export const AlgoResultDialog: React.FC<AlgoResultDialogProps> = (props: AlgoRes
     ? 
       <Dialog open={props.open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">
-        Algo result
+        {t("Algo result")}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -80,13 +80,13 @@ export const AlgoResultDialog: React.FC<AlgoResultDialogProps> = (props: AlgoRes
         </DialogContent>
         <DialogActions>
             <Button onClick={handleClose} color="primary">
-                Close
+                {t("Close")}
             </Button>
         </DialogActions>
       </Dialog>
     : <Dialog open={props.open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">
-        Algo selection
+        {t("Algo selection")}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -112,10 +112,10 @@ export const AlgoResultDialog: React.FC<AlgoResultDialogProps> = (props: AlgoRes
         </DialogContent>
         <DialogActions>
             <Button onClick={handleClose} color="primary">
-                Close
+              {t("Close")}
             </Button>
             <Button onClick={executeAlgo} disabled={selectedAlgoValue === ''} color="primary">
-                Execute
+              {t("Execute")}
             </Button>
         </DialogActions>
       </Dialog>

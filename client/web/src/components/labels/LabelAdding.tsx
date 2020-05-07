@@ -78,13 +78,7 @@ export const LabelAdding: React.FC<LabelAddingProps> = (props: LabelAddingProps)
   }
 
   const checkInputs = () => {
-    if(selectedLabelValue !==  '') 
-    {
-      setAreInputsValid(true)
-    } else
-    {
-      setAreInputsValid(false)
-    }
+    setAreInputsValid(selectedLabelValue !== '')
   }
 
   useEffect(checkInputs, [selectedLabelValue]);

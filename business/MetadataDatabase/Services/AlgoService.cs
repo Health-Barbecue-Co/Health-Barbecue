@@ -33,7 +33,7 @@ namespace MetadataDatabase.Services
         public string Execute(AlgoExeInfoDto algoExeInfo)
         {
             Directory.CreateDirectory("workspace/data/");
-            var zipFilzName = this.pacsService.DownloadSeries(algoExeInfo.SeriesInstanceUID);
+            var zipFileName = this.pacsService.DownloadSeries(algoExeInfo.SeriesInstanceUID);
 
             // Clean workspace data
             DirectoryInfo di = new DirectoryInfo(workspaceName);
@@ -47,9 +47,9 @@ namespace MetadataDatabase.Services
             }
 
             // Extract zip file in workspace
-            ZipFile.ExtractToDirectory(zipFilzName, workspaceName);
+            ZipFile.ExtractToDirectory(zipFileName, workspaceName);
             // Get path to dicom files
-            ZipArchive archive = ZipFile.OpenRead(zipFilzName);
+            ZipArchive archive = ZipFile.OpenRead(zipFileName);
             var fullworkspacePath = Path.GetFullPath(workspaceName);
             Console.WriteLine(fullworkspacePath);
             var relativeFilePath = Path.Join(workspaceName + archive.Entries[0].FullName);
@@ -63,7 +63,7 @@ namespace MetadataDatabase.Services
             var relatifPathOfSeriesDirectory = Path.GetRelativePath(fullworkspacePath, directoryOfSeries);
             Console.WriteLine(relatifPathOfSeriesDirectory);
             archive.Dispose();
-            File.Delete(zipFilzName);
+            File.Delete(zipFileName);
 
             // Execute algo
             algoExeInfo.Folder = relatifPathOfSeriesDirectory;
