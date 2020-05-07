@@ -66,7 +66,7 @@ export const SeriesLabel: React.FC<SeriesLabelProps> = (
       {labels &&
         labels.map((label: ILabel) => (
           <Chip
-            key={label.labelKey}
+            key={`${label.labelKey}-${label.assignedValue}`}
             label={`${label.labelKey}: ${label.assignedValue}`}
             color="primary"
             size="small"

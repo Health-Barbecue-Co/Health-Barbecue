@@ -78,11 +78,11 @@ export const SeriesInfo: React.FC<SeriesInfoProps> = (
               <Box display="flex" flexDirection="row" p={1}>
                 {series.labels.map((label: ILabel) => (
                   <Paper
-                    key={`label-${label.labelKeyId}`}
+                    key={`label-${label.labelKey}-${label.assignedValue}`}
                     className={classes.labelItem}
                     variant="outlined"
                   >
-                    {label.labelKeyId}
+                    {label.labelKey}
                     -&gt;
                     {label.assignedValue}
                   </Paper>
