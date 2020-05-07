@@ -52,7 +52,7 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
   const onCreate = () => {
     let newLabel: ILabel = {
       'id': '',
-      'user': user.login,
+      'user': user.id,
       'labelKey': labelKey,
       'labelType': selectedLabelType,
       'labelValue': listPredefineValue,
