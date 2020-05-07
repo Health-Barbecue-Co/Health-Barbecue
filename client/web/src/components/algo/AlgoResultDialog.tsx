@@ -8,8 +8,11 @@ import {
   Button,
   Select,
   MenuItem,
+  CircularProgress,
+  makeStyles,
 } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
+import styles from './AlgoResultDialog.style'
 import { AlgoSelectors, algoActionTypes } from '../../features/algo'
 import { IUser } from '../../models/user'
 import { selectors } from '../../features/auth'
@@ -17,6 +20,8 @@ import { ISeries } from './../../models/series';
 import { IAlgo } from './../../models/IAlgo';
 import { useTranslation } from 'react-i18next'
 import { IAlgoExeInfo } from './../../models/IAlgoExeInfo';
+
+const useStyle = makeStyles(styles)
 
 type AlgoResultDialogProps = {
   open: boolean,
@@ -27,9 +32,11 @@ type AlgoResultDialogProps = {
 export const AlgoResultDialog: React.FC<AlgoResultDialogProps> = (props: AlgoResultDialogProps) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
+  const classes = useStyle()
   const { algoResult, algoList } = useSelector(AlgoSelectors.getAlgoStore)
   const user: IUser = useSelector(selectors.getAuth)
   const [selectedAlgoValue, setSelectedAlgoValue ] = useState<string>('');
+  const [executing, setExecuting] = React.useState(false);
   const selectedSeries = props.selectedSeriesList[0];
 
   useEffect(() => {
@@ -37,6 +44,7 @@ export const AlgoResultDialog: React.FC<AlgoResultDialogProps> = (props: AlgoRes
   }, [dispatch])
 
   const handleClose = () => {
+    setExecuting(false);
     if(props.onClose !== undefined) props.onClose();
     dispatch({ type: algoActionTypes.SET_ALGO_RESULT, algoResult: '' })
   };
@@ -50,6 +58,7 @@ export const AlgoResultDialog: React.FC<AlgoResultDialogProps> = (props: AlgoRes
   }
 
   const executeAlgo = () => {
+    setExecuting(true);
     const selectedAlgo = algoList.filter( algo => algo.name === selectedAlgoValue)[0];
     const algoInfo: IAlgoExeInfo = {
       user: user.id,
@@ -114,8 +123,9 @@ export const AlgoResultDialog: React.FC<AlgoResultDialogProps> = (props: AlgoRes
             <Button onClick={handleClose} color="primary">
               {t("Close")}
             </Button>
-            <Button onClick={executeAlgo} disabled={selectedAlgoValue === ''} color="primary">
+            <Button onClick={executeAlgo} disabled={(selectedAlgoValue === '' || executing)} color="primary">
               {t("Execute")}
+              {executing && <CircularProgress size={24} className={classes.buttonProgress}/>}
             </Button>
         </DialogActions>
       </Dialog>
