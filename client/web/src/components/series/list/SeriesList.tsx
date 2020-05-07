@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
-import SyncIcon from '@material-ui/icons/Sync'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import MaterialTable from 'material-table'
+import { makeStyles } from '@material-ui/core'
 
 import DescriptionIcon from '@material-ui/icons/Description'
+import SyncIcon from '@material-ui/icons/Sync'
 
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { actionTypes, selectors } from '../../../features/series'
@@ -12,9 +13,14 @@ import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
 import { SeriesLabel } from '../label/SeriesLabel'
 import { ISeries } from '../../../models/series'
 
+import style from './SeriesList.style'
+
+const useStyle = makeStyles(style)
+
 type SeriesListProps = {}
 
 export const SeriesList: React.FC<SeriesListProps> = () => {
+  const classes = useStyle()
   const { list } = useSelector(selectors.getSeriesStore)
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -53,7 +59,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   }
 
   return (
-    <div style={{ maxWidth: '100%' }}>
+    <div className={classes.root}>
       <MaterialTable
         columns={[
           { title: t('Patient name'), field: 'patientsName' },

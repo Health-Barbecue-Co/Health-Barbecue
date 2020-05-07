@@ -2,40 +2,42 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Formik } from 'formik'
-import {
-  TextField,
-  Button
-} from '@material-ui/core'
+import { TextField, Button } from '@material-ui/core'
 
 import { actionTypes } from '../../../features/series'
 import { ILabel } from '../../../models/ILabel'
 import { ISeries } from '../../../models/series'
 
-type SeriesLabelFromProps = { 
-  series: ISeries, 
-  onCreate?: () => void ,
+type SeriesLabelFromProps = {
+  series: ISeries
+  onCreate?: () => void
   onCancel?: () => void
 }
 
-export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLabelFromProps) => {
+export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (
+  props: SeriesLabelFromProps
+) => {
+  const { series, onCreate, onCancel } = props
+  const localSeries = series
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const localSeries = props.series;
 
-  const onCancel = () => {
-    if(props.onCancel !== undefined) props.onCancel();
+  const handleCancel = () => {
+    if (onCancel !== undefined) {
+      onCancel()
+    }
   }
 
   const validate = (values: ILabel) => {
-    let errors = {};
+    let errors = {}
     if (values.labelKeyId === '') {
-      errors = {"labelKeyId": 'Required'};
+      errors = { labelKeyId: 'Required' }
     }
     if (values.assignedValue === '') {
-      errors = {"assignedValue": 'Required'};
+      errors = { assignedValue: 'Required' }
     }
-    return errors;
-  };
+    return errors
+  }
 
   const defaultValues = {
     id: '',
@@ -49,30 +51,25 @@ export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLab
   }
 
   return (
-      <Formik
-        enableReinitialize
-        initialValues = {defaultValues}
-        validate = {validate}
-        onSubmit={(values: ILabel) => {
-          if(props.series == null)
-          {
-            throw Error("No series selected")
-          }
-          if(props.series.labels == null)
-          {
-            props.series.labels = new Array<ILabel>();
-          }
-          props.series.labels.push(values);
-          dispatch({ type: actionTypes.UPDATE_SERIES, series: localSeries});
-          if(props.onCreate !== undefined) props.onCreate();
-        }}
-      >
-      {({
-        values,
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-      }) => (
+    <Formik
+      enableReinitialize
+      initialValues={defaultValues}
+      validate={validate}
+      onSubmit={(values: ILabel) => {
+        if (series == null) {
+          throw Error('No series selected')
+        }
+        if (series.labels == null) {
+          series.labels = new Array<ILabel>()
+        }
+        series.labels.push(values)
+        dispatch({ type: actionTypes.UPDATE_SERIES, series: localSeries })
+        if (onCreate !== undefined) {
+          onCreate()
+        }
+      }}
+    >
+      {({ values, handleChange, handleSubmit, isSubmitting }) => (
         <form onSubmit={handleSubmit}>
           <TextField
             autoFocus
@@ -91,11 +88,11 @@ export const SeriesLabelFrom: React.FC<SeriesLabelFromProps> = (props: SeriesLab
             value={values.assignedValue}
             fullWidth
           />
-          <Button color="primary" onClick={onCancel}>
-            {t("Cancel")}
+          <Button color="primary" onClick={handleCancel}>
+            {t('Cancel')}
           </Button>
           <Button type="submit" disabled={isSubmitting} color="primary">
-            {t("Create")}
+            {t('Create')}
           </Button>
         </form>
       )}
