@@ -3,35 +3,31 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import {
   Chip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  Box,
+  Box
 } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
-import { actionTypes } from '../../../features/series'
-import { ILabel } from '../../../models/ILabel'
-import { ISeries } from '../../../models/series'
-import { SeriesLabelFrom } from './SeriesLabelFrom'
+import { actionTypes } from '../../features/series'
+import { ILabel } from '../../models/ILabel'
+import { ISeries } from '../../models/series'
+import { LabelManagementDialog } from './LabelManagementDialog';
 
-type SeriesLabelProps = { series: ISeries }
+type SeriesLabelProps = { series: ISeries, isSelected: boolean }
 
 export const SeriesLabel: React.FC<SeriesLabelProps> = (props: SeriesLabelProps) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  let labels = props.series.labels;
+  const [openLabelManagementDialog, 
+    setOpeLabelManagementDialog] = React.useState<boolean>(false);
+  const labels: ILabel[] = props.series.labels;
 
-  // For form
-  const [open, setOpen] = React.useState(false);
   const handleClickOpen = (localSeries: ISeries | null) => {
-    setOpen(true);
+    setOpeLabelManagementDialog(true);
     dispatch({ type: actionTypes.SET_CURRENT_SERIES, series: localSeries })
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpeLabelManagementDialog(false);
   };
 
   const handleDelete = (localSeries: ISeries | null, labelClicked: ILabel) => {
@@ -49,33 +45,29 @@ export const SeriesLabel: React.FC<SeriesLabelProps> = (props: SeriesLabelProps)
 
   return (
     <div>
-      <Box >
-      <Chip 
-        label='Add label'
-        size="small" 
-        onClick={() => handleClickOpen(props.series)}
-        icon={<AddCircleOutlineIcon />}
-      />
+      <Box>
+      {
+        props.isSelected ?
+        <Chip 
+          label={t('Add label')}
+          size="small" 
+          onClick={() => handleClickOpen(props.series)}
+          icon={<AddCircleOutlineIcon />}
+        /> : null
+      }
       </Box>
       {labels &&
         labels.map((label: ILabel, index) => (
           <Chip 
             key={index}
-            label={label.labelKeyId + ': ' + label.assignedValue} 
+            label={label.labelKey + ': ' + label.assignedValue} 
             color="primary" 
             size="small" 
             onDelete={() => handleDelete(props.series, label)}
           />
-      ))}
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{t("Create new label")}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-          {t("To create a new label, please enter following values.")}
-          </DialogContentText>
-          <SeriesLabelFrom series={props.series} onCreate={handleClose} onCancel={handleClose}/>
-        </DialogContent>
-      </Dialog>
+        ))
+      }
+      <LabelManagementDialog open={openLabelManagementDialog} itemLabelizable={props.series}  onClose={handleClose}/>
     </div>
   )
 }
