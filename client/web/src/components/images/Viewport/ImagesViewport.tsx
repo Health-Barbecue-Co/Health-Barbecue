@@ -1,13 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, makeStyles } from '@material-ui/core'
 import CornerstoneViewport from 'react-cornerstone-viewport'
+import axios from 'axios'
 
 import style from './ImagesViewport.Style'
 
 const useStyle = makeStyles(style)
 
-export const ImagesViewport: React.FC = () => {
+type ImagesViewportProps = {
+  seriesInstanceUID: string
+}
+
+export const ImagesViewport: React.FC<ImagesViewportProps> = (props: ImagesViewportProps) => {
   const classes = useStyle()
+  const [instancesURI, setInstancesURI] = useState<string[]>([])
+
+  const getAllInstancesURI = () => {
+    axios.get(`/orthanc/dicom-web/instances?SeriesInstanceUID=${props.seriesInstanceUID}`).then((response) => {
+      const arrayOfInstance = response.data;
+      arrayOfInstance.sort((instance1: any, instance2: any) => {
+        return instance1["00200013"]['Value'][0] - instance2["00200013"]['Value'][0];
+      })
+      const arrayOfInstancesURI: string[] = arrayOfInstance.map((instance: any )=> {
+        const objectUID = instance["00080018"]['Value'][0];
+        const transferSyntax = instance["00080016"]['Value'][0];
+        return `wadouri:/orthanc/wado?requestType=WADO&objectUID=${objectUID}&contentType=application%2Fdicom&transferSyntax=${transferSyntax}`;
+      });
+      setInstancesURI(arrayOfInstancesURI);
+    })
+  }
+  
+  useEffect(() => {
+    getAllInstancesURI();
+  }, [])
+
   const state = {
     tools: [
       // Mouse
@@ -33,19 +59,22 @@ export const ImagesViewport: React.FC = () => {
       { name: 'ZoomTouchPinch', mode: 'active' },
       { name: 'StackScrollMultiTouch', mode: 'active' },
     ],
-    imageIds: [
-      'dicomweb://s3.amazonaws.com/lury/PTCTStudy/1.3.6.1.4.1.25403.52237031786.3872.20100510032220.11.dcm',
-      'dicomweb://s3.amazonaws.com/lury/PTCTStudy/1.3.6.1.4.1.25403.52237031786.3872.20100510032220.12.dcm',
-    ],
+    // http://localhost:8042/instances/4640bd76-e07eced4-b4621273-ddad479f-40500e91/preview
+    imageIds: instancesURI,
   }
 
   return (
     <Box flex={1} display="flex" flexDirection="column">
-      <CornerstoneViewport
-        tools={state.tools}
-        imageIds={state.imageIds}
-        className={classes.root}
-      />
+      {
+        state.imageIds.length !== 0
+        ? <CornerstoneViewport
+          tools={state.tools}
+          imageIds={state.imageIds}
+          className={classes.root}
+        />
+        : null
+      }
+
     </Box>
   )
 }

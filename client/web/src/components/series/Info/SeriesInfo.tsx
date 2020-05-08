@@ -92,7 +92,7 @@ export const SeriesInfo: React.FC<SeriesInfoProps> = (
                 </Box>
               </Box>
               <Box flexGrow={1} display="flex">
-                <ImagesViewport />
+                <ImagesViewport seriesInstanceUID={series.seriesInstanceUID} />
               </Box>
             </Box>
           </Paper>
