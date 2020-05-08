@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { I18nextProvider } from "react-i18next";
+import { I18nextProvider } from 'react-i18next'
 
-import i18n from "./i18n";
+import i18n from './i18n'
 import store from './store'
 
 import 'typeface-roboto'
@@ -11,12 +11,15 @@ import 'typeface-roboto'
 import './index.scss'
 
 import App from './App'
+import setupCornerstone from './setupCornerstone'
+
+setupCornerstone()
 
 ReactDOM.render(
-    <I18nextProvider i18n={i18n}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </I18nextProvider>,
+  <I18nextProvider i18n={i18n}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </I18nextProvider>,
   document.getElementById('root')
 )
