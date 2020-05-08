@@ -1,6 +1,6 @@
-import { ILabel } from "./ILabel"
+import { ILabelizable } from "./ILabelizable";
 
-export interface ISeries {
+export interface ISeries extends ILabelizable{
   id: string
   seriesInstanceUID: string
   seriesDescription: string
@@ -8,5 +8,4 @@ export interface ISeries {
   numberOfSeriesRelatedInstances: string
   patientsName: string
   bodyPartExamined: string
-  labels: Array<ILabel>
 }

@@ -1,19 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MetadataDatabase.Repository;
 using MetadataDatabase.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.Options;
 using MetadataDatabase.Models;
 using System.Reflection;
 using System.IO;
@@ -24,7 +17,7 @@ using AutoMapper;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
-
+using System.Threading.Tasks;
 
 namespace MetadataDatabase
 {
@@ -138,6 +131,8 @@ namespace MetadataDatabase
 
             service.AddScoped<IPacsService, PacsService>();
             service.AddScoped<IPacsMirrorService, PacsMirrorService>();
+            service.AddScoped<ILabelRepository, LabelRepository>();
+            service.AddScoped<ILabelService, LabelService>();
         }
     }
 }

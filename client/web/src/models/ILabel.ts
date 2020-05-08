@@ -1,10 +1,10 @@
 export interface ILabel {
   'id': string
-  'userId': string
-  'labelKeyId': string
-  'labelTypeId': string
-  'labelValueId': string
-  'isPublic': string
-  'isApproved': string
+  'user': string
+  'labelKey': string
+  'labelType': string
+  'labelValue': string[]
+  'isPublic': boolean
+  'isApproved': boolean
   'assignedValue': string
 }
