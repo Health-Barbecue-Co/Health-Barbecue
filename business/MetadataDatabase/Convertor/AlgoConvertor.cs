@@ -16,6 +16,7 @@ namespace MetadataDatabase.Convertor
                 User = algoDto.User,
                 Name = algoDto.Name,
                 MainFile = algoDto.MainFile,
+                ContentFile = algoDto.ContentFile,
                 Description = algoDto.Description
             };
         }
@@ -27,6 +28,7 @@ namespace MetadataDatabase.Convertor
                 User = algo.User,
                 Name = algo.Name,
                 MainFile = algo.MainFile,
+                ContentFile = algo.ContentFile,
                 Description = algo.Description
             };
         }
