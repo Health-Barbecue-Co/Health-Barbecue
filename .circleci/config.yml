@@ -22,12 +22,6 @@ jobs:
             yarn install --silent
             # Run unit tests
             yarn test
-            
-            ## lint [Seems to be long to run. Should we keep it on every build?]
-            # yarn lint
-            
-            # Build production web client
-            yarn build
   unit-tests-business:
     executor:
       name: windows/default
