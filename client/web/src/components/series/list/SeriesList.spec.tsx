@@ -21,6 +21,18 @@ describe('SeriesList', () => {
     series: {
       list: [{ id: 'myId' }],
     },
+    auth: {
+      auth: null,
+      message: null,
+    },
+    algo:  {
+      algoResult: "",
+      selectedAlgo: {
+        name: '',
+        user:'',
+        seriesUid:''
+      }  
+    }
   })
 
   // Add jest mock spy to watch for store.dispatch method. See https://jestjs.io/docs/en/jest-object#jestspyonobject-methodname for more info

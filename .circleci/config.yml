@@ -1,13 +1,14 @@
 version: 2.1
-
 orbs:
+  cypress: cypress-io/cypress@1.20.0
   windows: circleci/windows@2.2.0
-
 executors:
   node-executor:
     docker:
       - image: circleci/node:13.12.0
-
+  with-chrome:
+    docker:
+      - image: 'cypress/browsers:chrome69'
 jobs:
   # Run all tests related to the web client
   test-webclient:
@@ -33,10 +34,16 @@ jobs:
     steps:
       - checkout
       - run: dotnet test business\tests\UnitTests.csproj
-    
+  end-to-end-tests:
+    machine:
+      docker_layer_caching: false
+    steps:
+    - checkout
+    - run: docker-compose up --exit-code-from hb_end_to_end_test
+
 workflows:
-  version: 2.1
-  build_and_test:
+  build:
     jobs:
       - test-webclient
       - unit-tests-business
+      - end-to-end-tests

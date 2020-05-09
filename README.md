@@ -3,6 +3,7 @@
 ## Requirements
 
 Required to launch the global application:
+
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [DOTNet Core 3.xx](https://dotnet.microsoft.com/download)
@@ -96,6 +97,7 @@ The application will be available on <http://localhost:3000/>.
 ### Business
 
 #### Requirement
+
 Install [dotnet 3.1](https://dotnet.microsoft.com/download).
 
 #### Build on macOS
@@ -116,3 +118,31 @@ Run the commands:
 cd business/MetadataDatabase
 dotnet run
 ```
+
+## End to End test
+
+You are using cypress.io, and to launch them thanks to docker compose :
+
+### Locally
+
+```bash
+# you must run api (with dotnet run) and frontend (with yarn start)
+cd end-to-end-tests
+yarn cy-open:local
+
+# or
+yarn cy-run:local
+```
+
+Important : mongoDB must be launched (via docker or locally)
+
+### Docker
+
+```bash
+docker-compose up --exit-code-from hb_end_to_end_test
+```
+
+### Recommandations
+
+To Find one element of page, it is recommanded to add attribute `data-testid` and use `cy.findByTestId('your_data-testId_element')`
+to find it in tests

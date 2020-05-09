@@ -8,5 +8,6 @@ namespace MetadataDatabase.Services
     {
         public IEnumerable<SeriesDto> GetSeriesList();
         public SeriesDto GetMetadataSeries(SeriesDto series);
+        public string DownloadSeries(string seriesUID);
     }
 }

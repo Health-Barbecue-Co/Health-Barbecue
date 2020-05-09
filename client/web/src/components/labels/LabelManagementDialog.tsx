@@ -26,12 +26,11 @@ enum Mode {
 
 export const LabelManagementDialog: React.FC<LabelManagementDialogProps> = (props: LabelManagementDialogProps) => {
   const { t } = useTranslation()
-  const propIsOpen = props.open;
+  const { open: propIsOpen, itemLabelizable, onClose } = props
   const [mode, setMode] = useState<Mode>(Mode.Adding);
-  const itemLabelizable = props.itemLabelizable;
 
   const handleClose = () => {
-    if(props.onClose !== undefined) props.onClose();
+    if(onClose !== undefined) onClose();
   };
 
   const handleLabelCreation = () => {
@@ -68,7 +67,7 @@ export const LabelManagementDialog: React.FC<LabelManagementDialogProps> = (prop
           {
             mode === Mode.Adding
             ? <Button onClick={handleLabelCreation} color="primary">
-                Create a new label
+                {t("Create a new label")}
               </Button>
             : null
           }

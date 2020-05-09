@@ -1,4 +1,5 @@
 ﻿using System;
+using MetadataDatabase.Data;
 using MetadataDatabase.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,19 @@ namespace MetadataDatabase.Controllers
         {
             this.pacsMirrorService.MirrorPacs();
             return Ok();
+        }
+
+        /// <summary>
+        /// Download
+        /// </summary>
+        [HttpGet("Download/{seriesUID}", Name = "Download")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Download(string seriesUID)
+        {
+
+            var res = this.pacsMirrorService.DownloadSeries(seriesUID);
+
+            return Ok(res);
         }
     }
 }

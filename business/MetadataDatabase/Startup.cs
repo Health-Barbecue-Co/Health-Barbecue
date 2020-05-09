@@ -122,6 +122,7 @@ namespace MetadataDatabase
             service.Configure<MongoConfiguration>(Configuration.GetSection(nameof(MongoConfiguration)));
             service.Configure<PacsConfiguration>(Configuration.GetSection(nameof(PacsConfiguration)));
             service.Configure<AuthConfiguration>(Configuration.GetSection(nameof(AuthConfiguration)));
+            service.Configure<AlgoConfiguration>(Configuration.GetSection(nameof(AlgoConfiguration)));
 
             service.AddScoped<ISeriesServices, SeriesServices>();
             service.AddScoped<ISeriesRepository, SeriesRepository>();
@@ -131,8 +132,12 @@ namespace MetadataDatabase
 
             service.AddScoped<IPacsService, PacsService>();
             service.AddScoped<IPacsMirrorService, PacsMirrorService>();
+
             service.AddScoped<ILabelRepository, LabelRepository>();
             service.AddScoped<ILabelService, LabelService>();
+
+            service.AddScoped<IAlgosRepository, AlgosRepository>();
+            service.AddScoped<IAlgoService, AlgoService>();
         }
     }
 }

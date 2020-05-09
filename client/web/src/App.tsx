@@ -11,7 +11,8 @@ import { Home } from './pages/Home'
 import { User } from './pages/User'
 import { Projects } from './pages/Projects'
 import { Series } from './pages/Series'
-import { AlgorithmsMain } from './components/algorithms'
+
+import { Algorithms } from './pages/Algorithms'
 
 const App: React.FC = () => {
   return (
@@ -36,8 +37,8 @@ const App: React.FC = () => {
             <ConnectedRoute path="/series">
               <Series />
             </ConnectedRoute>
-            <ConnectedRoute path="/algorithms">
-              <AlgorithmsMain />
+            <ConnectedRoute path="/algorithms" exact>
+              <Algorithms />
             </ConnectedRoute>
           </Switch>
         </Box>
