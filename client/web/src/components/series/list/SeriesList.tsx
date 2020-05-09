@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import MaterialTable from 'material-table'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'
 import OutdoorGrillIcon from '@material-ui/icons/OutdoorGrill';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import { CSVDownload } from "react-csv";
 
 import { actionTypes, seriesSelectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
@@ -21,6 +23,9 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   
   const [selectedSeriesList, setSelectedSeriesList ] =  useState<ISeries[]>([]);
   const [algoDialogOpen, setAlgoDialogOpen ] =  useState<boolean>(false);
+
+  const [csvData, setCsvData ] =  useState<Array<any>>([]);
+  const [downloadCsv, setDownloadCsv ] =  useState<boolean>(false);
 
   useEffect(() => {
     dispatch({ type: actionTypes.FETCH_ALL_SERIES })
@@ -55,6 +60,27 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
 
   const closeAlgoSelection = () => {
     setAlgoDialogOpen(false);
+  }
+
+  const exportSelected = (data: any) => {
+    // Get all labels of all selected series
+    let labels: any = {};
+    data.forEach((dataElement: any)=> {
+      dataElement.labels?.forEach((labelElement: any)=> {
+        labels[labelElement.labelKey] = null;
+      });
+    });
+    // Copy all labels as property of series
+    data.forEach((dataElement: any)=> {
+      Object.assign(dataElement, labels);
+      // Set series labels with corresponding values
+      dataElement.labels?.forEach((labelElement: any)=> {
+        dataElement[labelElement.labelKey] = labelElement.assignedValue;
+      });
+    });
+    setCsvData(data);
+    setDownloadCsv(true)
+    setTimeout(()=> {setCsvData([]); setDownloadCsv(false)}, 500);
   }
 
   const theme = createMuiTheme({
@@ -102,6 +128,11 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
               tooltip: t('Launch IA'),
               onClick: () => openAlgoSelection()
             },
+            {
+              icon: () => <CloudDownloadIcon />,
+              tooltip: t('Export csv'),
+              onClick: (evt, data) => exportSelected(data)
+            },
           ]}
           onSelectionChange={(rows) => {
             setSelectedSeriesList(rows);
@@ -128,6 +159,12 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
           }}
         />
         <AlgoResultDialog open={algoDialogOpen} onClose={closeAlgoSelection} selectedSeriesList={selectedSeriesList}/>
+        {
+          downloadCsv
+          ? 
+          <CSVDownload data={csvData} target="_blank"/>
+          : null
+        }
       </MuiThemeProvider>
     </div>
   )
