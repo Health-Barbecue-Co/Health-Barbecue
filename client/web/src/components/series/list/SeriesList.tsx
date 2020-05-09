@@ -65,7 +65,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
     },
 
   });
-  
+
   return (
     <div style={{ maxWidth: '100%' }}>
       <MuiThemeProvider theme={theme}>
@@ -92,7 +92,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
           }}
           actions={[
             {
-              icon: () => <SyncIcon />,
+              icon: () => <SyncIcon id="synchronize-pacs-icon" />,
               tooltip: t('Refresh'),
               isFreeAction: true,
               onClick: () => synchronize()
