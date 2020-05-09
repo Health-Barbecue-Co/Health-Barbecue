@@ -13,6 +13,7 @@ import { Projects } from './pages/Projects'
 import { Series } from './pages/Series'
 
 import style from './App.style'
+import { Algorithms } from './pages/Algorithms'
 
 
 const useStyles = makeStyles(style)
@@ -45,6 +46,9 @@ const App: React.FC = () => {
             </ConnectedRoute>
             <ConnectedRoute path="/series" exact>
               <Series />
+            </ConnectedRoute>
+            <ConnectedRoute path="/algorithms" exact>
+              <Algorithms />
             </ConnectedRoute>
           </Switch>
         </Container>
