@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Box, makeStyles } from '@material-ui/core'
 import CornerstoneViewport from 'react-cornerstone-viewport'
-import axios from 'axios'
 
 import style from './ImagesViewport.Style'
+import { UserService } from '../../../features/user'
 
 const useStyle = makeStyles(style)
 
@@ -12,27 +12,21 @@ type ImagesViewportProps = {
 }
 
 export const ImagesViewport: React.FC<ImagesViewportProps> = (props: ImagesViewportProps) => {
+  const { seriesInstanceUID } = props
   const classes = useStyle()
   const [instancesURI, setInstancesURI] = useState<string[]>([])
 
-  const getAllInstancesURI = () => {
-    axios.get(`/orthanc/dicom-web/instances?SeriesInstanceUID=${props.seriesInstanceUID}`).then((response) => {
-      const arrayOfInstance = response.data;
-      arrayOfInstance.sort((instance1: any, instance2: any) => {
-        return instance1["00200013"]['Value'][0] - instance2["00200013"]['Value'][0];
-      })
-      const arrayOfInstancesURI: string[] = arrayOfInstance.map((instance: any )=> {
-        const objectUID = instance["00080018"]['Value'][0];
-        const transferSyntax = instance["00080016"]['Value'][0];
-        return `wadouri:/orthanc/wado?requestType=WADO&objectUID=${objectUID}&contentType=application%2Fdicom&transferSyntax=${transferSyntax}`;
-      });
-      setInstancesURI(arrayOfInstancesURI);
-    })
-  }
-  
+  const getImageURIs = useCallback(
+    async () => {
+      const uris = await UserService.getInstanceUrls(seriesInstanceUID)
+      setInstancesURI(uris)
+    },
+    [seriesInstanceUID],
+  )
+
   useEffect(() => {
-    getAllInstancesURI();
-  }, [])
+    getImageURIs()
+  }, [seriesInstanceUID, getImageURIs])
 
   const state = {
     tools: [
@@ -59,7 +53,6 @@ export const ImagesViewport: React.FC<ImagesViewportProps> = (props: ImagesViewp
       { name: 'ZoomTouchPinch', mode: 'active' },
       { name: 'StackScrollMultiTouch', mode: 'active' },
     ],
-    // http://localhost:8042/instances/4640bd76-e07eced4-b4621273-ddad479f-40500e91/preview
     imageIds: instancesURI,
   }
 

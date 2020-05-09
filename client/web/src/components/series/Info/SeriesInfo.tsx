@@ -42,9 +42,9 @@ export const SeriesInfo: React.FC<SeriesInfoProps> = (
           </IconButton>,
         ]}
       />
-      <Box p={1}>
+      <Box p={1} flexGrow={1} display="flex" flexDirection="column">
         {series ? (
-          <Paper>
+          <Paper classes={{ root: classes.container}}>
             <Box p={1} display="flex" flexDirection="row">
               <Box width={3 / 5}>
                 <p>

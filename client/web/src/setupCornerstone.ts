@@ -11,7 +11,6 @@ export default function setupCornerstone() {
   cornerstoneTools.external.Hammer = Hammer
   cornerstoneTools.external.cornerstoneMath = cornerstoneMath
 
-  //
   cornerstoneTools.init()
 
   // Preferences
@@ -38,8 +37,4 @@ export default function setupCornerstone() {
       },
     },
   })
-
-  // Debug
-  // window.cornerstone = cornerstone
-  // window.cornerstoneTools = cornerstoneTools
 }
