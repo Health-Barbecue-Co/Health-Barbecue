@@ -76,7 +76,7 @@ export const SeriesInfo: React.FC<SeriesInfoProps> = (
               <Divider />
               <div>{t('Related labels')}</div>
               <Box display="flex" flexDirection="row" p={1}>
-                {series.labels.map((label: ILabel) => (
+                {series.labels && series.labels.map((label: ILabel) => (
                   <Paper
                     key={`label-${label.labelKey}-${label.assignedValue}`}
                     className={classes.labelItem}
