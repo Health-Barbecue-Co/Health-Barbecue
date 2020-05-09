@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { Paper, Box, IconButton, Divider, makeStyles } from '@material-ui/core'
 import BackIcon from '@material-ui/icons/ArrowBack'
 import { useTranslation } from 'react-i18next'
-import { actionTypes, selectors } from '../../../features/series'
+import { actionTypes, seriesSelectors } from '../../../features/series'
 import { ISeries } from '../../../models/series'
 import { Toolbar } from '../../common'
 import { ILabel } from '../../../models/ILabel'
@@ -25,7 +25,7 @@ export const SeriesInfo: React.FC<SeriesInfoProps> = (
   const { id } = props
   const dispatch = useDispatch()
   const history = useHistory()
-  const series: ISeries = useSelector(selectors.getCurrent)
+  const series: ISeries = useSelector(seriesSelectors.getCurrent)
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export const SeriesInfo: React.FC<SeriesInfoProps> = (
                 <Divider />
                 <div>{t('Related labels')}</div>
                 <Box display="flex" flexDirection="row" p={1}>
-                  {series.labels.map((label: ILabel) => (
+                  {series.labels && series.labels.map((label: ILabel) => (
                     <Paper
                       key={`label-${label.labelKey}-${label.assignedValue}`}
                       className={classes.labelItem}

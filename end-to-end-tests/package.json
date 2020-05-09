@@ -1,0 +1,20 @@
+{
+  "name": "end-to-end-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cy-run:local": "cross-env dbUrl=\"mongodb://localhost:27017\" cypress run --headed --config-file cypress.dev.json",
+    "cy-open:local": "cross-env dbUrl=\"mongodb://localhost:27017\" cypress open --config-file cypress.dev.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^4.5.0"
+  },
+  "dependencies": {
+    "@testing-library/cypress": "^6.0.0",
+    "cross-env": "^7.0.2",
+    "mongoose": "^5.9.11"
+  }
+}
