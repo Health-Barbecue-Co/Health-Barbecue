@@ -1,1 +1,2 @@
-export { SeriesList } from './list/SeriesList'
+export * from './Info/SeriesInfo'
+export * from './list/SeriesList'

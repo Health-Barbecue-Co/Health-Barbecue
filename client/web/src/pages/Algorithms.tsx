@@ -2,9 +2,9 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, TextField, Grid, Card } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
+import MaterialTable from 'material-table'
 
 import { AlgoSelectors, algoActionTypes } from '../features/algo'
-import MaterialTable from 'material-table'
 import { IAlgo } from './../models/IAlgo';
 import { IUser } from '../models/user'
 import { selectors } from '../features/auth'
@@ -36,7 +36,7 @@ export const Algorithms: React.FC = () => {
     && algoDesc !== '')
     {
       setAreInputsValid(true);
-    } else 
+    } else
     {
       setAreInputsValid(false);
     }
@@ -45,12 +45,12 @@ export const Algorithms: React.FC = () => {
   useEffect(checkInputs, [algoName, algoDesc]);
 
   const sendFile = () => {
-    var reader = new FileReader(); 
+    var reader = new FileReader();
     reader.onload = function(evt) {
-      if(evt === null 
+      if(evt === null
         || evt.target === null
         || evt.target.result === null){ throw(new Error("")) }
-      if(fileInput === null 
+      if(fileInput === null
         || fileInput.current === null
         || fileInput.current.files === null){ throw(new Error("")) }
       let algo: IAlgo = {
@@ -63,7 +63,7 @@ export const Algorithms: React.FC = () => {
       }
       dispatch({ type: algoActionTypes.CREATE_ALGO, algo: algo })
     };
-    if(fileInput === null 
+    if(fileInput === null
       || fileInput.current === null
       || fileInput.current.files === null){ throw(new Error("")) }
     reader.readAsBinaryString(fileInput.current.files[0]);
@@ -94,9 +94,9 @@ export const Algorithms: React.FC = () => {
                 fullWidth
                 variant="outlined"
               />
-              <label>Select files:</label>
+              <label>{t('Select files:')}</label>
               <input type="file" id="myfile" name="myfile" ref={fileInput} />
-              <Button color="primary" onClick={sendFile} disabled={!areInputsValid} variant="outlined"> Send algo </Button>
+              <Button color="primary" onClick={sendFile} disabled={!areInputsValid} variant="outlined">{t('Send algo')}</Button>
             </form>
           </Card>
         </Grid>
@@ -118,7 +118,7 @@ export const Algorithms: React.FC = () => {
                   tooltip: 'Remove All Selected algos',
                   icon: 'delete',
                   onClick: (evt, data) => {
-                    (data as IAlgo[]).forEach((algo) =>{
+                    (data as IAlgo[]).forEach((algo) => {
                       dispatch({ type: algoActionTypes.DELETE_ALGO, algo: algo })
                     })
                   }
