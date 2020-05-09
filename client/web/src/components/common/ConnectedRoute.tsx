@@ -6,16 +6,20 @@ import { Route, Redirect, RouteProps } from 'react-router-dom'
 export const ConnectedRoute: React.FC<RouteProps> = (
   routeProps: RouteProps
 ) => {
-  const { children, ...rest } = routeProps
+  const { children, render: routeRender, ...rest } = routeProps
   return (
     <Route
       {...rest}
       render={(props) => {
         // eslint-disable-next-line react/prop-types
         const { location } = props
-        return localStorage.getItem('user') ? (
-          children
-        ) : (
+        const fromLocalstorage = localStorage.getItem('user')
+        const authInfo = fromLocalstorage ? JSON.parse(fromLocalstorage) : false
+
+        if (authInfo && authInfo.token) {
+          return routeRender ? routeRender(props) : children
+        }
+        return (
           <Redirect to={{ pathname: '/user', state: { from: location } }} />
         )
       }}

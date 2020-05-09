@@ -52,6 +52,7 @@ export const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           <TextField
             error
             name="firstname"
+            id="firstname-field"
             label={t('user:field.firstname')}
             value={values.firstname}
             variant="outlined"
@@ -64,6 +65,7 @@ export const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           <TextField
             error
             name="lastname"
+            id="lastname-field"
             label={t('user:field.lastname')}
             value={values.lastname}
             variant="outlined"
@@ -78,6 +80,7 @@ export const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           error
           fullWidth
           name="login"
+          id="login-field"
           label={t('user:field.login')}
           value={values.login}
           variant="outlined"
@@ -92,6 +95,7 @@ export const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           <InputLabel htmlFor="password">{t('user:field.password')}</InputLabel>
           <OutlinedInput
             name="password"
+            id="password-field"
             fullWidth
             type={showPassword ? 'text' : 'password'}
             autoComplete="new-password"
@@ -130,6 +134,7 @@ export const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       <Box p={1}>
         <Button
           type="submit"
+          id="save-button"
           fullWidth
           variant="contained"
           color="primary"

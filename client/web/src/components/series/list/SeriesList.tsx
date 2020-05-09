@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import SyncIcon from '@material-ui/icons/Sync'
+
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import MaterialTable from 'material-table'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'
+import { MuiThemeProvider, createMuiTheme, makeStyles } from '@material-ui/core'
+import { useHistory, useRouteMatch } from 'react-router-dom'
+
+import SyncIcon from '@material-ui/icons/Sync'
+import DescriptionIcon from '@material-ui/icons/Description'
 import OutdoorGrillIcon from '@material-ui/icons/OutdoorGrill';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import { CSVDownload } from "react-csv";
@@ -14,13 +18,19 @@ import { ISeries } from '../../../models/series'
 import { SeriesLabel } from '../../labels/SeriesLabel'
 import { AlgoResultDialog } from '../../algo/AlgoResultDialog'
 
+import style from './SeriesList.style'
+
+const useStyle = makeStyles(style)
+
 type SeriesListProps = {}
 
 export const SeriesList: React.FC<SeriesListProps> = () => {
+  const classes = useStyle()
   const { list } = useSelector(seriesSelectors.getSeriesStore)
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  
+  const history = useHistory()
+  const match = useRouteMatch()
   const [selectedSeriesList, setSelectedSeriesList ] =  useState<ISeries[]>([]);
   const [algoDialogOpen, setAlgoDialogOpen ] =  useState<boolean>(false);
 
@@ -37,17 +47,25 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
 
   const customLabelFilter = (term: string, rowData: ISeries) => {
     // If no label no matching
-    if (rowData.labels === null) { return false }
+    if (rowData.labels === null) {
+      return false
+    }
     // Get array of label matching the filter
-    let labelMatching = rowData.labels.filter((value) => {
-      if (value.labelKey.includes(term)) {return value}
-      if (value.assignedValue.includes(term)) {return value}
-      return null;
-    });
+    const labelMatching = rowData.labels.filter((value) => {
+      if (value.labelKey.includes(term)) {
+        return value
+      }
+      if (value.assignedValue.includes(term)) {
+        return value
+      }
+      return null
+    })
     // Returns if a label matching the filter is found
-    let isMatching = false;
-    if(labelMatching.length !== 0) {isMatching = true}
-    return isMatching;
+    let isMatching = false
+    if (labelMatching.length !== 0) {
+      isMatching = true
+    }
+    return isMatching
   }
 
   const checkDisplay = (rowData: ISeries) =>{
@@ -89,11 +107,10 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
         main: '#3f51b5',
       },
     },
+  })
 
-  });
-  
   return (
-    <div style={{ maxWidth: '100%' }}>
+    <div className={classes.root}>
       <MuiThemeProvider theme={theme}>
         <MaterialTable
           title={t('Series list')}
@@ -102,23 +119,33 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
             // { title: t('Series instance UID'), field: 'seriesInstanceUID' },
             // { title: t('Series description'), field: 'seriesDescription' },
             { title: t('Modality'), field: 'modality' },
-            { title: t('Number of instances'), field: 'numberOfSeriesRelatedInstances' },
+            {
+              title: t('Number of instances'),
+              field: 'numberOfSeriesRelatedInstances',
+            },
             { title: t('Body part'), field: 'bodyPartExamined' },
             {
               title: t('Labels'),
               field: 'url',
-              render: rowData =>  <SeriesLabel series={rowData} isSelected={checkDisplay(rowData)}/>,
-              customFilterAndSearch: (term, rowData) => customLabelFilter(term, rowData),
-            }
+              render: (rowData) => (
+                <SeriesLabel
+                  series={rowData}
+                  isSelected={checkDisplay(rowData)}
+                />
+              ),
+              customFilterAndSearch: (term, rowData) =>
+                customLabelFilter(term, rowData),
+            },
           ]}
           data={list}
           options={{
             filtering: true,
-            selection: true
+            showTitle: false,
+            selection: true,
           }}
           actions={[
             {
-              icon: () => <SyncIcon />,
+              icon: () => <SyncIcon id="synchronize-pacs-icon" />,
               tooltip: t('Refresh'),
               isFreeAction: true,
               onClick: () => synchronize()
@@ -127,6 +154,16 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
               icon: () => <OutdoorGrillIcon />,
               tooltip: t('Launch IA'),
               onClick: () => openAlgoSelection()
+            },
+            {
+              icon: () => <DescriptionIcon />,
+              tooltip: t('Show'),
+              onClick: (event, rowData: ISeries | ISeries[]) => {
+                const elt: ISeries = Array.isArray(rowData)
+                  ? rowData[0]
+                  : rowData
+                history.push(`${match.url}/show/${elt.id}`)
+              },
             },
             {
               icon: () => <CloudDownloadIcon />,
@@ -142,20 +179,20 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
               emptyDataSourceMessage: t('No records to display'),
               filterRow: {
                 filterTooltip: t('Filter'),
-              }
+              },
             },
             toolbar: {
               searchTooltip: t('Search'),
-              searchPlaceholder: t('Search')
+              searchPlaceholder: t('Search'),
             },
             pagination: {
               labelRowsSelect: t('rows'),
-              labelDisplayedRows: '{from}-{to} ' + t('of') + ' {count}',
+              labelDisplayedRows: `{from}-{to} ${t('of')} {count}`,
               firstTooltip: t('First Page'),
               previousTooltip: t('Previous Page'),
               nextTooltip: t('Next Page'),
-              lastTooltip: t('Last Page')
-            }
+              lastTooltip: t('Last Page'),
+            },
           }}
         />
         <AlgoResultDialog open={algoDialogOpen} onClose={closeAlgoSelection} selectedSeriesList={selectedSeriesList}/>

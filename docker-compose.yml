@@ -1,10 +1,10 @@
-version: '3.4'
+version: '3.2'
 
 services:
   hb_database:
     image: mongo:latest
     container_name: "hb_database"
-    restart: unless-stopped
+    restart: always
     environment:
       - MONGO_DATA_DIR=/data/mongo/db
       - MONGO_LOG_DIR=/dev/null
@@ -60,6 +60,7 @@ services:
 
   hb_web_server:
     container_name: hb_web_server
+    restart: always
     build:
       context: .
       dockerfile: server.Dockerfile
@@ -73,6 +74,22 @@ services:
     links:
       - hb_business_server
       - hb_pacs_server
+
+  # End to End test
+  hb_end_to_end_test:
+    # the Docker image to use from https://github.com/cypress-io/cypress-docker-images
+    build:
+      context: ./end-to-end-tests
+      dockerfile: Dockerfile
+    container_name: hb_end_to_end_test
+    links:
+      - hb_web_server
+    environment:
+      # pass base url to test pointing at the web application
+      - CYPRESS_baseUrl=http://hb_web_server
+      - dbUrl=mongodb://hb_database
+    volumes:
+      - ./end-to-end-tests:/app
 
   hb_ia_server:
     container_name: hb_algo_server
