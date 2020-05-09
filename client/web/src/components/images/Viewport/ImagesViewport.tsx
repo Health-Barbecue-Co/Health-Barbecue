@@ -3,7 +3,7 @@ import { Box, makeStyles } from '@material-ui/core'
 import CornerstoneViewport from 'react-cornerstone-viewport'
 
 import style from './ImagesViewport.Style'
-import { UserService } from '../../../features/user'
+import { SeriesService } from '../../../features/series'
 
 const useStyle = makeStyles(style)
 
@@ -11,18 +11,17 @@ type ImagesViewportProps = {
   seriesInstanceUID: string
 }
 
-export const ImagesViewport: React.FC<ImagesViewportProps> = (props: ImagesViewportProps) => {
+export const ImagesViewport: React.FC<ImagesViewportProps> = (
+  props: ImagesViewportProps
+) => {
   const { seriesInstanceUID } = props
   const classes = useStyle()
   const [instancesURI, setInstancesURI] = useState<string[]>([])
 
-  const getImageURIs = useCallback(
-    async () => {
-      const uris = await UserService.getInstanceUrls(seriesInstanceUID)
-      setInstancesURI(uris)
-    },
-    [seriesInstanceUID],
-  )
+  const getImageURIs = useCallback(async () => {
+    const uris = await SeriesService.getInstanceUrls(seriesInstanceUID)
+    setInstancesURI(uris)
+  }, [seriesInstanceUID])
 
   useEffect(() => {
     getImageURIs()
@@ -58,16 +57,13 @@ export const ImagesViewport: React.FC<ImagesViewportProps> = (props: ImagesViewp
 
   return (
     <Box flex={1} display="flex" flexDirection="column">
-      {
-        state.imageIds.length !== 0
-        ? <CornerstoneViewport
+      {state.imageIds.length !== 0 ? (
+        <CornerstoneViewport
           tools={state.tools}
           imageIds={state.imageIds}
           className={classes.root}
         />
-        : null
-      }
-
+      ) : null}
     </Box>
   )
 }
