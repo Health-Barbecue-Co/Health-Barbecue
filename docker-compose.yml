@@ -46,10 +46,13 @@ services:
       - ASPNETCORE_URLS=http://+:4001
       - MongoConfiguration__Servername=hb_database
       - PacsConfiguration__Host=hb_pacs_server
+      - AlgoConfiguration__Host=hb_algo_server
     build:
       context: ./business/MetadataDatabase
     ports:
       - 4001:80
+    volumes:
+      - algoVolume:/app/workspace/
     expose:
       - 4001
     depends_on:
@@ -71,6 +74,20 @@ services:
       - hb_business_server
       - hb_pacs_server
 
+  hb_ia_server:
+    container_name: hb_algo_server
+    build:
+      context: ./business/Algo
+    volumes:
+      - algoVolume:/usr/src/app/workspace
+    ports:
+      - 5009:5009
+    expose:
+      - 5009
+    links:
+      - hb_business_server
+
 volumes:
   mongodata: {}
   orthancdata: {}
+  algoVolume: {}

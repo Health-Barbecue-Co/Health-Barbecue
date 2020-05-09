@@ -2,7 +2,6 @@
 using MetadataDatabase.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MetadataDatabase.Models;
 using MetadataDatabase.Data;
 using System;
 
