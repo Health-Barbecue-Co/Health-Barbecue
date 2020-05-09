@@ -8,13 +8,13 @@ import { useHistory, useRouteMatch } from 'react-router-dom'
 
 import SyncIcon from '@material-ui/icons/Sync'
 import DescriptionIcon from '@material-ui/icons/Description'
-import OutdoorGrillIcon from '@material-ui/icons/OutdoorGrill';
+import OutdoorGrillIcon from '@material-ui/icons/OutdoorGrill'
 
 import { actionTypes, seriesSelectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
 import { ISeries } from '../../../models/series'
 import { SeriesLabel } from '../../labels/SeriesLabel'
-import { AlgoResultDialog } from '../../algo/AlgoResultDialog'
+import { AlgoResultDialog } from '../../algorithms'
 
 import style from './SeriesList.style'
 
@@ -29,8 +29,8 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const match = useRouteMatch()
-  const [selectedSeriesList, setSelectedSeriesList ] =  useState<ISeries[]>([]);
-  const [algoDialogOpen, setAlgoDialogOpen ] =  useState<boolean>(false);
+  const [selectedSeriesList, setSelectedSeriesList] = useState<ISeries[]>([])
+  const [algoDialogOpen, setAlgoDialogOpen] = useState<boolean>(false)
 
   useEffect(() => {
     dispatch({ type: actionTypes.FETCH_ALL_SERIES })
@@ -63,16 +63,16 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
     return isMatching
   }
 
-  const checkDisplay = (rowData: ISeries) =>{
-    return selectedSeriesList.includes(rowData);
+  const checkDisplay = (rowData: ISeries) => {
+    return selectedSeriesList.includes(rowData)
   }
 
   const openAlgoSelection = () => {
-    setAlgoDialogOpen(true);
+    setAlgoDialogOpen(true)
   }
 
   const closeAlgoSelection = () => {
-    setAlgoDialogOpen(false);
+    setAlgoDialogOpen(false)
   }
 
   const theme = createMuiTheme({
@@ -122,12 +122,12 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
               icon: () => <SyncIcon id="synchronize-pacs-icon" />,
               tooltip: t('Refresh'),
               isFreeAction: true,
-              onClick: () => synchronize()
+              onClick: () => synchronize(),
             },
             {
               icon: () => <OutdoorGrillIcon />,
               tooltip: t('Launch IA'),
-              onClick: () => openAlgoSelection()
+              onClick: () => openAlgoSelection(),
             },
             {
               icon: () => <DescriptionIcon />,
@@ -141,7 +141,7 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
             },
           ]}
           onSelectionChange={(rows) => {
-            setSelectedSeriesList(rows);
+            setSelectedSeriesList(rows)
           }}
           localization={{
             body: {
@@ -164,7 +164,11 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
             },
           }}
         />
-        <AlgoResultDialog open={algoDialogOpen} onClose={closeAlgoSelection} selectedSeriesList={selectedSeriesList}/>
+        <AlgoResultDialog
+          open={algoDialogOpen}
+          onClose={closeAlgoSelection}
+          selectedSeriesList={selectedSeriesList}
+        />
       </MuiThemeProvider>
     </div>
   )
