@@ -15,6 +15,7 @@ describe('UserListRow', () => {
 
   it('a table row with user information', () => {
     const user = {
+      id: 'myId',
       firstname: 'firstname',
       lastname: 'lastname',
       login: 'login',
