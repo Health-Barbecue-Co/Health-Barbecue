@@ -44,48 +44,6 @@ jobs:
 workflows:
   build:
     jobs:
-      #- test-webclient
-      #- unit-tests-business
+      - test-webclient
+      - unit-tests-business
       - end-to-end-tests
-      # - cypress/install:
-      #     name: 'Start web client'
-      #     working_directory: end-to-end-tests
-      #     build: |
-      #       pwd
-      #       ls
-      #       cd client/web
-      #       yarn
-      #       yarn add -D cross-env
-      #       yarn build
-      #       ls
-      #       cd build 
-      #       pwd 
-      #       echo "Will start web client: yarn start"
-      #     cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
-      #     post-steps:
-      #       - run:
-      #           name: 'Run client web'
-      #           command: echo "Could have done something here"
-      #             #cd build && yarn && yarn start &
-      #           background: true
-      # - cypress/run:
-      #     executor: with-chrome
-      #     requires: 
-      #       - Start web client
-      #     yarn: true
-      #     working_directory: end-to-end-tests
-      #     start: |
-      #       pwd
-      #       ls
-      #       cd ..
-      #       pwd
-      #       ls
-      #       cd client/web/
-      #       pwd
-      #       ls
-      #       yarn global add serve
-      #       echo "Will start web client yarn start"
-      #       serve -s build
-      #       echo "Server is supposed to be started. Cyril"
-      #     wait-on: 'http://localhost:5000'
-      #     cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "end-to-end-tests/package.json" }}'
