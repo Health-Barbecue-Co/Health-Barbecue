@@ -66,7 +66,7 @@ namespace MetadataDatabase.Services
             var algoToExecute = this.Get(algoExeInfo.AlgoId);
             // Create the python algo file to execute
             File.WriteAllText($"{workspaceAlgosName}{algoToExecute.MainFile}", algoToExecute.ContentFile);
-            this.logger.LogInformation($"Main file {algoToExecute.MainFile}");
+            this.logger.LogInformation($"Main file: {algoToExecute.MainFile}");
             // Download the series zip file on which the algo will be executed
             var zipFileName = this.pacsService.DownloadSeries(algoExeInfo.SeriesInstanceUID);
             // Extract zip file in workspace
@@ -74,17 +74,11 @@ namespace MetadataDatabase.Services
             // Get path to dicom files
             ZipArchive archive = ZipFile.OpenRead(zipFileName);
             var fullworkspacePath = Path.GetFullPath(workspaceDataName);
-            this.logger.LogDebug(fullworkspacePath);
             var relativeFilePath = Path.Join(workspaceDataName + archive.Entries[0].FullName);
-            this.logger.LogDebug(relativeFilePath);
             var fullFilePath = Path.GetFullPath(relativeFilePath);
-            this.logger.LogDebug(fullFilePath);
             var fullFilesDirectoryPath = Path.GetDirectoryName(fullFilePath);
-            this.logger.LogDebug(fullFilesDirectoryPath);
             var directoryOfSeries = Path.GetDirectoryName(fullFilesDirectoryPath);
-            this.logger.LogDebug(directoryOfSeries);
             var relatifPathOfSeriesDirectory = Path.GetRelativePath(fullworkspacePath, directoryOfSeries);
-            this.logger.LogDebug(relatifPathOfSeriesDirectory);
             archive.Dispose();
             File.Delete(zipFileName);
 
