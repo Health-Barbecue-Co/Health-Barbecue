@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, TextField, Grid, Card } from '@material-ui/core'
+import { Button, TextField, Grid, Card, Input } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import MaterialTable from 'material-table'
 
@@ -12,7 +12,7 @@ import { selectors } from '../features/auth'
 export const Algorithms: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const fileInput = React.createRef<HTMLInputElement>();
+  const fileInput = React.createRef<any>();
   const { algoList } = useSelector(AlgoSelectors.getAlgoStore);
   const user: IUser = useSelector(selectors.getAuth)
   const [algoName, setAlgoName] = useState<string>('');
@@ -33,7 +33,8 @@ export const Algorithms: React.FC = () => {
 
   const checkInputs = () => {
     if(algoName !== ''
-    && algoDesc !== '')
+    && algoDesc !== ''
+    && (fileInput.current.firstChild.files.length !== 0))
     {
       setAreInputsValid(true);
     } else
@@ -50,23 +51,21 @@ export const Algorithms: React.FC = () => {
       if(evt === null
         || evt.target === null
         || evt.target.result === null){ throw(new Error("")) }
-      if(fileInput === null
-        || fileInput.current === null
-        || fileInput.current.files === null){ throw(new Error("")) }
       let algo: IAlgo = {
         id: '',
         user: user.id,
         name: algoName,
-        mainFile: fileInput.current.files[0].name,
+        mainFile: fileInput.current.firstChild.files[0].name,
         description: algoDesc,
         contentFile: evt.target.result as string
       }
       dispatch({ type: algoActionTypes.CREATE_ALGO, algo: algo })
+      // Reset values
+      setAlgoName('');
+      setAlgoDesc('');
+      (document.getElementById('myfile') as any).value = "";
     };
-    if(fileInput === null
-      || fileInput.current === null
-      || fileInput.current.files === null){ throw(new Error("")) }
-    reader.readAsBinaryString(fileInput.current.files[0]);
+    reader.readAsBinaryString(fileInput.current.firstChild.files[0]);
   }
 
   return (
@@ -82,6 +81,7 @@ export const Algorithms: React.FC = () => {
                 margin="dense"
                 id="AlgoName"
                 label="Algo name"
+                value={algoName}
                 onChange={handleAlgoNameChange}
                 fullWidth
                 variant="outlined"
@@ -90,12 +90,13 @@ export const Algorithms: React.FC = () => {
                 margin="dense"
                 id="AlgoDesc"
                 label="Algo description"
+                value={algoDesc}
                 onChange={handleAlgoDescChange}
                 fullWidth
                 variant="outlined"
               />
               <label>{t('Select files:')}</label>
-              <input type="file" id="myfile" name="myfile" ref={fileInput} />
+              <Input type="file" id="myfile" name="myfile" ref={fileInput} onChange={checkInputs} color="primary"/>
               <Button color="primary" onClick={sendFile} disabled={!areInputsValid} variant="outlined">{t('Send algo')}</Button>
             </form>
           </Card>
