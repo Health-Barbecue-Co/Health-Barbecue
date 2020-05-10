@@ -9,14 +9,16 @@ import { useHistory, useRouteMatch } from 'react-router-dom'
 import SyncIcon from '@material-ui/icons/Sync'
 import DescriptionIcon from '@material-ui/icons/Description'
 import OutdoorGrillIcon from '@material-ui/icons/OutdoorGrill';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import { CsvBuilder } from 'filefy';
 
+import style from './SeriesList.style'
 import { actionTypes, seriesSelectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
 import { ISeries } from '../../../models/series'
 import { SeriesLabel } from '../../labels/SeriesLabel'
 import { AlgoResultDialog } from '../../algo/AlgoResultDialog'
-
-import style from './SeriesList.style'
+import { ILabel } from './../../../models/ILabel';
 
 const useStyle = makeStyles(style)
 
@@ -73,6 +75,39 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
 
   const closeAlgoSelection = () => {
     setAlgoDialogOpen(false);
+  }
+
+  const exportSelected = (data: any) => {
+    // Get all labels of all selected series
+    let labels: any = {};
+    data.forEach((dataElement: ISeries)=> {
+      dataElement.labels?.forEach((labelElement: ILabel)=> {
+        labels[labelElement.labelKey] = '';
+      });
+    });
+    // Copy all labels as property of series
+    data.forEach((dataElement: any)=> {
+      Object.assign(dataElement, labels);
+      // Set series labels with corresponding values
+      dataElement.labels?.forEach((labelElement: any)=> {
+        dataElement[labelElement.labelKey] = labelElement.assignedValue;
+      });
+    });
+    // Get all properties with string value as columns header
+    const columns = Object.keys(data[0]).filter((element) => {
+      return (typeof data[0][element] === "string");
+    });
+    // Get rows data for each series
+    let rows = data.map((dataElement: any) => {
+      return columns.map((column) => {
+        return dataElement[column];
+      });
+    });
+    // Save the csv file
+    new CsvBuilder("series_list.csv")
+      .setColumns(columns)
+      .addRows(rows)
+      .exportFile();
   }
 
   const theme = createMuiTheme({
@@ -138,6 +173,11 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
                   : rowData
                 history.push(`${match.url}/show/${elt.id}`)
               },
+            },
+            {
+              icon: () => <CloudDownloadIcon />,
+              tooltip: t('Export csv'),
+              onClick: (evt, data) => exportSelected(data)
             },
           ]}
           onSelectionChange={(rows) => {
