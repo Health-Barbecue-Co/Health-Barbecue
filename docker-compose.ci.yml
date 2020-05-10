@@ -17,16 +17,6 @@ services:
     expose:
       - 27017
 
-  hb_database_view:
-    image: mongo-express:latest
-    container_name: "hb_database_view"
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=hb_database
-    links:
-      - hb_database
-    ports:
-      - 8043:8081
-
   hb_pacs_server:
     image: jodogne/orthanc-plugins:latest
     container_name: hb_pacs_server
@@ -57,6 +47,7 @@ services:
       - 4001
     depends_on:
       - hb_database
+      - hb_algo_server
 
   hb_web_server:
     container_name: hb_web_server
@@ -91,7 +82,7 @@ services:
     volumes:
       - ./end-to-end-tests:/app
 
-  hb_ia_server:
+  hb_algo_server:
     container_name: hb_algo_server
     build:
       context: ./business/Algo

@@ -39,7 +39,7 @@ services:
     expose:
       - 8042
 
-  hb_ia_server:
+  hb_algo_server:
     container_name: hb_algo_server
     build:
       context: ./business/Algo

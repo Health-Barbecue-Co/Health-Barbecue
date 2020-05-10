@@ -57,6 +57,7 @@ services:
       - 4001
     depends_on:
       - hb_database
+      - hb_algo_server
 
   hb_web_server:
     container_name: hb_web_server
@@ -75,7 +76,7 @@ services:
       - hb_business_server
       - hb_pacs_server
 
-  hb_ia_server:
+  hb_algo_server:
     container_name: hb_algo_server
     build:
       context: ./business/Algo
