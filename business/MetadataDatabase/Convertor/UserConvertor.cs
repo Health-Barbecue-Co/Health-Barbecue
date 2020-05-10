@@ -16,7 +16,8 @@ namespace MetadataDatabase.Convertor
                 lastname = userDto.lastname,
                 firstname = userDto.firstname,
                 login = userDto.login,
-                role = userDto.role
+                role = userDto.role,
+                settings = userDto.settings.ToModel()
             };
         }
         public static UserDto ToDto(this User user)
@@ -27,7 +28,8 @@ namespace MetadataDatabase.Convertor
                 lastname = user.lastname,
                 firstname = user.firstname,
                 login = user.login,
-                role = user.role
+                role = user.role,
+                settings = user.settings.ToUserSettingsDto()
             };
         }
 

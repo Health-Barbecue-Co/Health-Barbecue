@@ -9,5 +9,7 @@
         public string login { get; set; }
 
         public string role { get; set; }
+
+        public UserSettingsDto settings { get; set; }
     }
 }

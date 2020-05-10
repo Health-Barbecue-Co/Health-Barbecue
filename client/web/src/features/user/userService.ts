@@ -1,4 +1,4 @@
-import { IUser } from '../../models/user'
+import { IUserSetting, IUser } from '../../models/user'
 
 import { ICrudService } from '../common/ICrudService'
 import { HttpRequest } from '../common/HttpRequest'
@@ -32,6 +32,10 @@ export class UserService implements ICrudService<IUser> {
     if (item.id) {
       this.api.delete(item.id)
     }
+  }
+
+  setSettings(id: string, settings: IUserSetting) {
+    return this.api.post(`${id}/settings`, settings)
   }
 }
 

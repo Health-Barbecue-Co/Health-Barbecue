@@ -98,4 +98,18 @@ describe('UserService', () => {
       expect(mockDelete).not.toHaveBeenCalled()
     })
   })
+
+  describe('UserService.setSettings', () => {
+    it('exists', () => {
+      expect(userService.setSettings).toBeDefined()
+    })
+
+    it('calls an HttpRequest', () => {
+      const mockPost = mockapiInstance.post
+      userService.setSettings('myId', { theme: { index: 0, dark: true } })
+
+      expect(mockPost).toHaveBeenCalled()
+      expect(mockPost).toHaveBeenCalledWith('myId/settings', { theme: { index: 0, dark: true } })
+    })
+  })
 })

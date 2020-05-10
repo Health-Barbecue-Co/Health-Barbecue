@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import MaterialTable from 'material-table'
-import { MuiThemeProvider, createMuiTheme, makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 
 import SyncIcon from '@material-ui/icons/Sync'
@@ -75,101 +75,89 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
     setAlgoDialogOpen(false)
   }
 
-  const theme = createMuiTheme({
-    palette: {
-      secondary: {
-        main: '#3f51b5',
-      },
-    },
-  })
-
   return (
     <div className={classes.root}>
-      <MuiThemeProvider theme={theme}>
-        <MaterialTable
-          title={t('Series list')}
-          columns={[
-            { title: t('Patient name'), field: 'patientsName' },
-            // { title: t('Series instance UID'), field: 'seriesInstanceUID' },
-            // { title: t('Series description'), field: 'seriesDescription' },
-            { title: t('Modality'), field: 'modality' },
-            {
-              title: t('Number of instances'),
-              field: 'numberOfSeriesRelatedInstances',
+      <MaterialTable
+        title={t('Series list')}
+        columns={[
+          { title: t('Patient name'), field: 'patientsName' },
+          // { title: t('Series instance UID'), field: 'seriesInstanceUID' },
+          // { title: t('Series description'), field: 'seriesDescription' },
+          { title: t('Modality'), field: 'modality' },
+          {
+            title: t('Number of instances'),
+            field: 'numberOfSeriesRelatedInstances',
+          },
+          { title: t('Body part'), field: 'bodyPartExamined' },
+          {
+            title: t('Labels'),
+            field: 'url',
+            render: (rowData) => (
+              <SeriesLabel
+                series={rowData}
+                isSelected={checkDisplay(rowData)}
+              />
+            ),
+            customFilterAndSearch: (term, rowData) =>
+              customLabelFilter(term, rowData),
+          },
+        ]}
+        data={list}
+        options={{
+          filtering: true,
+          showTitle: false,
+          selection: true,
+        }}
+        actions={[
+          {
+            icon: () => <SyncIcon id="synchronize-pacs-icon" />,
+            tooltip: t('Refresh'),
+            isFreeAction: true,
+            onClick: () => synchronize(),
+          },
+          {
+            icon: () => <OutdoorGrillIcon />,
+            tooltip: t('Launch IA'),
+            onClick: () => openAlgoSelection(),
+          },
+          {
+            icon: () => <DescriptionIcon />,
+            tooltip: t('Show'),
+            onClick: (event, rowData: ISeries | ISeries[]) => {
+              const elt: ISeries = Array.isArray(rowData) ? rowData[0] : rowData
+              history.push(`${match.url}/show/${elt.id}`)
             },
-            { title: t('Body part'), field: 'bodyPartExamined' },
-            {
-              title: t('Labels'),
-              field: 'url',
-              render: (rowData) => (
-                <SeriesLabel
-                  series={rowData}
-                  isSelected={checkDisplay(rowData)}
-                />
-              ),
-              customFilterAndSearch: (term, rowData) =>
-                customLabelFilter(term, rowData),
+          },
+        ]}
+        onSelectionChange={(rows) => {
+          setSelectedSeriesList(rows)
+        }}
+        localization={{
+          body: {
+            emptyDataSourceMessage: t('No records to display'),
+            filterRow: {
+              filterTooltip: t('Filter'),
             },
-          ]}
-          data={list}
-          options={{
-            filtering: true,
-            showTitle: false,
-            selection: true,
-          }}
-          actions={[
-            {
-              icon: () => <SyncIcon id="synchronize-pacs-icon" />,
-              tooltip: t('Refresh'),
-              isFreeAction: true,
-              onClick: () => synchronize(),
-            },
-            {
-              icon: () => <OutdoorGrillIcon />,
-              tooltip: t('Launch IA'),
-              onClick: () => openAlgoSelection(),
-            },
-            {
-              icon: () => <DescriptionIcon />,
-              tooltip: t('Show'),
-              onClick: (event, rowData: ISeries | ISeries[]) => {
-                const elt: ISeries = Array.isArray(rowData)
-                  ? rowData[0]
-                  : rowData
-                history.push(`${match.url}/show/${elt.id}`)
-              },
-            },
-          ]}
-          onSelectionChange={(rows) => {
-            setSelectedSeriesList(rows)
-          }}
-          localization={{
-            body: {
-              emptyDataSourceMessage: t('No records to display'),
-              filterRow: {
-                filterTooltip: t('Filter'),
-              },
-            },
-            toolbar: {
-              searchTooltip: t('Search'),
-              searchPlaceholder: t('Search'),
-            },
-            pagination: {
-              labelRowsSelect: t('rows'),
-              labelDisplayedRows: `{from}-{to} ${t('of')} {count}`,
-              firstTooltip: t('First Page'),
-              previousTooltip: t('Previous Page'),
-              nextTooltip: t('Next Page'),
-              lastTooltip: t('Last Page'),
-            },
-          }}
-        />
-        <AlgoResultDialog
-          open={algoDialogOpen}
-          onClose={closeAlgoSelection}
-          selectedSeriesList={selectedSeriesList}
-        />
-      </MuiThemeProvider>
+          },
+          toolbar: {
+            searchTooltip: t('Search'),
+            searchPlaceholder: t('Search'),
+          },
+          pagination: {
+            labelRowsSelect: t('rows'),
+            labelDisplayedRows: `{from}-{to} ${t('of')} {count}`,
+            firstTooltip: t('First Page'),
+            previousTooltip: t('Previous Page'),
+            nextTooltip: t('Next Page'),
+            lastTooltip: t('Last Page'),
+          },
+        }}
+      />
+      <AlgoResultDialog
+        open={algoDialogOpen}
+        onClose={closeAlgoSelection}
+        selectedSeriesList={selectedSeriesList}
+      />
     </div>
   )
 }

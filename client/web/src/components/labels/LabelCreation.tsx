@@ -13,93 +13,99 @@ import {
   ListItemSecondaryAction,
   IconButton,
 } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import DeleteIcon from '@material-ui/icons/Delete'
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 
 import { LabelsActionTypes } from '../../features/labels'
-import { ILabel } from '../../models/ILabel';
-import { IUser } from '../../models/user'
+import { ILabel } from '../../models/ILabel'
 import { selectors } from '../../features/auth'
 
-type LabelCreationProps = { 
-  onCreate?: () => void ,
+type LabelCreationProps = {
+  onCreate?: () => void
   onCancel?: () => void
 }
 
-export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreationProps) => {
+export const LabelCreation: React.FC<LabelCreationProps> = (
+  props: LabelCreationProps
+) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const user: IUser = useSelector(selectors.getAuth)
+  const user = useSelector(selectors.getAuth)
 
-  const [labelKey, setLabelKey] = useState<string>('');
-  const [selectedLabelType, setSelectedLabelType] = useState<string>('');
-  const [inputPredefineValue, setInputPredefineValue] = useState<string>('');
-  const [listPredefineValue, setListPredefineValue] = useState<string[]>([]);
-  const [areInputsValid, setAreInputsValid] = useState<boolean>(false);
+  const [labelKey, setLabelKey] = useState<string>('')
+  const [selectedLabelType, setSelectedLabelType] = useState<string>('')
+  const [inputPredefineValue, setInputPredefineValue] = useState<string>('')
+  const [listPredefineValue, setListPredefineValue] = useState<string[]>([])
+  const [areInputsValid, setAreInputsValid] = useState<boolean>(false)
 
   const handleLabelKeyChange = (event: any) => {
-    setLabelKey(event.target.value);
-  };
+    setLabelKey(event.target.value)
+  }
 
   const handleLabelTypeChange = (event: any) => {
-    setSelectedLabelType(event.target.value);
-  };
+    setSelectedLabelType(event.target.value)
+  }
 
   const onCancel = () => {
-    if(props.onCancel !== undefined) props.onCancel();
+    if (props.onCancel !== undefined) props.onCancel()
   }
 
   const onCreate = () => {
-    let newLabel: ILabel = {
-      'id': '',
-      'user': user.id,
-      'labelKey': labelKey,
-      'labelType': selectedLabelType,
-      'labelValue': listPredefineValue,
-      'isPublic': true,
-      'isApproved': true,
-      'assignedValue': '',
+    const newLabel: ILabel = {
+      id: '',
+      user: user?.id ? user.id : '',
+      labelKey,
+      labelType: selectedLabelType,
+      labelValue: listPredefineValue,
+      isPublic: true,
+      isApproved: true,
+      assignedValue: '',
     }
-    dispatch({ type: LabelsActionTypes.POST_LABEL, label: newLabel});
-    if(props.onCreate !== undefined) props.onCreate();
+    dispatch({ type: LabelsActionTypes.POST_LABEL, label: newLabel })
+    if (props.onCreate !== undefined) props.onCreate()
   }
 
   const handleAddPredefineValue = () => {
-    let newListPredefineValue = listPredefineValue;
-    newListPredefineValue.push(inputPredefineValue);
-    setListPredefineValue(newListPredefineValue);
-    setInputPredefineValue('');
+    const newListPredefineValue = listPredefineValue
+    newListPredefineValue.push(inputPredefineValue)
+    setListPredefineValue(newListPredefineValue)
+    setInputPredefineValue('')
   }
 
   const handleDeletePredefineValue = (value: string) => {
-    let newListPredefineValue = listPredefineValue.filter((predefineValue) => (predefineValue !== value));
-    setListPredefineValue(newListPredefineValue);
+    const newListPredefineValue = listPredefineValue.filter(
+      (predefineValue) => predefineValue !== value
+    )
+    setListPredefineValue(newListPredefineValue)
   }
 
   const handleInputPredefineValueChange = (event: any) => {
-    setInputPredefineValue(event.target.value);
+    setInputPredefineValue(event.target.value)
   }
 
   const checkInputs = () => {
-    if(labelKey !== ''
-    && selectedLabelType === 'Multi' 
-    && listPredefineValue.length !== 0)
-    {
+    if (
+      labelKey !== '' &&
+      selectedLabelType === 'Multi' &&
+      listPredefineValue.length !== 0
+    ) {
       setAreInputsValid(true)
-    } else if (labelKey !== ''
-    && selectedLabelType === 'String')
-    {
+    } else if (labelKey !== '' && selectedLabelType === 'String') {
       setAreInputsValid(true)
-    } else
-    {
+    } else {
       setAreInputsValid(false)
     }
   }
 
-  useEffect(checkInputs, [listPredefineValue, labelKey, selectedLabelType, inputPredefineValue]);
+  useEffect(checkInputs, [
+    listPredefineValue,
+    labelKey,
+    selectedLabelType,
+    inputPredefineValue,
+  ])
 
   return (
-    <form >
+    <form>
       <TextField
         autoFocus
         margin="dense"
@@ -118,49 +124,48 @@ export const LabelCreation: React.FC<LabelCreationProps> = (props: LabelCreation
         variant="outlined"
         margin="dense"
       >
-        <MenuItem 
-          key='Multi' 
-          value='Multi' 
-        >
-          {t("Multi values")}
+        <MenuItem key="Multi" value="Multi">
+          {t('Multi values')}
         </MenuItem>
-        <MenuItem 
-          key='String' 
-          value='String' 
-        >
-          {t("Free text")}
+        <MenuItem key="String" value="String">
+          {t('Free text')}
         </MenuItem>
       </Select>
-      {
-        (selectedLabelType === 'Multi') 
-        ? <div>
-          <TextField label="Value"  value={inputPredefineValue} onChange={handleInputPredefineValueChange} margin="dense" variant="outlined"/>
+      {selectedLabelType === 'Multi' ? (
+        <div>
+          <TextField
+            label="Value"
+            value={inputPredefineValue}
+            onChange={handleInputPredefineValueChange}
+            margin="dense"
+            variant="outlined"
+          />
           <IconButton color="primary" onClick={handleAddPredefineValue}>
             <AddCircleOutlineIcon />
           </IconButton>
           <List>
-            {
-              listPredefineValue.map((value) => (
-                <ListItem key={value}>
-                  <ListItemText>{value}</ListItemText>
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" onClick={() => handleDeletePredefineValue(value)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))
-            }
+            {listPredefineValue.map((value) => (
+              <ListItem key={value}>
+                <ListItemText>{value}</ListItemText>
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="end"
+                    onClick={() => handleDeletePredefineValue(value)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
           </List>
         </div>
-        : null
-      }
+      ) : null}
       <div>
         <Button color="primary" onClick={onCancel}>
-          {t("Cancel")}
+          {t('Cancel')}
         </Button>
         <Button color="primary" onClick={onCreate} disabled={!areInputsValid}>
-          {t("Create")}
+          {t('Create')}
         </Button>
       </div>
     </form>

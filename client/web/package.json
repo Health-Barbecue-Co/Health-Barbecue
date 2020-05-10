@@ -97,7 +97,8 @@
       "!<rootDir>/node_modules/",
       "!src/*.{js,jsx,ts,tsx}",
       "!src/**/index.ts",
-      "!src/**/*.style.ts"
+      "!src/**/*.style.ts",
+      "!src/@types/**/*"
     ],
     "coverageThreshold": {
       "global": {

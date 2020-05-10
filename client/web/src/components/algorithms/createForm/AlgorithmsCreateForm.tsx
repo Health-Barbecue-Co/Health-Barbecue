@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { algoActionTypes } from '../../../features/algo'
 import { IAlgo } from '../../../models/IAlgo'
 import { selectors } from '../../../features/auth'
-import { IUser } from '../../../models/user'
 
 type AlgorithmsCreateFormProps = {
   onSave?: () => void
@@ -17,7 +16,7 @@ export const AlgorithmsCreateForm: React.FC<AlgorithmsCreateFormProps> = (
   const { onSave } = props
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const user: IUser = useSelector(selectors.getAuth)
+  const user = useSelector(selectors.getAuth)
   const fileInput = React.createRef<HTMLInputElement>()
 
   const [algoName, setAlgoName] = useState<string>('')
@@ -53,12 +52,13 @@ export const AlgorithmsCreateForm: React.FC<AlgorithmsCreateFormProps> = (
 
       const algo: IAlgo = {
         id: '',
-        user: user.id,
+        user: user?.id ? user.id : '',
         name: algoName,
         mainFile: fileInput.current.files[0].name,
         description: algoDesc,
         contentFile: evt.target.result as string,
       }
+
       dispatch({ type: algoActionTypes.CREATE_ALGO, algo })
     }
 

@@ -141,5 +141,32 @@ namespace MetadataDatabase.Controllers
 
             return NoContent();
         }
+
+        // PUT: api/users/5/setting
+        /// <summary>
+        /// update settings of user.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="settings"></param>
+        [HttpPost("{id}/settings")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Post(string id, [FromBody] UserSettingsDto settings)
+        {
+            var user = this.userService.Get(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.settings = settings;
+
+            try {
+                this.userService.SetSettings(id, settings);
+                return NoContent();
+            } catch (Exception e) {
+                return BadRequest(e.ToString());
+            }
+        }
     }
 }

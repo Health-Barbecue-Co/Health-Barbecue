@@ -8,5 +8,6 @@ namespace MetadataDatabase.Data
         public string login { get; set; }
         public string role { get; set; }
         public string password { get; set; }
+        public UserSettingsDto? settings { get; set; }
     }
 }

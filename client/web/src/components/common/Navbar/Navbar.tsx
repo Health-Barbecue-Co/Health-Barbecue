@@ -23,6 +23,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import HelpIcon from '@material-ui/icons/Help'
 import UsersIcon from '@material-ui/icons/PeopleAlt'
+import SettingsIcon from '@material-ui/icons/SettingsApplications'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -152,6 +153,13 @@ export const Navbar: React.FC = () => {
                 <HelpIcon />
               </ListItemIcon>
               <ListItemText primary={t('about')} />
+            </ListItem>
+
+            <ListItem button component={Link} to="/user/main/settings">
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary={t('settings')} />
             </ListItem>
 
             <ListItem button onClick={logout}>

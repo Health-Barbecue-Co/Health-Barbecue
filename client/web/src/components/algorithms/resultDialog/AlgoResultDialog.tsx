@@ -15,7 +15,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import styles from './AlgoResultDialog.style'
 import { AlgoSelectors, algoActionTypes } from '../../../features/algo'
-import { IUser } from '../../../models/user'
 import { selectors } from '../../../features/auth'
 import { ISeries } from '../../../models/series'
 import { IAlgo } from '../../../models/IAlgo'
@@ -37,7 +36,7 @@ export const AlgoResultDialog: React.FC<AlgoResultDialogProps> = (
   const { t } = useTranslation()
   const classes = useStyle()
   const { algoResult, algoList } = useSelector(AlgoSelectors.getAlgoStore)
-  const user: IUser = useSelector(selectors.getAuth)
+  const user = useSelector(selectors.getAuth)
   const [selectedAlgoValue, setSelectedAlgoValue] = useState<string>('')
   const [executing, setExecuting] = React.useState(false)
   const selectedSeries = selectedSeriesList[0]
@@ -68,7 +67,7 @@ export const AlgoResultDialog: React.FC<AlgoResultDialogProps> = (
       (algo) => algo.name === selectedAlgoValue
     )[0]
     const algoInfo: IAlgoExeInfo = {
-      user: user.id,
+      user: user?.id ? user.id : '',
       mainFile: selectedAlgo.mainFile,
       seriesInstanceUID: selectedSeries.seriesInstanceUID,
       folder: '',
@@ -115,6 +114,7 @@ export const AlgoResultDialog: React.FC<AlgoResultDialogProps> = (
               onChange={handleSelectedAlgoValueChange}
               variant="outlined"
               margin="dense"
+              fullWidth
             >
               {algoList &&
                 algoList.map((algo: IAlgo) => (
