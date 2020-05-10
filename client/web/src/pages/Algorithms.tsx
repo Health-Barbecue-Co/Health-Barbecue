@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import MaterialTable from 'material-table'
 
 import { AlgoSelectors, algoActionTypes } from '../features/algo'
-import { IAlgo } from './../models/IAlgo';
+import { IAlgo } from '../models/IAlgo'
 import { IUser } from '../models/user'
 import { selectors } from '../features/auth'
 
