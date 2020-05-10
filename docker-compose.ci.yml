@@ -92,8 +92,6 @@ services:
       - 5009:5009
     expose:
       - 5009
-    links:
-      - hb_business_server
 
 volumes:
   mongodata: {}
