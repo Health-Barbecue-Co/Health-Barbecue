@@ -8,17 +8,17 @@ import { useHistory, useRouteMatch } from 'react-router-dom'
 
 import SyncIcon from '@material-ui/icons/Sync'
 import DescriptionIcon from '@material-ui/icons/Description'
-import OutdoorGrillIcon from '@material-ui/icons/OutdoorGrill';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import { CsvBuilder } from 'filefy';
+import OutdoorGrillIcon from '@material-ui/icons/OutdoorGrill'
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
+import { CsvBuilder } from 'filefy'
 
 import style from './SeriesList.style'
 import { actionTypes, seriesSelectors } from '../../../features/series'
 import { mirrorPacsActionTypes } from '../../../features/mirrorPacs'
 import { ISeries } from '../../../models/series'
 import { SeriesLabel } from '../../labels/SeriesLabel'
-import { AlgoResultDialog } from '../../algo/AlgoResultDialog'
-import { ILabel } from './../../../models/ILabel';
+import { AlgoResultDialog } from '../../algorithms'
+import { ILabel } from '../../../models/ILabel'
 
 const useStyle = makeStyles(style)
 
@@ -31,8 +31,8 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const match = useRouteMatch()
-  const [selectedSeriesList, setSelectedSeriesList ] =  useState<ISeries[]>([]);
-  const [algoDialogOpen, setAlgoDialogOpen ] =  useState<boolean>(false);
+  const [selectedSeriesList, setSelectedSeriesList] = useState<ISeries[]>([])
+  const [algoDialogOpen, setAlgoDialogOpen] = useState<boolean>(false)
 
   useEffect(() => {
     dispatch({ type: actionTypes.FETCH_ALL_SERIES })
@@ -65,49 +65,48 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
     return isMatching
   }
 
-  const checkDisplay = (rowData: ISeries) =>{
-    return selectedSeriesList.includes(rowData);
+  const checkDisplay = (rowData: ISeries) => {
+    return selectedSeriesList.includes(rowData)
   }
 
   const openAlgoSelection = () => {
-    setAlgoDialogOpen(true);
+    setAlgoDialogOpen(true)
   }
 
   const closeAlgoSelection = () => {
-    setAlgoDialogOpen(false);
+    setAlgoDialogOpen(false)
   }
 
   const exportSelected = (data: any) => {
     // Get all labels of all selected series
-    let labels: any = {};
-    data.forEach((dataElement: ISeries)=> {
-      dataElement.labels?.forEach((labelElement: ILabel)=> {
-        labels[labelElement.labelKey] = '';
-      });
-    });
+    const labels: any = {}
+    data.forEach((dataElement: ISeries) => {
+      dataElement.labels?.forEach((labelElement: ILabel) => {
+        labels[labelElement.labelKey] = ''
+      })
+    })
     // Copy all labels as property of series
-    data.forEach((dataElement: any)=> {
-      Object.assign(dataElement, labels);
+    data.forEach((dataElement: any) => {
+      Object.assign(dataElement, labels)
       // Set series labels with corresponding values
-      dataElement.labels?.forEach((labelElement: any)=> {
-        dataElement[labelElement.labelKey] = labelElement.assignedValue;
-      });
-    });
+      dataElement.labels?.forEach((labelElement: any) => {
+        // eslint-disable-next-line no-param-reassign
+        dataElement[labelElement.labelKey] = labelElement.assignedValue
+      })
+    })
     // Get all properties with string value as columns header
     const columns = Object.keys(data[0]).filter((element) => {
-      return (typeof data[0][element] === "string");
-    });
+      return typeof data[0][element] === 'string'
+    })
     // Get rows data for each series
-    let rows = data.map((dataElement: any) => {
-      return columns.map((column) => {
-        return dataElement[column];
-      });
-    });
+    const rows = data.map((dataElement: any) =>
+      columns.map((column) => dataElement[column])
+    )
     // Save the csv file
-    new CsvBuilder("series_list.csv")
+    new CsvBuilder('series_list.csv')
       .setColumns(columns)
       .addRows(rows)
-      .exportFile();
+      .exportFile()
   }
 
   const theme = createMuiTheme({
@@ -157,12 +156,12 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
               icon: () => <SyncIcon id="synchronize-pacs-icon" />,
               tooltip: t('Refresh'),
               isFreeAction: true,
-              onClick: () => synchronize()
+              onClick: () => synchronize(),
             },
             {
               icon: () => <OutdoorGrillIcon />,
               tooltip: t('Launch IA'),
-              onClick: () => openAlgoSelection()
+              onClick: () => openAlgoSelection(),
             },
             {
               icon: () => <DescriptionIcon />,
@@ -177,11 +176,11 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
             {
               icon: () => <CloudDownloadIcon />,
               tooltip: t('Export csv'),
-              onClick: (evt, data) => exportSelected(data)
+              onClick: (evt, data) => exportSelected(data),
             },
           ]}
           onSelectionChange={(rows) => {
-            setSelectedSeriesList(rows);
+            setSelectedSeriesList(rows)
           }}
           localization={{
             body: {
@@ -204,7 +203,11 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
             },
           }}
         />
-        <AlgoResultDialog open={algoDialogOpen} onClose={closeAlgoSelection} selectedSeriesList={selectedSeriesList}/>
+        <AlgoResultDialog
+          open={algoDialogOpen}
+          onClose={closeAlgoSelection}
+          selectedSeriesList={selectedSeriesList}
+        />
       </MuiThemeProvider>
     </div>
   )
