@@ -1,1 +1,3 @@
-export * from './main/AlgorithmsMain'
+export * from './list/AlgorithmsList'
+export * from './resultDialog/AlgoResultDialog'
+export * from './createForm/AlgorithmsCreateForm'
