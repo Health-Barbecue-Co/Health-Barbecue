@@ -1,0 +1,22 @@
+{
+  "palette": {
+    "secondary": {
+      "light": "rgba(209, 217, 255, 1)",
+      "main": "rgba(159, 168, 218, 1)",
+      "dark": "rgba(111, 121, 168, 1)",
+      "contrastText": "rgba(103, 58, 183, 0.82)"
+    },
+    "primary": {
+      "light": "rgba(170, 182, 254, 1)",
+      "main": "rgba(121, 134, 203, 1)",
+      "dark": "rgba(73, 89, 154, 1)",
+      "contrastText": "rgba(232, 234, 246, 1)"
+    },
+    "error": {
+      "light": "#e57373",
+      "main": "#f44336",
+      "dark": "#d32f2f",
+      "contrastText": "#fff"
+    }
+  }
+}

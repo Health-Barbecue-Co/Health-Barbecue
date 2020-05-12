@@ -70,13 +70,14 @@ namespace MetadataDatabase.Controllers {
                 }
 
                 var tokenString = GenerateToken(user.Id.ToString());
-
                 // return basic user info and authentication token
                 return Ok(new UserAuthenticatedDto {
                     Id = user.Id,
                     login = user.login,
                     firstname = user.firstname,
                     lastname = user.lastname,
+                    role = user.role,
+                    settings = user.settings,
                     token = tokenString
                 });
             } catch(Exception error) {
@@ -102,7 +103,9 @@ namespace MetadataDatabase.Controllers {
                 login = user.login,
                 firstname = user.firstname,
                 lastname = user.lastname,
-                token = token
+                token = token,
+                role = user.role,
+                settings = user.settings
             });
         }
     }

@@ -1,13 +1,22 @@
-import { put, takeLatest, all, delay, call } from 'redux-saga/effects'
+import {
+  put,
+  takeLatest,
+  all,
+  delay,
+  call,
+  takeEvery,
+} from 'redux-saga/effects'
 import userSaga, {
   fetchUsers,
   actionWatcher,
   createOrUpdateUser,
   fetchOneUser,
+  setSettings,
 } from './userSaga'
 import { IUser } from '../../models/user'
 import * as actionTypes from './actionTypes'
 import userService from './userService'
+import { SET_THEME } from '../theme/actionTypes'
 
 jest.mock('../common/HttpRequest')
 
@@ -15,7 +24,7 @@ describe('User saga', () => {
   it(`has a actionWatcher`, () => {
     const generator = actionWatcher()
     expect(generator.next().value).toEqual(
-      takeLatest(actionTypes.FETCH_ALL_USERS, fetchUsers)
+      takeEvery(actionTypes.FETCH_ALL_USERS, fetchUsers)
     )
 
     expect(generator.next().value).toEqual(
@@ -24,6 +33,10 @@ describe('User saga', () => {
 
     expect(generator.next().value).toEqual(
       takeLatest(actionTypes.FETCH_ONE_USER, fetchOneUser)
+    )
+
+    expect(generator.next().value).toEqual(
+      takeLatest(actionTypes.SET_USER_SETTINGS, setSettings)
     )
 
     expect(generator.next().done).toBeTruthy()
@@ -51,8 +64,34 @@ describe('User saga', () => {
     )
 
     expect(generator.next({ data: { id: 'my-id' } }).value).toEqual(
-      put({ type: actionTypes.SET_CURRENT_USER, user: { id: 'my-id' } })
+      put({
+        type: actionTypes.SET_CURRENT_USER,
+        user: { id: 'my-id', settings: { theme: { index: 0, dark: false } } },
+      })
     )
+    expect(generator.next().done).toBeTruthy()
+  })
+
+  it(`should dispatch action "${actionTypes.SET_USER_SETTINGS}" to set settings in store`, () => {
+    const cb = () => jest.fn()
+    const generator = setSettings({
+      type: actionTypes.SET_USER_SETTINGS,
+      user: { id: 'my-id' },
+      settings: { theme: 'my-theme' },
+      callback: cb,
+    })
+
+    expect(generator.next().value).toEqual(
+      call([userService, 'setSettings'], 'my-id', { theme: 'my-theme' })
+    )
+
+    expect(generator.next({ theme: 'my-theme' }).value).toEqual(
+      put({
+        type: SET_THEME,
+        theme: 'my-theme',
+      })
+    )
+    expect(generator.next().value).toEqual(call(cb))
     expect(generator.next().done).toBeTruthy()
   })
 

@@ -1,23 +1,15 @@
 import React from 'react'
-import {
-  Switch,
-  useRouteMatch,
-  Route,
-  Redirect,
-  useHistory,
-} from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { Switch, useRouteMatch, Route, useHistory } from 'react-router-dom'
 import {
   SignIn,
   ForgottenPassword,
   UserRegister,
   UserMain,
 } from '../components/users'
-import { selectors } from '../features/auth'
+import { ConnectedRoute } from '../components/common'
 
 export const User: React.FC = () => {
   const match = useRouteMatch()
-  const user = useSelector(selectors.getAuth)
   const history = useHistory()
 
   return (
@@ -38,9 +30,9 @@ export const User: React.FC = () => {
           />
         </Route>
 
-        <Route path={`${match.path}/main`}>
-          {!user ? <Redirect to="/user" /> : <UserMain />}
-        </Route>
+        <ConnectedRoute path={`${match.path}/main`}>
+          <UserMain />
+        </ConnectedRoute>
 
         <Route component={SignIn} />
       </Switch>

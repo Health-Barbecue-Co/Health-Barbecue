@@ -11,6 +11,7 @@ import { authSaga, AuthReducer } from './features/auth'
 import { VersionReducer, versionSaga } from './features/version'
 import algoSaga from './features/algo/algoSaga'
 import algoReducer from './features/algo/algoReducer'
+import themeReducer from './features/theme/themeReducer'
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   version: VersionReducer,
   labels: labelsReducer,
   algo: algoReducer,
+  theme: themeReducer,
 })
 
 /* Configuration Redux Saga */

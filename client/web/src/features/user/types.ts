@@ -1,4 +1,4 @@
-import { IUser } from '../../models/user'
+import { IUserSetting, IUser } from '../../models/user'
 import {
   SET_CURRENT_USER,
   UNSET_CURRENT_USER,
@@ -8,6 +8,7 @@ import {
   RESET_USER_FORM_RESULT,
   SET_USER_FORM_RESULT,
   FETCH_ONE_USER,
+  SET_USER_SETTINGS,
 } from './actionTypes'
 
 interface FetchUsersAction {
@@ -46,6 +47,13 @@ interface SetAllUserAction {
   users: IUser[]
 }
 
+interface SetSettingsAction {
+  type: typeof SET_USER_SETTINGS
+  settings: IUserSetting
+  user: IUser
+  callback: () => void
+}
+
 export type UserActionTypes =
   | UnsetCurrentUserAction
   | SetCurrentUserAction
@@ -55,6 +63,7 @@ export type UserActionTypes =
   | SaveUserAction
   | SetUserFormResultAction
   | UnsetUserFormResultAction
+  | SetSettingsAction
 
 export interface UserState {
   user: IUser | null

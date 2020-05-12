@@ -74,7 +74,7 @@ namespace MetadataDatabase.Services
         }
 
         /// <summary>
-        /// set the password of specified series.
+        /// set the password of specified user.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="password">The password to update.</param>
@@ -91,6 +91,23 @@ namespace MetadataDatabase.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
+            this.userRepository.Update(user);
+            return user.ToDto();
+        }
+
+        /// <summary>
+        /// set the settings of specified user.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="settings">The settings to update.</param>
+        public UserDto SetSettings(string id, UserSettingsDto settings)
+        {
+            var user = this.userRepository.Get(id.ToObjectId());
+            if (user == null) {
+                throw new MongoException($"User not found with id='{id}'");
+            }
+
+            user.settings = settings.ToModel();
             this.userRepository.Update(user);
             return user.ToDto();
         }

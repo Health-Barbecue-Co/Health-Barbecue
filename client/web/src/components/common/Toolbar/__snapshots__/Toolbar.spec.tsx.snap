@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toolbar contains a label which is displayed 1`] = `
+<div
+  className="MuiToolbar-root MuiToolbar-regular makeStyles-toolbar-1 MuiToolbar-gutters"
+>
+  <h6
+    className="MuiTypography-root makeStyles-title-2 MuiTypography-h6"
+  >
+    hello
+  </h6>
+</div>
+`;
+
+exports[`Toolbar contains a leftAction array as props 1`] = `
+<div
+  className="MuiToolbar-root MuiToolbar-regular makeStyles-toolbar-1 MuiToolbar-gutters"
+>
+  <span>
+    left
+  </span>
+  <h6
+    className="MuiTypography-root makeStyles-title-2 MuiTypography-h6"
+  >
+    hello
+  </h6>
+</div>
+`;
+
+exports[`Toolbar contains a rightAction array as props 1`] = `
+<div
+  className="MuiToolbar-root MuiToolbar-regular makeStyles-toolbar-1 MuiToolbar-gutters"
+>
+  <h6
+    className="MuiTypography-root makeStyles-title-2 MuiTypography-h6"
+  >
+    hello
+  </h6>
+  <span>
+    right
+  </span>
+</div>
+`;

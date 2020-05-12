@@ -1,8 +1,11 @@
+import { IUserSetting } from './user'
+
 export interface IAuthenticatedUser {
-  Id: string
+  id: string
   firstname: string
   lastname: string
   login: string
   role: string
   token: string
+  settings?: IUserSetting
 }

@@ -1,4 +1,6 @@
-export const getAuth = (state: any) => {
+import { IAuthenticatedUser } from '../../models/authenticatedUser'
+
+export const getAuth = (state: any): IAuthenticatedUser | null => {
   const { auth } = state
   return auth.auth
 }

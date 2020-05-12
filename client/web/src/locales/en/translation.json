@@ -8,6 +8,7 @@
     "about": "About",
     "users": "Users",
     "logout": "Logout",
+    "settings": "Settings",
     "action": {
         "save": "Save"
     },

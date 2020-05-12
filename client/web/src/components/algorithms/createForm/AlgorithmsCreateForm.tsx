@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { algoActionTypes } from '../../../features/algo'
 import { IAlgo } from '../../../models/IAlgo'
 import { selectors } from '../../../features/auth'
-import { IUser } from '../../../models/user'
+import { IAuthenticatedUser } from '../../../models/authenticatedUser'
 
 type AlgorithmsCreateFormProps = {
   onSave?: () => void
@@ -17,8 +17,8 @@ export const AlgorithmsCreateForm: React.FC<AlgorithmsCreateFormProps> = (
   const { onSave } = props
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const user: IUser = useSelector(selectors.getAuth)
-  let fileInput = React.createRef<any>()
+  const user: IAuthenticatedUser | null = useSelector(selectors.getAuth)
+  const fileInput = React.createRef<any>()
 
   const [algoName, setAlgoName] = useState<string>('')
   const [algoDesc, setAlgoDesc] = useState<string>('')
@@ -33,9 +33,11 @@ export const AlgorithmsCreateForm: React.FC<AlgorithmsCreateFormProps> = (
   }
 
   const checkInputs = () => {
-    setAreInputsValid(algoName !== '' 
-      && algoDesc !== ''
-      && fileInput.current.firstChild.files.length !== 0)
+    setAreInputsValid(
+      algoName !== '' &&
+        algoDesc !== '' &&
+        fileInput.current.firstChild.files.length !== 0
+    )
   }
 
   const sendFile = () => {
@@ -47,7 +49,7 @@ export const AlgorithmsCreateForm: React.FC<AlgorithmsCreateFormProps> = (
 
       const algo: IAlgo = {
         id: '',
-        user: user.id,
+        user: user?.id ? user.id : '',
         name: algoName,
         mainFile: fileInput.current.firstChild.files[0].name,
         description: algoDesc,
@@ -55,10 +57,12 @@ export const AlgorithmsCreateForm: React.FC<AlgorithmsCreateFormProps> = (
       }
 
       dispatch({ type: algoActionTypes.CREATE_ALGO, algo })
-      setAlgoName('');
-      setAlgoDesc('');
-      (document.getElementById("file-selector") as any).value = ""
+      setAlgoName('')
+      setAlgoDesc('')
+
+      fileInput.current.this.props.value = ''
     }
+
     reader.readAsBinaryString(fileInput.current.firstChild.files[0])
 
     if (onSave && typeof onSave === 'function') {
@@ -100,7 +104,13 @@ export const AlgorithmsCreateForm: React.FC<AlgorithmsCreateFormProps> = (
         >
           <Box alignContent="center" alignItems="center">
             <label htmlFor="file-selector">{t('Select files:')}</label>
-            <Input type="file" id="file-selector" name="file-selector" ref={fileInput} onChange={checkInputs}/>
+            <Input
+              type="file"
+              id="file-selector"
+              name="file-selector"
+              ref={fileInput}
+              onChange={checkInputs}
+            />
           </Box>
           <Box flexGrow={1} />
           <Button

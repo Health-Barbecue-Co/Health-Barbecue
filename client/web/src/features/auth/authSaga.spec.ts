@@ -7,6 +7,7 @@ import authSaga, {
 } from './authSaga'
 import * as actionTypes from './actionTypes'
 import authService, { AuthService } from './authService'
+import { UNSET_THEME } from '../theme/actionTypes'
 
 jest.mock('../common/HttpRequest')
 
@@ -66,6 +67,8 @@ describe('Auth saga', () => {
     expect(generator.next().value).toEqual(
       put({ type: actionTypes.UNSET_AUTH })
     )
+
+    expect(generator.next().value).toEqual(put({ type: UNSET_THEME }))
 
     expect(generator.next().value).toEqual(call(cb))
     expect(generator.next().done).toBeTruthy()

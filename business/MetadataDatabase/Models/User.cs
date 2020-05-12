@@ -4,6 +4,14 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace MetadataDatabase.Models
 {
+    public class UserTheme {
+        public int index { get; set; }
+        public bool dark { get; set; }
+    }
+    public class UserSettings {
+        public UserTheme theme { set; get; }
+    }
+
     public class User : IMongoEntity
     {
         /// <summary>
@@ -62,5 +70,13 @@ namespace MetadataDatabase.Models
         /// The user salt of password.
         /// </value>
         public byte[] PasswordSalt { get; set; }
+
+        /// <summary>
+        /// Gets or sets the settings.
+        /// </summary>
+        /// <value>
+        /// The user settings.
+        /// </value>
+        public UserSettings settings { get; set; }
     }
 }
