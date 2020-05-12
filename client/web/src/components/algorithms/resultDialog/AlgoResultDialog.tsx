@@ -69,6 +69,7 @@ export const AlgoResultDialog: React.FC<AlgoResultDialogProps> = (
     )[0]
     const algoInfo: IAlgoExeInfo = {
       user: user.id,
+      algoId: selectedAlgo.id,
       mainFile: selectedAlgo.mainFile,
       seriesInstanceUID: selectedSeries.seriesInstanceUID,
       folder: '',

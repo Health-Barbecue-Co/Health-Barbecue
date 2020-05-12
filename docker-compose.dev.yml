@@ -39,49 +39,12 @@ services:
     expose:
       - 8042
 
-  hb_business_server:
-    container_name: hb_business_server
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:4001
-      - MongoConfiguration__Servername=hb_database
-      - PacsConfiguration__Host=hb_pacs_server
-      - AlgoConfiguration__Host=hb_algo_server
-    build:
-      context: ./business/MetadataDatabase
-    ports:
-      - 4001:80
-    volumes:
-      - algoVolume:/app/workspace/
-    expose:
-      - 4001
-    depends_on:
-      - hb_database
-      - hb_algo_server
-
-  hb_web_server:
-    container_name: hb_web_server
-    restart: always
-    build:
-      context: .
-      dockerfile: server.Dockerfile
-    volumes:
-      - './client/web:/app'
-      - '/app/node_modules'
-    ports:
-      - 4000:80
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    links:
-      - hb_business_server
-      - hb_pacs_server
-
   hb_algo_server:
     container_name: hb_algo_server
     build:
       context: ./business/Algo
     volumes:
-      - algoVolume:/usr/src/app/workspace
+      - ./business/MetadataDatabase/workspace:/usr/src/app/workspace
     ports:
       - 5009:5009
     expose:
@@ -90,4 +53,3 @@ services:
 volumes:
   mongodata: {}
   orthancdata: {}
-  algoVolume: {}

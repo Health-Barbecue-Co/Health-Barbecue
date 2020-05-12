@@ -82,8 +82,6 @@ namespace MetadataDatabase.Controllers
             var algoWithId = this.algoService.Create(algo);
             try
             {
-                Directory.CreateDirectory("workspace/algos/");
-                System.IO.File.WriteAllText(("workspace/algos/" + algo.MainFile), algo.ContentFile);
                 return CreatedAtRoute("GetAlgo", new { id = algoWithId.Id }, algoWithId);
             } catch(Exception e)
             {
