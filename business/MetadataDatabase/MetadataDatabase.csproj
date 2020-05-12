@@ -6,6 +6,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
 	<AssemblyVersion>1.0.0.1</AssemblyVersion>
 	<FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>

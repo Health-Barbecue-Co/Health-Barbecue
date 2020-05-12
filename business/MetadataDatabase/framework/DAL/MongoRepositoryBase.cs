@@ -13,7 +13,6 @@ namespace MetadataDatabase.framework.DAL
     /// BAse class for the mongo repository.
     /// </summary>
     /// <typeparam name="TMongoEntity">The type of the mongo entity.</typeparam>
-    /// <seealso cref="MetadataDatabase.framework.DAL.IRepository{TMongoEntity, MongoDB.Bson.ObjectId}" />
     public abstract class MongoRepositoryBase<TMongoEntity> : IRepository<TMongoEntity, ObjectId> where TMongoEntity : IMongoEntity, new()
     {
         /// <summary>The mongo client</summary>

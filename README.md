@@ -64,35 +64,26 @@ To change the login/password, edit file `config/orthanc.json` and add a new logi
 
 A web Mongo client being available on the stack, simply use <http://localhost:8043/> to access MongoDB.
 
+### Python server
+
+Python server for algorithms execution, simply use <http://localhost:5009/> to check if running.
+
 ### Web Client
-
-It is developed in React TypeScript, and Yarn is used as the package manager/CLI.
-
-#### Requirement
-
-The following tools are needed for development:
-
-- [Node.js](https://nodejs.org/en/) >= 12
-- [Yarn](https://classic.yarnpkg.com/lang/en/) ~1.20
-
-On macOS, these tools can be installed with Homebrew, by running the command `brew install yarn`.
-
-#### Docker
 
 It is available on <http://localhost:4000/>.
 
-#### Locally
-
-The web client can be ran locally with the commands:
-
-```bash
-cd client/web
-yarn && yarn start
-```
-
-The application will be available on <http://localhost:3000/>.
-
 ## Development
+
+### Requirement
+
+For 3rd party dependencies:
+- Orthanc Server
+- Mongo Database
+- Python server for algorithms execution
+
+```shell
+docker-compose -f "docker-compose.dev.yml" up -d --build
+```
 
 ### Business
 
@@ -119,30 +110,26 @@ cd business/MetadataDatabase
 dotnet run
 ```
 
-## End to End test
+### Web Client
 
-You are using cypress.io, and to launch them thanks to docker compose :
+It is developed in React TypeScript, and Yarn is used as the package manager/CLI.
 
-### Locally
+#### Requirement
 
-```bash
-# you must run api (with dotnet run) and frontend (with yarn start)
-cd end-to-end-tests
-yarn cy-open:local
+The following tools are needed for development:
 
-# or
-yarn cy-run:local
-```
+- [Node.js](https://nodejs.org/en/) >= 12
+- [Yarn](https://classic.yarnpkg.com/lang/en/) ~1.20
 
-Important : mongoDB must be launched (via docker or locally)
+On macOS, these tools can be installed with Homebrew, by running the command `brew install yarn`.
 
-### Docker
+#### Locally
+
+The web client can be ran locally with the commands:
 
 ```bash
-docker-compose up --exit-code-from hb_end_to_end_test
+cd client/web
+yarn && yarn start
 ```
 
-### Recommandations
-
-To Find one element of page, it is recommanded to add attribute `data-testid` and use `cy.findByTestId('your_data-testId_element')`
-to find it in tests
+The application will be available on <http://localhost:3000/>.

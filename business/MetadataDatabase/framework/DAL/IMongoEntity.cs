@@ -6,7 +6,6 @@ namespace MetadataDatabase.framework.DAL
     /// <summary>
     /// Interface for monfgo entity.
     /// </summary>
-    /// <seealso cref="MetadataDatabase.framework.DAL.IEntity{MongoDB.Bson.ObjectId}" />
     public interface IMongoEntity : IEntity<ObjectId>
     {
         /// <summary>Gets or sets the identifier.</summary>

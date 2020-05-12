@@ -99,11 +99,9 @@ export const SeriesList: React.FC<SeriesListProps> = () => {
       return typeof data[0][element] === 'string'
     })
     // Get rows data for each series
-    const rows = data.map((dataElement: any) => {
-      return columns.map((column) => {
-        return dataElement[column]
-      })
-    })
+    const rows = data.map((dataElement: any) =>
+      columns.map((column) => dataElement[column])
+    )
     // Save the csv file
     new CsvBuilder('series_list.csv')
       .setColumns(columns)
