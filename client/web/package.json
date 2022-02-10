@@ -51,7 +51,7 @@
     "i18next-xhr-backend": "^3.2.2",
     "jest-enzyme": "^7.1.2",
     "material-table": "^1.57.2",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "prettier": "^2.0.4",
     "react": "^16.13.1",
     "react-cornerstone-viewport": "^2.3.8",
